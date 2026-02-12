@@ -9,7 +9,7 @@ const navLinks = [
   { label: "Paquetes", href: "/paquetes" },
   { label: "Tren Maya", href: "/tren-maya" },
   { label: "Blog", href: "/blog" },
-  { label: "Destinos", href: "/#destinos" },
+  { label: "Destinos", href: "/destinos" },
 ];
 
 const Header = () => {

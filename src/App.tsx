@@ -10,6 +10,7 @@ import TrenMaya from "./pages/TrenMaya";
 import Packages from "./pages/Packages";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
+import Destinos from "./pages/Destinos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/paquetes" element={<Packages />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogArticle />} />
+          <Route path="/destinos" element={<Destinos />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
