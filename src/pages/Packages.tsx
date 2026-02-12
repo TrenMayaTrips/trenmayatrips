@@ -90,97 +90,92 @@ const Packages = () => {
             </button>
           </div>
 
-          {compareMode && selectedForCompare.length > 0 && (
+          {compareMode && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>{selectedForCompare.length} paquete(s) seleccionado(s)</span>
-              <button
-                onClick={() => {
-                  setCompareMode(false);
-                  setSelectedForCompare([]);
-                }}
-                className="text-primary hover:underline"
-              >
-                Ver comparación
-              </button>
+              {selectedForCompare.length >= 2 && (
+                <span className="text-xs text-muted-foreground">— la comparación se muestra abajo</span>
+              )}
             </div>
           )}
         </div>
       </section>
 
-      {/* Packages Grid */}
-      {!compareMode ? (
-        <section className="py-10 md:py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <p className="text-sm text-muted-foreground mb-8">
-              {filtered.length} paquete{filtered.length !== 1 ? "s" : ""} disponible{filtered.length !== 1 ? "s" : ""}
-            </p>
+      {/* Packages Grid - always visible */}
+      <section className="py-10 md:py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <p className="text-sm text-muted-foreground mb-8">
+            {filtered.length} paquete{filtered.length !== 1 ? "s" : ""} disponible{filtered.length !== 1 ? "s" : ""}
+            {compareMode && " — selecciona paquetes para comparar"}
+          </p>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {filtered.map((pkg, i) => (
-                <motion.div
-                  key={pkg.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`rounded-xl overflow-hidden border ${
-                    compareMode && selectedForCompare.includes(pkg.slug)
-                      ? "border-primary bg-primary/5"
-                      : "border-border bg-card"
-                  } hover:shadow-lg transition-all`}
-                >
-                  {/* Package Header */}
-                  <div className="bg-gradient-to-br from-primary/20 to-jade-light/30 p-6 border-b border-border">
-                    <div className="flex items-start justify-between gap-4 mb-4">
-                      <div className="flex-1">
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                          {packageTypes[pkg.type]}
-                        </p>
-                        <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
-                          {pkg.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground mt-2">{pkg.description}</p>
-                      </div>
-                      {compareMode && (
-                        <button
-                          onClick={() => toggleCompare(pkg.slug)}
-                          className={`mt-2 px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                            selectedForCompare.includes(pkg.slug)
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-secondary text-foreground hover:bg-muted"
-                          }`}
-                        >
-                          {selectedForCompare.includes(pkg.slug) ? "✓" : "Añadir"}
-                        </button>
-                      )}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {filtered.map((pkg, i) => (
+              <motion.div
+                key={pkg.slug}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                onClick={() => compareMode && toggleCompare(pkg.slug)}
+                className={`rounded-xl overflow-hidden border ${
+                  compareMode && selectedForCompare.includes(pkg.slug)
+                    ? "border-primary ring-2 ring-primary/30 bg-primary/5"
+                    : "border-border bg-card"
+                } ${compareMode ? "cursor-pointer" : ""} hover:shadow-lg transition-all`}
+              >
+                {/* Package Header */}
+                <div className="bg-gradient-to-br from-primary/20 to-jade-light/30 p-6 border-b border-border">
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+                        {packageTypes[pkg.type]}
+                      </p>
+                      <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
+                        {pkg.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-2">{pkg.description}</p>
                     </div>
+                    {compareMode && (
+                      <div
+                        className={`mt-2 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-colors ${
+                          selectedForCompare.includes(pkg.slug)
+                            ? "bg-primary border-primary text-primary-foreground"
+                            : "border-muted-foreground/40 text-transparent"
+                        }`}
+                      >
+                        <Check size={14} />
+                      </div>
+                    )}
+                  </div>
 
-                    {/* Key Metrics */}
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="flex items-center gap-2 text-foreground">
-                        <Clock size={16} className="text-accent" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Duración</p>
-                          <p className="font-semibold text-sm">{pkg.duration} días</p>
-                        </div>
+                  {/* Key Metrics */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Clock size={16} className="text-accent" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Duración</p>
+                        <p className="font-semibold text-sm">{pkg.duration} días</p>
                       </div>
-                      <div className="flex items-center gap-2 text-foreground">
-                        <Users size={16} className="text-accent" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Grupo</p>
-                          <p className="font-semibold text-sm text-xs">{pkg.groupSize}</p>
-                        </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Users size={16} className="text-accent" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Grupo</p>
+                        <p className="font-semibold text-sm text-xs">{pkg.groupSize}</p>
                       </div>
-                      <div className="flex items-center gap-2 text-foreground">
-                        <Star size={16} className="text-gold fill-gold" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Rating</p>
-                          <p className="font-semibold text-sm">{pkg.rating} ({pkg.reviews})</p>
-                        </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Star size={16} className="text-gold fill-gold" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Rating</p>
+                        <p className="font-semibold text-sm">{pkg.rating} ({pkg.reviews})</p>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Package Content */}
+                {/* Package Content - hidden in compare mode for cleaner selection */}
+                {!compareMode && (
                   <div className="p-6">
                     {/* Highlights */}
                     <div className="mb-6">
@@ -308,163 +303,111 @@ const Packages = () => {
                       </Button>
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                )}
+              </motion.div>
+            ))}
           </div>
-        </section>
-      ) : (
-        /* Compare Mode */
-        <section className="py-10 md:py-16 bg-background">
+        </div>
+      </section>
+
+      {/* Comparison Table - shown when 2+ packages selected in compare mode */}
+      {compareMode && toCompare.length >= 2 && (
+        <section className="py-10 md:py-16 bg-secondary/50 border-t border-border">
           <div className="container mx-auto px-4">
-            {toCompare.length === 0 ? (
-              <div className="text-center py-16">
-                <p className="text-lg text-muted-foreground mb-4">Selecciona al menos 2 paquetes para comparar.</p>
-                <button
-                  onClick={() => setCompareMode(false)}
-                  className="text-primary font-medium underline underline-offset-4"
-                >
-                  Volver a paquetes
-                </button>
-              </div>
-            ) : (
-              <>
-                <h2 className="text-2xl font-bold text-foreground mb-8">Comparador de Paquetes</h2>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm border-collapse">
-                    <thead>
-                      <tr className="border-b border-border">
-                        <th className="text-left p-4 font-semibold text-foreground bg-secondary">Característica</th>
-                        {toCompare.map((pkg) => (
-                          <th key={pkg.slug} className="text-left p-4 font-semibold text-foreground bg-secondary">
-                            <p className="font-heading text-base">{pkg.title}</p>
-                            <p className="text-xs text-muted-foreground font-normal mt-1">{pkg.duration} días</p>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Precio Base</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground">
-                            <p className="font-bold text-lg">${pkg.price.toLocaleString()} MXN</p>
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Tipo</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground">
-                            {packageTypes[pkg.type]}
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Dificultad</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground capitalize">
-                            {pkg.difficulty}
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Tamaño del Grupo</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground text-sm">{pkg.groupSize}</td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Hospedaje</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground text-sm">
-                            {pkg.includes.find((i) => i.includes("hospedaje")) ? "✓ Incluido" : "-"}
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Transporte Privado</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground">
-                            {pkg.includes.some((i) => i.includes("Transporte privado")) ? (
-                              <Check size={18} className="text-accent" />
-                            ) : (
-                              "-"
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Guía Especializado</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground">
-                            {pkg.includes.some((i) => i.includes("Guía")) ? (
-                              <Check size={18} className="text-accent" />
-                            ) : (
-                              "-"
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Número de Comidas</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground text-sm">
-                            {pkg.includes.filter((i) => i.includes("comida")).length > 0
-                              ? `${pkg.duration * 2} (est.)`
-                              : "-"}
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr className="border-b border-border">
-                        <td className="p-4 font-semibold text-foreground">Rating</td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4 text-foreground">
-                            <div className="flex items-center gap-1">
-                              <Star size={16} className="text-gold fill-gold" />
-                              <span className="font-semibold">{pkg.rating}</span>
-                              <span className="text-xs text-muted-foreground">({pkg.reviews})</span>
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-
-                      <tr>
-                        <td className="p-4"></td>
-                        {toCompare.map((pkg) => (
-                          <td key={pkg.slug} className="p-4">
-                            <Button
-                              onClick={() => handleQuote(pkg.slug)}
-                              className="w-full"
-                              size="sm"
-                            >
-                              Cotizar
-                            </Button>
-                          </td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="mt-8 text-center">
-                  <button
-                    onClick={() => setCompareMode(false)}
-                    className="text-primary font-medium underline underline-offset-4"
-                  >
-                    Volver a paquetes
-                  </button>
-                </div>
-              </>
-            )}
+            <h2 className="text-2xl font-bold text-foreground mb-8">Comparador de Paquetes</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse bg-card rounded-lg overflow-hidden">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left p-4 font-semibold text-foreground bg-secondary">Característica</th>
+                    {toCompare.map((pkg) => (
+                      <th key={pkg.slug} className="text-left p-4 font-semibold text-foreground bg-secondary">
+                        <p className="font-heading text-base">{pkg.title}</p>
+                        <p className="text-xs text-muted-foreground font-normal mt-1">{pkg.duration} días</p>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Precio Base</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground">
+                        <p className="font-bold text-lg">${pkg.price.toLocaleString()} MXN</p>
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Tipo</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground">{packageTypes[pkg.type]}</td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Dificultad</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground capitalize">{pkg.difficulty}</td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Tamaño del Grupo</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground text-sm">{pkg.groupSize}</td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Hospedaje</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground text-sm">
+                        {pkg.includes.find((i) => i.includes("hospedaje")) ? "✓ Incluido" : "-"}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Transporte Privado</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground">
+                        {pkg.includes.some((i) => i.includes("Transporte privado")) ? (
+                          <Check size={18} className="text-accent" />
+                        ) : "-"}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Guía Especializado</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground">
+                        {pkg.includes.some((i) => i.includes("Guía")) ? (
+                          <Check size={18} className="text-accent" />
+                        ) : "-"}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-4 font-semibold text-foreground">Rating</td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4 text-foreground">
+                        <div className="flex items-center gap-1">
+                          <Star size={16} className="text-gold fill-gold" />
+                          <span className="font-semibold">{pkg.rating}</span>
+                          <span className="text-xs text-muted-foreground">({pkg.reviews})</span>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-4"></td>
+                    {toCompare.map((pkg) => (
+                      <td key={pkg.slug} className="p-4">
+                        <Button onClick={() => handleQuote(pkg.slug)} className="w-full" size="sm">
+                          Cotizar
+                        </Button>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
       )}
