@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from "react-router-dom";
 
 const navLinks = [
-  { label: "Destinos", href: "#destinos" },
-  { label: "Experiencias", href: "#experiencias" },
-  { label: "Tren Maya", href: "#vagones" },
-  { label: "Rutas", href: "#rutas" },
-  { label: "Planifica", href: "#reservar" },
+  { label: "Experiencias", href: "/experiencias" },
+  { label: "Tren Maya", href: "/tren-maya" },
+  { label: "Destinos", href: "/#destinos" },
+  { label: "Rutas", href: "/#rutas" },
 ];
 
 const Header = () => {
@@ -32,15 +32,26 @@ const Header = () => {
         {/* Desktop Nav */}
         {!isMobile && (
           <nav className="flex items-center gap-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isExternal = link.href.startsWith("/#");
+              return isExternal ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <a
               href="#reservar"
               className="ml-2 px-5 py-2.5 bg-accent text-accent-foreground font-semibold text-sm rounded-md hover:bg-gold-light transition-colors"
@@ -74,16 +85,28 @@ const Header = () => {
             className="overflow-hidden bg-card border-b border-border"
           >
             <div className="container mx-auto px-4 py-4 flex flex-col gap-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="py-3 px-4 text-base font-medium text-foreground hover:bg-secondary rounded-md transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isExternal = link.href.startsWith("/#");
+                return isExternal ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="py-3 px-4 text-base font-medium text-foreground hover:bg-secondary rounded-md transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="py-3 px-4 text-base font-medium text-foreground hover:bg-secondary rounded-md transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
               <a
                 href="#reservar"
                 onClick={() => setIsOpen(false)}
