@@ -14,11 +14,11 @@ const CTAFinalSection = () => {
           viewport={{ once: true }}
         >
           <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
-            Tu aventura sobre rieles{" "}
-            <span className="text-gold italic">comienza aquí</span>
+            El Mundo Maya te{" "}
+            <span className="text-gold italic">espera</span>
           </h2>
           <p className="mt-5 text-primary-foreground/70 text-base md:text-lg max-w-xl mx-auto">
-            Reserva hoy y asegura tu lugar en la próxima salida. Plazas limitadas por temporada.
+            Solicita tu cotización y diseñamos el circuito perfecto por la ruta del Tren Maya. Plazas limitadas por temporada.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <a

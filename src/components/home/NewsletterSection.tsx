@@ -19,7 +19,7 @@ const NewsletterSection = () => {
             Recibe ofertas exclusivas
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Suscríbete y obtén una <strong className="text-foreground">guía gratuita en PDF</strong> con los 10 paisajes imperdibles desde el tren.
+            Suscríbete y obtén una <strong className="text-foreground">guía gratuita en PDF</strong> con los 10 destinos imperdibles de la ruta del Tren Maya.
           </p>
 
           <form

@@ -3,21 +3,21 @@ import { Star, Quote } from "lucide-react";
 
 const testimonials = [
   {
-    name: "María García",
+    name: "Laura Fernández",
     location: "Ciudad de México",
-    text: "Una experiencia inolvidable. El servicio a bordo es impecable y los paisajes de la Barranca del Cobre te dejan sin palabras.",
+    text: "El circuito por Chichén Itzá, Uxmal y los cenotes fue mágico. El Tren Maya hace que todo sea cómodo y sin estrés. ¡Volveremos!",
     rating: 5,
   },
   {
-    name: "Carlos Mendoza",
-    location: "Guadalajara",
-    text: "El Tequila Express superó todas nuestras expectativas. La degustación, la música y la hospitalidad fueron excepcionales.",
-    rating: 5,
-  },
-  {
-    name: "Ana Rodríguez",
+    name: "Roberto Sánchez",
     location: "Monterrey",
-    text: "Viajamos en Suite Presidencial y fue como estar en un hotel de cinco estrellas sobre rieles. Absolutamente recomendable.",
+    text: "Palenque nos dejó sin palabras. La combinación de zona arqueológica, cascadas de Agua Azul y el viaje en tren clase Janal fue perfecta.",
+    rating: 5,
+  },
+  {
+    name: "Patricia Morales",
+    location: "Los Ángeles, CA",
+    text: "Bacalar es un paraíso y el servicio de Tren Maya Trips fue excepcional. Guías locales increíbles y la cochinita pibil, ¡de otro nivel!",
     rating: 5,
   },
 ];

@@ -1,26 +1,26 @@
 import { motion } from "framer-motion";
-import { Utensils, Wine, Mountain, Music } from "lucide-react";
+import { Palmtree, Landmark, UtensilsCrossed, Sparkles } from "lucide-react";
 
 const experiences = [
   {
-    icon: Utensils,
-    title: "Gastronomía a bordo",
-    description: "Menús degustación con chefs reconocidos que celebran la cocina regional mexicana.",
+    icon: Landmark,
+    title: "Patrimonio Maya",
+    description: "Visita zonas arqueológicas como Chichén Itzá, Palenque, Uxmal y Calakmul con guías certificados.",
   },
   {
-    icon: Wine,
-    title: "Cata de vinos y mezcal",
-    description: "Degusta las mejores etiquetas mexicanas mientras el paisaje se transforma.",
+    icon: Palmtree,
+    title: "Cenotes y naturaleza",
+    description: "Nada en cenotes sagrados, explora la selva y descubre la Reserva de Sian Ka'an.",
   },
   {
-    icon: Mountain,
-    title: "Excursiones en parada",
-    description: "Caminatas, cabalgatas y recorridos culturales en cada destino de la ruta.",
+    icon: UtensilsCrossed,
+    title: "Gastronomía regional",
+    description: "Cochinita pibil, papadzules, chocolate de Tabasco y sabores auténticos del sureste.",
   },
   {
-    icon: Music,
-    title: "Cultura viva",
-    description: "Música en vivo, artesanías locales y encuentros con comunidades originarias.",
+    icon: Sparkles,
+    title: "Bienestar y temazcal",
+    description: "Rituales de sanación, temazcales tradicionales y retiros de bienestar en la selva.",
   },
 ];
 
@@ -31,10 +31,10 @@ const ExperienciasSection = () => {
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Experiencias</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
-            Más que un viaje en tren
+            Vive el Mundo Maya
           </h2>
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-            Cada momento a bordo está diseñado para que vivas México con todos los sentidos.
+            Cada parada del Tren Maya te conecta con experiencias únicas de cultura, aventura y tradición.
           </p>
         </div>
 

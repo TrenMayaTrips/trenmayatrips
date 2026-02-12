@@ -3,30 +3,30 @@ import { MapPin, Clock, Star } from "lucide-react";
 
 const destinations = [
   {
-    name: "Barranca del Cobre",
-    region: "Chihuahua · Sinaloa",
-    duration: "3 días",
+    name: "Chichén Itzá y Valladolid",
+    region: "Yucatán",
+    duration: "2 días",
     rating: 4.9,
     tag: "Más popular",
   },
   {
-    name: "Ruta Tequila Express",
-    region: "Jalisco",
-    duration: "1 día",
-    rating: 4.8,
-    tag: "Experiencia única",
-  },
-  {
-    name: "Riviera Maya Colonial",
-    region: "Yucatán · Quintana Roo",
-    duration: "4 días",
+    name: "Riviera Maya y Tulum",
+    region: "Quintana Roo",
+    duration: "3 días",
     rating: 4.9,
-    tag: "Nuevo",
+    tag: "Imperdible",
   },
   {
-    name: "Ruta de la Plata",
-    region: "Zacatecas · Guanajuato",
+    name: "Palenque y Agua Azul",
+    region: "Chiapas",
     duration: "2 días",
+    rating: 4.8,
+    tag: "Aventura",
+  },
+  {
+    name: "Calakmul y Campeche",
+    region: "Campeche",
+    duration: "3 días",
     rating: 4.7,
     tag: "Cultural",
   },
@@ -39,10 +39,10 @@ const DestinosSection = () => {
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Destinos</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
-            Rutas que inspiran
+            Descubre el sureste mexicano
           </h2>
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-            Cada ruta es una puerta a paisajes, sabores y tradiciones que solo México puede ofrecer.
+            Cinco estados, miles de años de historia Maya y paisajes que solo el sureste de México puede ofrecer.
           </p>
         </div>
 
@@ -56,7 +56,6 @@ const DestinosSection = () => {
               transition={{ delay: i * 0.1 }}
               className="group relative bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all cursor-pointer"
             >
-              {/* Image placeholder */}
               <div className="h-48 md:h-56 bg-gradient-to-br from-primary/20 to-jade-light/30 relative">
                 <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
                   {dest.tag}
