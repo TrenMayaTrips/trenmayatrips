@@ -15,7 +15,7 @@ const HeroSection = () => {
           transition={{ duration: 0.6 }}
           className="text-gold font-medium tracking-[0.3em] uppercase text-xs md:text-sm mb-4"
         >
-          Descubre México a bordo
+          Explora el Mundo Maya
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -23,9 +23,8 @@ const HeroSection = () => {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-primary-foreground leading-tight max-w-4xl mx-auto"
         >
-          Viaja por las rutas más{" "}
-          <span className="text-gold italic">espectaculares</span>{" "}
-          de México
+          Experiencias únicas conectadas por{" "}
+          <span className="text-gold italic">tren</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -33,8 +32,8 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-6 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
         >
-          Lujo, cultura y naturaleza se encuentran en una experiencia ferroviaria única. 
-          Desde la Barranca del Cobre hasta la Riviera Maya.
+          Recorre la Península de Yucatán y el sureste de México a bordo del Tren Maya. 
+          Cultura, naturaleza y aventura en un solo viaje.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,10 +42,10 @@ const HeroSection = () => {
           className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
         >
           <a
-            href="#rutas"
+            href="#destinos"
             className="px-8 py-3.5 bg-accent text-accent-foreground font-semibold rounded-md hover:bg-gold-light transition-colors text-sm md:text-base"
           >
-            Explorar Rutas
+            Explorar Destinos
           </a>
           <a
             href="#experiencias"

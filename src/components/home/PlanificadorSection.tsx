@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronUp, ChevronDown, X, CalendarDays, Users, MapPin } from "lucide-react";
+import { ChevronUp, ChevronDown, CalendarDays, Users, MapPin } from "lucide-react";
 
 const steps = [
   { id: 1, label: "Destino", icon: MapPin },
@@ -20,7 +20,7 @@ const PlanificadorSection = () => {
             Planifica tu viaje
           </h2>
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-            En 3 simples pasos, diseña la experiencia perfecta para ti.
+            En 3 simples pasos, diseña la experiencia perfecta por la ruta del Tren Maya.
           </p>
         </div>
 
@@ -61,12 +61,18 @@ const PlanificadorSection = () => {
               <div>
                 <h3 className="font-heading text-xl font-semibold mb-4">¿A dónde quieres ir?</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {["Barranca del Cobre", "Tequila Express", "Riviera Maya", "Ruta de la Plata"].map((dest) => (
+                  {[
+                    { name: "Chichén Itzá y Valladolid", state: "Yucatán" },
+                    { name: "Riviera Maya y Tulum", state: "Quintana Roo" },
+                    { name: "Palenque y Agua Azul", state: "Chiapas" },
+                    { name: "Calakmul y Campeche", state: "Campeche" },
+                  ].map((dest) => (
                     <button
-                      key={dest}
+                      key={dest.name}
                       className="p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 text-left transition-all min-h-[48px]"
                     >
-                      <p className="font-medium text-foreground">{dest}</p>
+                      <p className="font-medium text-foreground">{dest.name}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{dest.state}</p>
                     </button>
                   ))}
                 </div>

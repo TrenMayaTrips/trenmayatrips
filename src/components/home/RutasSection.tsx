@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 const routes = [
-  { name: "El Chepe Express", from: "Los Mochis", to: "Creel", days: 3, stops: 5 },
-  { name: "Tequila Express", from: "Guadalajara", to: "Amatitán", days: 1, stops: 3 },
-  { name: "Ruta Maya", from: "Mérida", to: "Cancún", days: 4, stops: 7 },
-  { name: "Sierra Norte", from: "Oaxaca", to: "Ixtlán", days: 2, stops: 4 },
+  { name: "Ruta de la Grandeza Maya", from: "Palenque", to: "Tulum", days: 7, stops: 8 },
+  { name: "Caribe y Cenotes", from: "Cancún", to: "Bacalar", days: 4, stops: 5 },
+  { name: "Ruta Puuc", from: "Mérida", to: "Uxmal", days: 2, stops: 4 },
+  { name: "Selva y Cacao", from: "Villahermosa", to: "Palenque", days: 3, stops: 4 },
 ];
 
 const RutasSection = () => {
@@ -15,7 +15,7 @@ const RutasSection = () => {
         <div className="text-center mb-10 md:mb-14">
           <p className="text-gold font-medium tracking-widest uppercase text-xs mb-2">Rutas</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold">
-            Nuestros recorridos
+            Circuitos por el sureste
           </h2>
         </div>
 

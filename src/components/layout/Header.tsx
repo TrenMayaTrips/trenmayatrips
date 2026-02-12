@@ -4,12 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const navLinks = [
-  { label: "Rutas", href: "#rutas" },
+  { label: "Destinos", href: "#destinos" },
   { label: "Experiencias", href: "#experiencias" },
-  { label: "Vagones", href: "#vagones" },
-  { label: "Paquetes", href: "#paquetes" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Tren Maya", href: "#vagones" },
+  { label: "Rutas", href: "#rutas" },
+  { label: "Planifica", href: "#reservar" },
 ];
 
 const Header = () => {
@@ -25,8 +24,8 @@ const Header = () => {
             <span className="text-primary-foreground font-heading font-bold text-sm md:text-lg">T</span>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="font-heading font-bold text-foreground text-base md:text-lg tracking-wide">Tren Turístico</span>
-            <span className="text-[10px] md:text-xs text-muted-foreground tracking-widest uppercase">de México</span>
+         <span className="font-heading font-bold text-foreground text-base md:text-lg tracking-wide">Tren Maya</span>
+            <span className="text-[10px] md:text-xs text-muted-foreground tracking-widest uppercase">Trips</span>
           </div>
         </a>
 
@@ -54,7 +53,7 @@ const Header = () => {
         {/* Mobile Menu Toggle */}
         {isMobile && (
           <div className="flex items-center gap-3">
-            <a href="tel:+521234567890" className="p-2 text-primary">
+            <a href="tel:+529982186754" className="p-2 text-primary">
               <Phone size={20} />
             </a>
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-foreground">

@@ -1,39 +1,36 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { Check } from "lucide-react";
 
 const vagones = [
   {
-    name: "Clase Turista",
-    tagline: "Confort accesible",
-    features: ["Asientos reclinables", "Vista panorámica", "Servicio de snacks", "Wi-Fi básico"],
-    price: "Desde $2,500 MXN",
+    name: "Xiinbal",
+    tagline: "Clase económica",
+    features: ["Asientos reclinables", "Vista panorámica", "Servicio de snacks", "Amenidades básicas"],
+    price: "Desde $800 MXN",
   },
   {
-    name: "Clase Primera",
-    tagline: "Elegancia y confort",
-    features: ["Asientos premium", "Comida incluida", "Bar a bordo", "Wi-Fi premium", "Amenidades"],
-    price: "Desde $5,800 MXN",
+    name: "Janal",
+    tagline: "Clase intermedia",
+    features: ["Asientos premium", "Comida a bordo", "Wi-Fi incluido", "Amenidades mejoradas", "Bar a bordo"],
+    price: "Desde $1,500 MXN",
     featured: true,
   },
   {
-    name: "Suite Presidencial",
-    tagline: "Lujo sin límites",
-    features: ["Cabina privada", "Chef personal", "Spa a bordo", "Mayordomo", "Champagne ilimitado"],
-    price: "Desde $15,000 MXN",
+    name: "P'atal",
+    tagline: "Clase premium",
+    features: ["Cabina de lujo", "Gastronomía gourmet", "Servicio personalizado", "Amenidades completas", "Acceso VIP"],
+    price: "Desde $3,200 MXN",
   },
 ];
 
 const VagonesSection = () => {
-  const [active, setActive] = useState(1);
-
   return (
     <section id="vagones" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Vagones</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
-            Elige tu estilo de viaje
+            Tres clases, un mismo destino
           </h2>
         </div>
 
@@ -67,7 +64,6 @@ const VagonCard = ({ vagon, index, isFeatured }: { vagon: typeof vagones[0]; ind
         : "border-border hover:shadow-md"
     }`}
   >
-    {/* Image placeholder */}
     <div className={`h-44 md:h-52 ${isFeatured ? "bg-gradient-to-br from-accent/20 to-gold-light/30" : "bg-gradient-to-br from-secondary to-muted"}`}>
       {isFeatured && (
         <div className="m-3 inline-block px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
