@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { destinationImageMap } from "@/data/destination-images";
 import heroDestinos from "@/assets/hero-destinos.jpg";
 import ctaDestinos from "@/assets/cta-destinos.jpg";
+import ParallaxHero from "@/components/layout/ParallaxHero";
 
 const Destinos = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -31,26 +32,15 @@ const Destinos = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <img
-            src={heroDestinos}
-            alt="Tren Maya Destinations"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Destinos</p>
-          <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
-            5 Estados, Miles de Historias
-          </h1>
-          <p className="mt-4 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto">
-            Explora los destinos más fascinantes del sureste mexicano a lo largo de la ruta del Tren Maya.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imageSrc={heroDestinos} imageAlt="Tren Maya Destinations" overlayClass="bg-black/40">
+        <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Destinos</p>
+        <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+          5 Estados, Miles de Historias
+        </h1>
+        <p className="mt-4 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto">
+          Explora los destinos más fascinantes del sureste mexicano a lo largo de la ruta del Tren Maya.
+        </p>
+      </ParallaxHero>
 
       {/* Interactive State Map */}
       <section className="py-10 md:py-14 bg-card border-b border-border">

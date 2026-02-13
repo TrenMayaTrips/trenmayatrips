@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
+import ParallaxHero from "@/components/layout/ParallaxHero";
 
 const Experiencias = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,19 +35,15 @@ const Experiencias = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16 min-h-[340px] md:min-h-[420px] flex items-center">
-        <img src={heroExperiencias} alt="Ruinas mayas en la selva tropical" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Experiencias</p>
-          <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            Vive el Mundo Maya
-          </h1>
-          <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl mx-auto">
-            Aventura, cultura, gastronomía y bienestar en los 5 estados de la ruta del Tren Maya.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imageSrc={heroExperiencias} imageAlt="Ruinas mayas en la selva tropical">
+        <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Experiencias</p>
+        <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+          Vive el Mundo Maya
+        </h1>
+        <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl mx-auto">
+          Aventura, cultura, gastronomía y bienestar en los 5 estados de la ruta del Tren Maya.
+        </p>
+      </ParallaxHero>
 
       {/* Search & Filters */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
