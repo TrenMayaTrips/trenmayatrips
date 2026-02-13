@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { destinations, states, destinationTypes, type Destination } from "@/data/destinations";
+import { destinationImageMap } from "@/data/destination-images";
 
 const tripTypes = [
   { id: "cultural", label: "Cultural & Arqueología", emoji: "🏛️", description: "Ruinas mayas, museos y tradiciones" },
@@ -380,6 +381,16 @@ const Itinerarios = () => {
                             : "hover:border-primary/30 hover:shadow-md"
                         }`}
                       >
+                        {destinationImageMap[dest.slug] && (
+                          <div className="h-32 overflow-hidden">
+                            <img
+                              src={destinationImageMap[dest.slug]}
+                              alt={dest.name}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        )}
                         <CardContent className="p-4 flex items-center gap-3">
                           <span className="text-2xl">{dest.emoji}</span>
                           <div className="flex-1 min-w-0">
