@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
 import ParallaxHero from "@/components/layout/ParallaxHero";
+import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 
 const stateColors: Record<string, string> = {
@@ -79,6 +80,22 @@ const TrenMaya = () => {
         </div>
       </section>
 
+      {/* Route Map */}
+      <section className="py-12 md:py-20 bg-secondary/50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8 md:mb-12">
+            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Mapa de la ruta</p>
+            <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
+              Recorrido completo del Tren Maya
+            </h2>
+            <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-sm md:text-base">
+              34 estaciones y paraderos a lo largo de 1,554 km conectando Chiapas, Tabasco, Campeche, Yucatán y Quintana Roo.
+            </p>
+          </div>
+          <TrenMayaRouteMap />
+        </div>
+      </section>
+
       {/* Stations - Metro style */}
       <section className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
@@ -127,18 +144,20 @@ const TrenMaya = () => {
                 className="flex gap-4 relative"
               >
                 <div className="flex flex-col items-center">
-                  <div className={`w-4 h-4 rounded-full shrink-0 mt-1 border-2 border-card ${station.isMain ? stateColors[station.stateKey] || "bg-primary" : "bg-border"}`} />
+                  <div className={`w-4 h-4 rounded-full shrink-0 mt-1 border-2 border-card ${station.type === "principal" ? stateColors[station.stateKey] || "bg-primary" : station.type === "estacion" ? "bg-muted-foreground/40" : "bg-border"}`} />
                   {i < filteredStations.length - 1 && <div className="w-0.5 flex-1 bg-border" />}
                 </div>
-                <div className={`pb-5 ${station.isMain ? "" : "opacity-70"}`}>
+                <div className={`pb-5 ${station.type === "principal" ? "" : "opacity-70"}`}>
                   <div className="flex items-center gap-2">
-                    <h3 className={`font-heading font-semibold text-foreground ${station.isMain ? "text-base md:text-lg" : "text-sm"}`}>
+                    <h3 className={`font-heading font-semibold text-foreground ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}>
                       {station.name}
                     </h3>
-                    {station.isMain && <Train size={14} className="text-primary" />}
+                    {station.type === "principal" && <Train size={14} className="text-primary" />}
+                    {station.type === "estacion" && <span className="text-[10px] text-muted-foreground font-medium">Estación</span>}
+                    {station.type === "paradero" && <span className="text-[10px] text-muted-foreground">Paradero</span>}
                   </div>
                   <p className="text-xs text-muted-foreground">{station.state} · km {station.km}</p>
-                  {station.isMain && station.highlights.length > 0 && (
+                  {station.highlights.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-1">
                       {station.highlights.map((h) => (
                         <span key={h} className="text-[10px] px-2 py-0.5 bg-secondary rounded-full text-muted-foreground">{h}</span>
