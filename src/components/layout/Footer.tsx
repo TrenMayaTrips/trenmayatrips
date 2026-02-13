@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import logoTmt from "@/assets/logo-tmt.png";
 
 const Footer = () => {
   return (
@@ -7,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="font-heading text-2xl font-bold mb-3">Tren Maya Trips</h3>
+            <img src={logoTmt} alt="Tren Maya Trips" className="h-12 w-auto brightness-0 invert" />
             <p className="text-sm text-primary-foreground/70 leading-relaxed">
               Explora el Mundo Maya a bordo del Tren Maya. Circuitos turísticos con experiencias únicas en el sureste de México.
             </p>
