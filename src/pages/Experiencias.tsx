@@ -6,6 +6,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
+import { experienceGallery } from "@/data/experience-gallery";
 
 const Experiencias = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -160,7 +161,17 @@ const Experiencias = () => {
                     to={`/experiencias/${exp.slug}`}
                     className="group block bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all"
                   >
-                    <div className="h-48 md:h-52 bg-gradient-to-br from-primary/20 to-jade-light/30 relative">
+                    <div className="h-48 md:h-52 relative overflow-hidden">
+                      {experienceGallery[exp.slug]?.[0] ? (
+                        <img
+                          src={experienceGallery[exp.slug][0]}
+                          alt={exp.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-jade-light/30" />
+                      )}
                       <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
                         {categoryLabels[exp.category]}
                       </span>
