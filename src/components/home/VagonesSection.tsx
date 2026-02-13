@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import vagonXiinbal from "@/assets/vagon-xiinbal.jpg";
+import vagonJanal from "@/assets/vagon-janal.jpg";
+import vagonPatal from "@/assets/vagon-patal.jpg";
 
 const vagones = [
   {
@@ -7,6 +10,8 @@ const vagones = [
     tagline: "Clase económica",
     features: ["Asientos reclinables", "Vista panorámica", "Servicio de snacks", "Amenidades básicas"],
     price: "Desde $800 MXN",
+    image: vagonXiinbal,
+    alt: "Interior del vagón clase económica Xiinbal con asientos cómodos",
   },
   {
     name: "Janal",
@@ -14,12 +19,16 @@ const vagones = [
     features: ["Asientos premium", "Comida a bordo", "Wi-Fi incluido", "Amenidades mejoradas", "Bar a bordo"],
     price: "Desde $1,500 MXN",
     featured: true,
+    image: vagonJanal,
+    alt: "Interior del vagón clase intermedia Janal con bar y sofás",
   },
   {
     name: "P'atal",
     tagline: "Clase premium",
     features: ["Cabina de lujo", "Gastronomía gourmet", "Servicio personalizado", "Amenidades completas", "Acceso VIP"],
     price: "Desde $3,200 MXN",
+    image: vagonPatal,
+    alt: "Interior del vagón clase premium P'atal con cena gourmet",
   },
 ];
 
@@ -64,9 +73,15 @@ const VagonCard = ({ vagon, index, isFeatured }: { vagon: typeof vagones[0]; ind
         : "border-border hover:shadow-md"
     }`}
   >
-    <div className={`h-44 md:h-52 ${isFeatured ? "bg-gradient-to-br from-accent/20 to-gold-light/30" : "bg-gradient-to-br from-secondary to-muted"}`}>
+    <div className="h-44 md:h-52 relative overflow-hidden">
+      <img
+        src={vagon.image}
+        alt={vagon.alt}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
       {isFeatured && (
-        <div className="m-3 inline-block px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
+        <div className="absolute top-3 left-3 px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
           Más elegido
         </div>
       )}
