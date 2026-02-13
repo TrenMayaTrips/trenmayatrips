@@ -49,7 +49,7 @@ export const blogCategories: BlogCategory[] = [
 export const blogPosts: BlogPost[] = [
   {
     slug: "guia-completa-tren-maya-2025",
-    title: "Guía Completa del Tren Maya 2025: Todo lo que Necesitas Saber",
+    title: "Guía completa del Tren Maya 2025: todo lo que necesitas saber",
     excerpt:
       "Desde rutas y estaciones hasta clases de vagones y precios. La guía definitiva para planificar tu viaje en el Tren Maya este año.",
     category: "guias-practicas",
@@ -70,7 +70,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "chichen-itza-mas-alla-piramide",
-    title: "Chichén Itzá: Más Allá de la Pirámide de Kukulcán",
+    title: "Chichén Itzá: más allá de la pirámide de Kukulcán",
     excerpt:
       "Descubre los rincones menos conocidos de esta maravilla del mundo y vive la experiencia del equinoccio como los antiguos mayas.",
     category: "mundo-maya",
@@ -91,7 +91,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "cenotes-sagrados-yucatan",
-    title: "Los 10 Cenotes Más Espectaculares de la Península de Yucatán",
+    title: "Los 10 cenotes más espectaculares de la Península de Yucatán",
     excerpt:
       "Una selección de los cenotes más impresionantes para nadar, bucear y conectar con la naturaleza en tu ruta por el Tren Maya.",
     category: "destinos-magicos",
@@ -112,7 +112,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "gastronomia-yucateca-imperdible",
-    title: "Sabores del Sureste: Guía de Gastronomía Yucateca Imperdible",
+    title: "Sabores del sureste: guía de gastronomía yucateca imperdible",
     excerpt:
       "Cochinita pibil, papadzules, salbutes y más. Un recorrido por los platillos que debes probar en cada parada del Tren Maya.",
     category: "gastronomia",
@@ -133,7 +133,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "palenque-ciudad-perdida-selva",
-    title: "Palenque: La Ciudad Perdida en la Selva de Chiapas",
+    title: "Palenque: la ciudad perdida en la selva de Chiapas",
     excerpt:
       "Explora una de las ciudades mayas más elegantes, rodeada de selva tropical, cascadas y la magia del río Usumacinta.",
     category: "mundo-maya",
@@ -153,7 +153,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "que-empacar-viaje-tren-maya",
-    title: "¿Qué Empacar para tu Viaje en el Tren Maya? Lista Definitiva",
+    title: "¿Qué empacar para tu viaje en el Tren Maya? Lista definitiva",
     excerpt:
       "Desde ropa adecuada hasta gadgets esenciales. Todo lo que necesitas llevar para disfrutar al máximo tu aventura ferroviaria.",
     category: "guias-practicas",
@@ -173,7 +173,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "bacalar-laguna-siete-colores",
-    title: "Bacalar: La Laguna de los Siete Colores que Debes Conocer",
+    title: "Bacalar: la laguna de los siete colores que debes conocer",
     excerpt:
       "Todo sobre este paraíso de aguas cristalinas en Quintana Roo: cómo llegar, dónde hospedarte y qué hacer en este destino emergente.",
     category: "destinos-magicos",
@@ -192,7 +192,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "chocolate-cacao-ruta-maya",
-    title: "La Ruta del Cacao: Del Árbol Sagrado al Chocolate Artesanal",
+    title: "La ruta del cacao: del árbol sagrado al chocolate artesanal",
     excerpt:
       "Descubre la historia del cacao en la cultura maya y visita las plantaciones donde aún se produce chocolate de forma tradicional.",
     category: "gastronomia",

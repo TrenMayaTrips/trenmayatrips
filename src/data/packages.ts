@@ -21,16 +21,16 @@ export interface Package {
 }
 
 export const packageTypes: Record<string, string> = {
-  cultural: "Cultural y Patrimonio",
-  aventura: "Aventura y Naturaleza",
+  cultural: "Cultural y patrimonio",
+  aventura: "Aventura y naturaleza",
   gastronomico: "Gastronómico",
-  mixto: "Circuito Completo",
+  mixto: "Circuito completo",
 };
 
 export const packages: Package[] = [
   {
     slug: "ruta-grandeza-maya",
-    title: "Ruta de la Grandeza Maya",
+    title: "Ruta de la grandeza maya",
     description:
       "Recorre la historia de la civilización Maya en orden cronológico visitando sus sitios arqueológicos más espectaculares a lo largo de los 5 estados.",
     duration: 7,
@@ -101,7 +101,7 @@ export const packages: Package[] = [
       },
       {
         day: 7,
-        title: "Tulum y Despedida",
+        title: "Tulum y despedida",
         description:
           "Última mañana en Tulum, la ciudad amurallada frente al Caribe. Almuerzo de despedida y traslado a punto de salida.",
       },
@@ -119,7 +119,7 @@ export const packages: Package[] = [
   },
   {
     slug: "cultura-gastronomia-entretenimiento",
-    title: "Cultura, Gastronomía y Entretenimiento",
+    title: "Cultura, gastronomía y entretenimiento",
     description:
       "Vive la esencia de la Península de Yucatán y el Caribe Mexicano combinando experiencias culturales con sabores auténticos y playas paradisiacas.",
     duration: 7,
@@ -155,43 +155,43 @@ export const packages: Package[] = [
     itinerary: [
       {
         day: 1,
-        title: "Mérida - Bienvenida Cultural",
+        title: "Mérida - bienvenida cultural",
         description:
           "Llegada a Mérida. Tour a pie por el Centro Histórico. Visita a hacienda henequenera. Cena en casa tradicional yucateca.",
       },
       {
         day: 2,
-        title: "Gastronomía Yucateca",
+        title: "Gastronomía yucateca",
         description:
           "Clase de cocina con chef local. Mercado tradicional. Elaboración de panuchos y papadzules. Almuerzo con lo preparado.",
       },
       {
         day: 3,
-        title: "Chichén Itzá y Cenotes",
+        title: "Chichén Itzá y cenotes",
         description:
           "Viaje a Chichén Itzá. Recorrido arqueológico. Nado en cenote subterráneo de aguas cristalinas.",
       },
       {
         day: 4,
-        title: "Riviera Maya - Playa y Relax",
+        title: "Riviera Maya - playa y relax",
         description:
           "Traslado a Riviera Maya. Tarde libre en playa. Cena romántica frente al mar.",
       },
       {
         day: 5,
-        title: "Tulum Arqueológica",
+        title: "Tulum arqueológica",
         description:
           "Visita a Tulum, la única zona arqueológica frente al Caribe. Nado en cenote privado. Tour por tiendas de artesanía local.",
       },
       {
         day: 6,
-        title: "Playa del Carmen - Entretenimiento",
+        title: "Playa del Carmen - entretenimiento",
         description:
           "Mañana libre en Playa del Carmen. Tarde opcional en Xcaret. Espectáculo folclórico de lujo.",
       },
       {
         day: 7,
-        title: "Despedida y Regreso",
+        title: "Despedida y regreso",
         description:
           "Última mañana libre. Almuerzo de despedida. Traslado a aeropuerto.",
       },
@@ -208,7 +208,7 @@ export const packages: Package[] = [
   },
   {
     slug: "aventura-naturaleza-5-estados",
-    title: "Aventura en la Naturaleza: Los 5 Estados",
+    title: "Aventura en la naturaleza: los 5 estados",
     description:
       "Recorre la biodiversidad del sureste explorando selvas, cenotes, ríos subterráneos y reservas de biosfera.",
     duration: 9,
@@ -250,7 +250,7 @@ export const packages: Package[] = [
       },
       {
         day: 2,
-        title: "Reserva de Tulum - Snorkel",
+        title: "Reserva de Tulum - snorkel",
         description:
           "Snorkel en arrecife mesoamericano. Exploración de parque marino.",
       },
@@ -268,13 +268,13 @@ export const packages: Package[] = [
       },
       {
         day: 5,
-        title: "Tabasco - Pantanos",
+        title: "Tabasco - pantanos",
         description:
           "Kayak en Pantanos de Centla. Observación de aves y caimanes.",
       },
       {
         day: 6,
-        title: "Tabasco - Ruta del Cacao",
+        title: "Tabasco - ruta del cacao",
         description:
           "Senderismo en plantaciones de cacao. Visita a cascada en Puyacatengo.",
       },
@@ -309,7 +309,7 @@ export const packages: Package[] = [
   },
   {
     slug: "mundo-maya-classico-4-dias",
-    title: "Mundo Maya Clásico - 4 Días",
+    title: "Mundo Maya clásico - 4 días",
     description:
       "Una introducción perfecta a la civilización Maya con los sitios más icónicos en una duración compacta.",
     duration: 4,
@@ -342,7 +342,7 @@ export const packages: Package[] = [
       },
       {
         day: 2,
-        title: "Cenotes y Cenote Sagrado",
+        title: "Cenotes y cenote sagrado",
         description: "Nado en cenote. Visita a sitios de nado tradicionales.",
       },
       {
@@ -362,7 +362,7 @@ export const packages: Package[] = [
   },
   {
     slug: "gastronomia-autentica-yucatan",
-    title: "Gastronomía Auténtica de Yucatán",
+    title: "Gastronomía auténtica de Yucatán",
     description:
       "Sumérgete en los sabores únicos de la cocina yucateca con clases, tours de mercado y cenas en casas locales.",
     duration: 5,
@@ -392,22 +392,22 @@ export const packages: Package[] = [
     itinerary: [
       {
         day: 1,
-        title: "Mérida - Bienvenida",
+        title: "Mérida - bienvenida",
         description: "Llegada. Tour histórico. Cena en casa yucateca.",
       },
       {
         day: 2,
-        title: "Mercados y Cocina",
+        title: "Mercados y cocina",
         description: "Tour de mercado. Clase de cocina. Almuerzo con lo preparado.",
       },
       {
         day: 3,
-        title: "Hacienda Gastronómica",
+        title: "Hacienda gastronómica",
         description: "Día en hacienda histórica. Cata de bebidas. Cena",
       },
       {
         day: 4,
-        title: "Técnicas Tradicionales",
+        title: "Técnicas tradicionales",
         description: "Clase de panuchos y papadzules. Visita a productor de queso.",
       },
       {

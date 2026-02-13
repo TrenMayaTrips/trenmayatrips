@@ -38,7 +38,7 @@ export const stateLabels: Record<string, string> = {
 export const experiences: Experience[] = [
   {
     slug: "amanecer-maya-uxmal",
-    title: "Amanecer Maya en Uxmal",
+    title: "Amanecer maya en Uxmal",
     description: "Vive la magia de un amanecer exclusivo en la zona arqueológica de Uxmal con guía experto en cultura Maya.",
     longDescription: "Una experiencia única que te permite acceder a Uxmal antes de la apertura al público general. Contempla el amanecer sobre la Pirámide del Adivino mientras un arqueólogo certificado te narra los secretos de la civilización Maya. Incluye recorrido por la Ruta Puuc con paradas en Kabáh y Sayil.",
     category: "cultural",
@@ -97,7 +97,7 @@ export const experiences: Experience[] = [
   },
   {
     slug: "ek-balam-valladolid",
-    title: "Ek Balam + Hacienda + Valladolid + Cenote",
+    title: "Ek Balam + hacienda + Valladolid + cenote",
     description: "Fusión de dos culturas: arqueología Maya, hacienda henequenera y el encanto colonial de Valladolid.",
     longDescription: "Descubre Ek Balam, una de las joyas menos conocidas del mundo Maya con su impresionante friso de estuco. Visita una auténtica hacienda henequenera para conocer la historia del 'oro verde'. Explora Valladolid, Pueblo Mágico de encanto colonial, y cierra con un cenote de ensueño.",
     category: "cultural",
@@ -156,7 +156,7 @@ export const experiences: Experience[] = [
   },
   {
     slug: "calakmul-biosfera",
-    title: "Calakmul: Corazón de la selva",
+    title: "Calakmul: corazón de la selva",
     description: "Adéntrate en la Reserva de la Biosfera de Calakmul para descubrir la ciudad Maya más grande y la selva más densa.",
     longDescription: "Calakmul es la joya escondida del mundo Maya. Con más de 6,000 estructuras en medio de la selva más extensa de México, esta experiencia te sumerge en la naturaleza y la historia. Avistamiento de fauna silvestre, escalada a la Gran Pirámide y contacto con comunidades locales.",
     category: "aventura",
@@ -186,7 +186,7 @@ export const experiences: Experience[] = [
   },
   {
     slug: "ruta-del-cacao",
-    title: "Ruta del Cacao en Tabasco",
+    title: "Ruta del cacao en Tabasco",
     description: "Descubre el origen del chocolate con los herederos de la tradición cacaotera en las tierras de Tabasco.",
     longDescription: "Tabasco es la cuna del cacao en Mesoamérica. Esta experiencia te lleva a haciendas cacaoteras donde aprenderás el proceso del chocolate desde la cosecha hasta la barra. Incluye visita al sitio arqueológico de Comalcalco, la única pirámide de ladrillo en el mundo Maya.",
     category: "gastronomico",
@@ -215,7 +215,7 @@ export const experiences: Experience[] = [
   },
   {
     slug: "palenque-agua-azul",
-    title: "Palenque y Cascadas de Agua Azul",
+    title: "Palenque y cascadas de Agua Azul",
     description: "Explora la majestuosa zona arqueológica de Palenque y báñate en las cascadas turquesa de Agua Azul.",
     longDescription: "Palenque es considerada una de las ciudades Maya más elegantes jamás construidas. Su Templo de las Inscripciones y el Palacio te transportan a la época de Pakal el Grande. Complementa con las impresionantes Cascadas de Agua Azul, una serie de cataratas de agua turquesa en medio de la selva chiapaneca.",
     category: "aventura",
@@ -273,7 +273,7 @@ export const experiences: Experience[] = [
   },
   {
     slug: "snorkel-arrecife",
-    title: "Snorkel en el Gran Arrecife Maya",
+    title: "Snorkel en el gran arrecife maya",
     description: "Sumérgete en el segundo arrecife más grande del mundo frente a las costas de la Riviera Maya.",
     longDescription: "El Gran Arrecife Mesoamericano es el segundo sistema arrecifal más grande del planeta. Nada entre tortugas marinas, rayas y cientos de especies de peces tropicales. Visita tres puntos de snorkel diferentes y disfruta de un almuerzo en la playa.",
     category: "aventura",
@@ -302,7 +302,7 @@ export const experiences: Experience[] = [
   },
   {
     slug: "bacalar-laguna",
-    title: "Bacalar: Laguna de los 7 colores",
+    title: "Bacalar: laguna de los 7 colores",
     description: "Navega la mágica Laguna de Bacalar en velero, visita el Cenote Azul y descubre el Fuerte de San Felipe.",
     longDescription: "Bacalar, Pueblo Mágico, alberga una de las lagunas más hermosas de México con sus siete tonalidades de azul. Navega en velero, nada en el Cenote Azul, visita el Canal de los Piratas y conoce la historia del Fuerte de San Felipe Bacalar.",
     category: "aventura",
