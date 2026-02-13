@@ -1,17 +1,21 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-tren-maya.jpg";
+import { useParallax } from "@/hooks/use-parallax";
 
 const HeroSection = () => {
+  const { ref, offset } = useParallax(0.35);
+
   return (
-    <section className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image */}
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image with parallax */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
           alt="Tren Maya cruzando la selva de la Península de Yucatán con pirámides mayas al fondo"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover will-change-transform"
           loading="eager"
+          style={{ transform: `translateY(${offset}px) scale(1.1)` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/70" />
       </div>

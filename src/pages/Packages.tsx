@@ -6,6 +6,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import { packages, packageTypes } from "@/data/packages";
 import { Button } from "@/components/ui/button";
 import heroPaquetes from "@/assets/hero-paquetes.jpg";
+import ParallaxHero from "@/components/layout/ParallaxHero";
 
 const Packages = () => {
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -39,19 +40,15 @@ const Packages = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16 min-h-[340px] md:min-h-[420px] flex items-center">
-        <img src={heroPaquetes} alt="Tren Maya cruzando la selva tropical" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Paquetes</p>
-          <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            Circuitos Prediseñados
-          </h1>
-          <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl mx-auto">
-            Elige entre nuestros itinerarios cuidadosamente diseñados o personaliza tu aventura perfecta.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imageSrc={heroPaquetes} imageAlt="Tren Maya cruzando la selva tropical">
+        <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Paquetes</p>
+        <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+          Circuitos Prediseñados
+        </h1>
+        <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl mx-auto">
+          Elige entre nuestros itinerarios cuidadosamente diseñados o personaliza tu aventura perfecta.
+        </p>
+      </ParallaxHero>
 
       {/* Filters & Compare Mode */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
