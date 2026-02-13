@@ -8,6 +8,7 @@ import type { StateInfo } from "@/data/destinations";
 import { Button } from "@/components/ui/button";
 import { destinationImageMap } from "@/data/destination-images";
 import heroDestinos from "@/assets/hero-destinos.jpg";
+import ctaDestinos from "@/assets/cta-destinos.jpg";
 
 const Destinos = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -337,8 +338,17 @@ const Destinos = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative py-16 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src={ctaDestinos}
+            alt="Tren Maya Adventure"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
             ¿Listo para explorar?
           </h2>
