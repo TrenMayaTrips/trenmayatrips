@@ -3,6 +3,7 @@ import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
+import logoTmt from "@/assets/logo-tmt.png";
 
 const navLinks = [
   { label: "Experiencias", href: "/experiencias" },
@@ -23,13 +24,7 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-heading font-bold text-sm md:text-lg">T</span>
-          </div>
-          <div className="flex flex-col leading-tight">
-         <span className="font-heading font-bold text-foreground text-base md:text-lg tracking-wide">Tren Maya</span>
-            <span className="text-[10px] md:text-xs text-muted-foreground tracking-widest uppercase">Trips</span>
-          </div>
+          <img src={logoTmt} alt="Tren Maya Trips" className="h-10 md:h-12 w-auto" />
         </a>
 
         {/* Desktop Nav */}
