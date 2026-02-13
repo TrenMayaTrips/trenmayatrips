@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { destinations } from "@/data/destinations";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import { destinationTypes } from "@/data/destinations";
 
 // Approximate SVG coordinates for destinations on a stylized Yucatan Peninsula map
 // viewBox is 0 0 500 450
@@ -36,8 +38,9 @@ interface PeninsulaMapProps {
 
 const PeninsulaMap = ({ highlightedSlugs }: PeninsulaMapProps) => {
   return (
-    <div className="w-full max-w-md mx-auto">
-      <svg viewBox="0 0 460 420" className="w-full h-auto" role="img" aria-label="Mapa del Tren Maya">
+    <TooltipProvider>
+      <div className="w-full max-w-md mx-auto">
+        <svg viewBox="0 0 460 420" className="w-full h-auto" role="img" aria-label="Mapa del Tren Maya">
         <defs>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -118,70 +121,82 @@ const PeninsulaMap = ({ highlightedSlugs }: PeninsulaMapProps) => {
         })}
 
         {/* Highlighted destinations */}
-        {highlightedSlugs.map((slug, i) => {
-          const coords = destinationCoords[slug];
-          if (!coords) return null;
-          const dest = destinations.find((d) => d.slug === slug);
-          if (!dest) return null;
+         {highlightedSlugs.map((slug, i) => {
+           const coords = destinationCoords[slug];
+           if (!coords) return null;
+           const dest = destinations.find((d) => d.slug === slug);
+           if (!dest) return null;
 
-          return (
-            <motion.g
-              key={slug}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.8 + i * 0.15, duration: 0.4, type: "spring" }}
-            >
-              {/* Pulse ring */}
-              <motion.circle
-                cx={coords.x}
-                cy={coords.y}
-                r="10"
-                fill="none"
-                stroke="hsl(40, 65%, 55%)"
-                strokeWidth="1.5"
-                initial={{ r: 5, opacity: 0.8 }}
-                animate={{ r: 14, opacity: 0 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-              />
-              {/* Dot */}
-              <circle
-                cx={coords.x}
-                cy={coords.y}
-                r="5"
-                fill="hsl(40, 65%, 55%)"
-                stroke="white"
-                strokeWidth="2"
-                filter="url(#glow)"
-              />
-              {/* Order number */}
-              <text
-                x={coords.x}
-                y={coords.y + 1}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-accent-foreground text-[7px] font-bold font-body"
-              >
-                {i + 1}
-              </text>
-              {/* Label */}
-              <text
-                x={coords.x + (coords.x > 300 ? -12 : 12)}
-                y={coords.y - 10}
-                textAnchor={coords.x > 300 ? "end" : "start"}
-                className="fill-foreground text-[9px] font-heading font-semibold"
-              >
-                {dest.name}
-              </text>
-            </motion.g>
-          );
-        })}
+           return (
+             <Tooltip key={slug}>
+               <TooltipTrigger asChild>
+                 <motion.g
+                   initial={{ scale: 0, opacity: 0 }}
+                   animate={{ scale: 1, opacity: 1 }}
+                   transition={{ delay: 0.8 + i * 0.15, duration: 0.4, type: "spring" }}
+                   className="cursor-pointer"
+                 >
+                   {/* Pulse ring */}
+                   <motion.circle
+                     cx={coords.x}
+                     cy={coords.y}
+                     r="10"
+                     fill="none"
+                     stroke="hsl(40, 65%, 55%)"
+                     strokeWidth="1.5"
+                     initial={{ r: 5, opacity: 0.8 }}
+                     animate={{ r: 14, opacity: 0 }}
+                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                   />
+                   {/* Dot */}
+                   <circle
+                     cx={coords.x}
+                     cy={coords.y}
+                     r="5"
+                     fill="hsl(40, 65%, 55%)"
+                     stroke="white"
+                     strokeWidth="2"
+                     filter="url(#glow)"
+                   />
+                   {/* Order number */}
+                   <text
+                     x={coords.x}
+                     y={coords.y + 1}
+                     textAnchor="middle"
+                     dominantBaseline="middle"
+                     className="fill-accent-foreground text-[7px] font-bold font-body"
+                   >
+                     {i + 1}
+                   </text>
+                   {/* Label */}
+                   <text
+                     x={coords.x + (coords.x > 300 ? -12 : 12)}
+                     y={coords.y - 10}
+                     textAnchor={coords.x > 300 ? "end" : "start"}
+                     className="fill-foreground text-[9px] font-heading font-semibold"
+                   >
+                     {dest.name}
+                   </text>
+                 </motion.g>
+               </TooltipTrigger>
+               <TooltipContent className="max-w-xs">
+                 <div className="space-y-1">
+                   <p className="font-semibold">{dest.name}</p>
+                   <p className="text-xs text-muted-foreground">{dest.tagline}</p>
+                   <p className="text-xs">{destinationTypes[dest.type]}</p>
+                 </div>
+               </TooltipContent>
+             </Tooltip>
+           );
+         })}
 
         {/* Map title */}
         <text x="16" y="24" className="fill-foreground/60 text-[10px] font-heading font-semibold tracking-wide">
           🚂 RUTA DEL TREN MAYA
         </text>
-      </svg>
-    </div>
+        </svg>
+      </div>
+    </TooltipProvider>
   );
 };
 
