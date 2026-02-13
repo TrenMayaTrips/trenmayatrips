@@ -7,6 +7,11 @@ import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
+import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
+import trenJanal from "@/assets/tren-janal-interior.jpg";
+import trenPatal from "@/assets/tren-patal-interior.jpg";
+
+const wagonImages = [trenXiinbal, trenJanal, trenPatal];
 
 const stateColors: Record<string, string> = {
   chiapas: "bg-jade-dark",
@@ -193,9 +198,15 @@ const TrenMaya = () => {
                   i === 1 ? "border-accent ring-1 ring-accent/20 shadow-lg" : "border-border"
                 }`}
               >
-                <div className={`h-40 ${i === 1 ? "bg-gradient-to-br from-accent/20 to-gold-light/30" : "bg-gradient-to-br from-secondary to-muted"}`}>
+                <div className="h-40 overflow-hidden relative">
+                  <img
+                    src={wagonImages[i]}
+                    alt={`Interior del vagón clase ${wagon.name}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                   {i === 1 && (
-                    <div className="m-3 inline-block px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
+                    <div className="absolute top-3 left-3 px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
                       Recomendado
                     </div>
                   )}
