@@ -2,6 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
+import ParallaxHero from "@/components/layout/ParallaxHero";
+import heroTrenMaya from "@/assets/hero-tren-maya.jpg";
+import destRivieraMaya from "@/assets/dest-riviera-maya.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -89,17 +92,15 @@ const Contacto = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-gradient-to-b from-jade-dark to-primary">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Contacto</p>
-          <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
-            ¿Cómo podemos ayudarte?
-          </h1>
-          <p className="mt-4 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto">
-            Estamos aquí para hacer de tu viaje en el Tren Maya una experiencia inolvidable.
-          </p>
-        </div>
-      </section>
+      <ParallaxHero imageSrc={heroTrenMaya} imageAlt="Contacto Tren Maya">
+        <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Contacto</p>
+        <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+          ¿Cómo podemos ayudarte?
+        </h1>
+        <p className="mt-4 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto">
+          Estamos aquí para hacer de tu viaje en el Tren Maya una experiencia inolvidable.
+        </p>
+      </ParallaxHero>
 
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
@@ -148,9 +149,16 @@ const Contacto = () => {
                   💬 Escríbenos por WhatsApp
                 </a>
               </div>
+              {/* Decorative image */}
+              <div className="pt-2 rounded-xl overflow-hidden border border-border">
+                <img
+                  src={destRivieraMaya}
+                  alt="Riviera Maya"
+                  className="w-full h-40 object-cover rounded-xl"
+                  loading="lazy"
+                />
+              </div>
             </div>
-
-            {/* Form */}
             <div className="lg:col-span-2">
               {isSuccess ? (
                 <motion.div
