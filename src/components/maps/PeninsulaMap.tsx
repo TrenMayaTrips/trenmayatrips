@@ -37,6 +37,13 @@ interface PeninsulaMapProps {
 }
 
 const PeninsulaMap = ({ highlightedSlugs }: PeninsulaMapProps) => {
+  // Build a path connecting only the highlighted destinations in order
+  const highlightedPath = highlightedSlugs
+    .map((slug) => destinationCoords[slug])
+    .filter(Boolean)
+    .map((c, i) => `${i === 0 ? "M" : "L"} ${c.x},${c.y}`)
+    .join(" ");
+
   return (
     <TooltipProvider>
       <div className="w-full max-w-md mx-auto">
@@ -103,6 +110,21 @@ const PeninsulaMap = ({ highlightedSlugs }: PeninsulaMapProps) => {
           animate={{ pathLength: 1, opacity: 0.5 }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
         />
+
+        {/* Animated itinerary path connecting selected destinations */}
+        {highlightedPath && highlightedSlugs.length > 1 && (
+          <motion.path
+            d={highlightedPath}
+            fill="none"
+            stroke="hsl(40, 65%, 55%)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.8 }}
+            transition={{ duration: 1.2, delay: 0.6, ease: "easeInOut" }}
+          />
+        )}
 
         {/* All destination dots (muted) */}
         {Object.entries(destinationCoords).map(([slug, { x, y }]) => {
