@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles } from "lucide-react";
+import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,11 +23,19 @@ const durations = [
   { days: 10, label: "10+ días", subtitle: "Gran circuito" },
 ];
 
+const lodgingOptions = [
+  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada" },
+  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza" },
+  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones" },
+  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social" },
+];
+
 const steps = [
   { id: 1, label: "Tipo de viaje", icon: Compass },
   { id: 2, label: "Duración", icon: Clock },
   { id: 3, label: "Destinos", icon: MapPin },
-  { id: 4, label: "Resumen", icon: Sparkles },
+  { id: 4, label: "Hospedaje", icon: Hotel },
+  { id: 5, label: "Resumen", icon: Sparkles },
 ];
 
 const Itinerarios = () => {
@@ -36,6 +44,7 @@ const Itinerarios = () => {
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null);
   const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
   const [stateFilter, setStateFilter] = useState<string | null>(null);
+  const [lodgingByDest, setLodgingByDest] = useState<Record<string, string>>({});
 
   const maxDestinations = selectedDuration ? Math.min(Math.floor(selectedDuration / 1.5), 8) : 4;
 
@@ -62,23 +71,33 @@ const Itinerarios = () => {
     );
   };
 
+  const setLodging = (destSlug: string, lodgingId: string) => {
+    setLodgingByDest((prev) => ({ ...prev, [destSlug]: lodgingId }));
+  };
+
   const canProceed = () => {
     if (currentStep === 1) return !!selectedType;
     if (currentStep === 2) return !!selectedDuration;
     if (currentStep === 3) return selectedDestinations.length >= 2;
+    if (currentStep === 4) return selectedDestinations.every((slug) => !!lodgingByDest[slug]);
     return true;
   };
 
   const progressValue = (currentStep / steps.length) * 100;
 
   const whatsappMessage = useMemo(() => {
-    if (currentStep !== 4) return "";
+    if (currentStep !== 5) return "";
     const type = tripTypes.find((t) => t.id === selectedType);
-    const destNames = selectedDests.map((d) => d.name).join(", ");
+    const destLines = selectedDests
+      .map((d) => {
+        const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[d.slug]);
+        return `  📍 ${d.name} — ${lodging?.emoji} ${lodging?.label}`;
+      })
+      .join("\n");
     return encodeURIComponent(
-      `¡Hola! Me interesa un itinerario personalizado:\n\n🧭 Tipo: ${type?.label}\n📅 Duración: ${selectedDuration} días\n📍 Destinos: ${destNames}\n\n¿Pueden ayudarme a armarlo?`
+      `¡Hola! Me interesa un itinerario personalizado:\n\n🧭 Tipo: ${type?.label}\n📅 Duración: ${selectedDuration} días\n\n${destLines}\n\n¿Pueden ayudarme a armarlo?`
     );
-  }, [currentStep, selectedType, selectedDuration, selectedDests]);
+  }, [currentStep, selectedType, selectedDuration, selectedDests, lodgingByDest]);
 
   return (
     <PageLayout>
@@ -110,7 +129,7 @@ const Itinerarios = () => {
       {/* Stepper */}
       <section className="bg-card border-b border-border sticky top-16 md:top-20 z-30">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between max-w-xl mx-auto mb-3">
+          <div className="flex items-center justify-between max-w-2xl mx-auto mb-3">
             {steps.map((step) => {
               const Icon = step.icon;
               const isActive = currentStep === step.id;
@@ -145,7 +164,7 @@ const Itinerarios = () => {
               );
             })}
           </div>
-          <Progress value={progressValue} className="h-1.5 max-w-xl mx-auto" />
+          <Progress value={progressValue} className="h-1.5 max-w-2xl mx-auto" />
         </div>
       </section>
 
@@ -334,10 +353,67 @@ const Itinerarios = () => {
               </motion.div>
             )}
 
-            {/* Step 4: Summary */}
+            {/* Step 4: Lodging */}
             {currentStep === 4 && (
               <motion.div
                 key="step4"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                className="space-y-6"
+              >
+                <div className="text-center mb-8">
+                  <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
+                    ¿Dónde prefieres hospedarte?
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Elige el tipo de alojamiento para cada destino
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {selectedDests.map((dest) => {
+                    const currentLodging = lodgingByDest[dest.slug];
+                    return (
+                      <Card key={dest.slug} className="overflow-hidden">
+                        <div className="bg-muted/50 px-5 py-3 border-b border-border flex items-center gap-2">
+                          <span className="text-xl">{dest.emoji}</span>
+                          <h3 className="font-heading font-semibold text-foreground">{dest.name}</h3>
+                        </div>
+                        <CardContent className="p-4">
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {lodgingOptions.map((opt) => (
+                              <button
+                                key={opt.id}
+                                onClick={() => setLodging(dest.slug, opt.id)}
+                                className={`rounded-xl border-2 p-4 text-center transition-all hover:shadow-md ${
+                                  currentLodging === opt.id
+                                    ? "border-primary bg-primary/5 shadow-sm"
+                                    : "border-border hover:border-primary/30"
+                                }`}
+                              >
+                                <span className="text-2xl block mb-2">{opt.emoji}</span>
+                                <span className="font-heading text-sm font-semibold text-foreground block">
+                                  {opt.label}
+                                </span>
+                                <span className="text-xs text-muted-foreground leading-tight block mt-1">
+                                  {opt.description}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Step 5: Summary */}
+            {currentStep === 5 && (
+              <motion.div
+                key="step5"
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
@@ -377,6 +453,7 @@ const Itinerarios = () => {
                     <div className="space-y-0">
                       {selectedDests.map((dest, i) => {
                         const state = states.find((s) => s.slug === dest.state);
+                        const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
                         return (
                           <div key={dest.slug} className="flex gap-4">
                             {/* Timeline */}
@@ -404,6 +481,11 @@ const Itinerarios = () => {
                                 <Badge variant="outline" className="text-xs">
                                   🚂 {dest.travelTime}
                                 </Badge>
+                                {lodging && (
+                                  <Badge variant="secondary" className="text-xs bg-accent/10 text-accent-foreground">
+                                    {lodging.emoji} {lodging.label}
+                                  </Badge>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -438,7 +520,7 @@ const Itinerarios = () => {
           </AnimatePresence>
 
           {/* Navigation buttons */}
-          {currentStep < 4 && (
+          {currentStep < 5 && (
             <div className="flex justify-between mt-10 max-w-xl mx-auto">
               <Button
                 variant="ghost"
