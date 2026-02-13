@@ -6,6 +6,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import { destinations, states, destinationTypes } from "@/data/destinations";
 import type { StateInfo } from "@/data/destinations";
 import { Button } from "@/components/ui/button";
+import { destinationImageMap } from "@/data/destination-images";
 
 const Destinos = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -167,27 +168,35 @@ const Destinos = () => {
                     transition={{ delay: i * 0.04 }}
                     className="rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all group"
                   >
-                    {/* Card Header with gradient */}
-                    <div
-                      className="p-6 min-h-[140px] flex flex-col justify-end relative overflow-hidden"
-                      style={{
-                        background: `linear-gradient(135deg, ${state?.color || 'hsl(var(--primary))'}20, ${state?.color || 'hsl(var(--primary))'}10)`,
-                      }}
-                    >
-                      <span className="text-4xl mb-2">{dest.emoji}</span>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span
-                          className="w-2 h-2 rounded-full inline-block"
-                          style={{ backgroundColor: state?.color }}
+                    {/* Card Header with Image */}
+                    <div className="relative h-48 overflow-hidden bg-muted">
+                      {destinationImageMap[dest.slug] && (
+                        <img
+                          src={destinationImageMap[dest.slug]}
+                          alt={dest.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
                         />
-                        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                          {state?.name} · {destinationTypes[dest.type]}
-                        </span>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-card/80" />
+                      
+                      {/* Overlay Content */}
+                      <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                        <span className="text-4xl mb-2">{dest.emoji}</span>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span
+                            className="w-2 h-2 rounded-full inline-block"
+                            style={{ backgroundColor: state?.color }}
+                          />
+                          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                            {state?.name} · {destinationTypes[dest.type]}
+                          </span>
+                        </div>
+                        <h3 className="font-heading text-xl font-bold text-primary-foreground leading-tight group-hover:text-gold transition-colors">
+                          {dest.name}
+                        </h3>
+                        <p className="text-xs text-primary-foreground/70 italic mt-1">{dest.tagline}</p>
                       </div>
-                      <h3 className="font-heading text-xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
-                        {dest.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground italic mt-1">{dest.tagline}</p>
                     </div>
 
                     {/* Card Body */}
