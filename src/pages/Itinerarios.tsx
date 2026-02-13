@@ -24,10 +24,10 @@ const durations = [
 ];
 
 const lodgingOptions = [
-  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada" },
-  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza" },
-  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones" },
-  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social" },
+  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada", pricePerNight: 120 },
+  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza", pricePerNight: 85 },
+  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones", pricePerNight: 150 },
+  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social", pricePerNight: 35 },
 ];
 
 const steps = [
@@ -399,6 +399,9 @@ const Itinerarios = () => {
                                 <span className="text-xs text-muted-foreground leading-tight block mt-1">
                                   {opt.description}
                                 </span>
+                                <span className="text-sm font-heading font-bold text-primary block mt-3">
+                                  ${opt.pricePerNight}/noche
+                                </span>
                               </button>
                             ))}
                           </div>
@@ -446,6 +449,16 @@ const Itinerarios = () => {
                         <MapPin size={18} />
                         <span className="font-medium">{selectedDestinations.length} destinos</span>
                       </div>
+                      <div className="flex items-center gap-2 ml-auto">
+                        <span className="font-medium">
+                          💰 Alojamiento estimado: $
+                          {selectedDests.reduce((total, dest) => {
+                            const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
+                            return total + (lodging?.pricePerNight || 0) * (selectedDuration || 1);
+                          }, 0)}
+                          /total
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <CardContent className="p-6">
@@ -481,19 +494,24 @@ const Itinerarios = () => {
                                 <Badge variant="outline" className="text-xs">
                                   🚂 {dest.travelTime}
                                 </Badge>
-                                {lodging && (
-                                  <Badge variant="secondary" className="text-xs bg-accent/10 text-accent-foreground">
-                                    {lodging.emoji} {lodging.label}
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
+                                 {lodging && (
+                                   <Badge variant="secondary" className="text-xs bg-accent/10 text-accent-foreground">
+                                     {lodging.emoji} {lodging.label}
+                                   </Badge>
+                                 )}
+                                 {lodging && (
+                                   <Badge variant="outline" className="text-xs">
+                                     💰 ${lodging.pricePerNight} x {selectedDuration} = ${lodging.pricePerNight * (selectedDuration || 1)}
+                                   </Badge>
+                                 )}
+                               </div>
+                             </div>
+                           </div>
+                         );
+                       })}
+                     </div>
+                   </CardContent>
+                 </Card>
 
                 {/* CTA */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
