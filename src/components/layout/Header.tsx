@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const navLinks = [
   { label: "Experiencias", href: "/experiencias" },
   { label: "Paquetes", href: "/paquetes" },
+  { label: "Itinerarios", href: "/itinerarios" },
   { label: "Tren Maya", href: "/tren-maya" },
   { label: "Blog", href: "/blog" },
   { label: "Destinos", href: "/destinos" },
