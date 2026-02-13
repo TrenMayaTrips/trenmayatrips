@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Clock, Compass, Sparkles, ArrowLeft, Copy, Check, Send } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import PeninsulaMap from "@/components/maps/PeninsulaMap";
 import PageLayout from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,6 +32,7 @@ const ItinerarioCompartido = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchItinerary = async () => {
@@ -124,7 +127,9 @@ const ItinerarioCompartido = () => {
       </section>
 
       <section className="py-10 md:py-16">
-        <div className="container mx-auto px-4 max-w-4xl space-y-8">
+        <div className="container mx-auto px-4 max-w-6xl space-y-8">
+          <div className={`${!isMobile ? 'grid grid-cols-[1fr_340px] gap-8 items-start' : ''}`}>
+          <div className="space-y-8">
           <Card className="overflow-hidden">
             <div className="bg-primary p-6">
               <div className="flex flex-wrap gap-4 text-primary-foreground">
@@ -210,6 +215,24 @@ const ItinerarioCompartido = () => {
                 <Sparkles size={16} /> Crear el mío
               </Link>
             </Button>
+          </div>
+          </div>
+
+          {/* Desktop-only SVG map */}
+          {!isMobile && (
+            <div className="sticky top-24">
+              <Card className="overflow-hidden">
+                <div className="p-4 bg-secondary/50 border-b border-border">
+                  <h3 className="font-heading text-sm font-semibold text-foreground/70 tracking-wide uppercase">
+                    🗺️ Tu recorrido
+                  </h3>
+                </div>
+                <CardContent className="p-4">
+                  <PeninsulaMap highlightedSlugs={destSlugs} />
+                </CardContent>
+              </Card>
+            </div>
+          )}
           </div>
         </div>
       </section>
