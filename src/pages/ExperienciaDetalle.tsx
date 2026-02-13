@@ -4,6 +4,8 @@ import { useState } from "react";
 import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import { getExperienceBySlug, experiences, categoryLabels } from "@/data/experiences";
+import { experienceGallery } from "@/data/experience-gallery";
+import ImageGallery from "@/components/experiences/ImageGallery";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
@@ -47,9 +49,9 @@ const ExperienciaDetalle = () => {
         </div>
       </section>
 
-      {/* Image placeholder */}
+      {/* Image Gallery */}
       <div className="container mx-auto px-4 -mt-4 md:-mt-6">
-        <div className="h-56 md:h-80 rounded-xl bg-gradient-to-br from-primary/15 to-jade-light/25 border border-border" />
+        <ImageGallery images={experienceGallery[exp.slug] || []} title={exp.title} />
       </div>
 
       {/* Content */}
