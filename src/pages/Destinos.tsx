@@ -7,6 +7,7 @@ import { destinations, states, destinationTypes } from "@/data/destinations";
 import type { StateInfo } from "@/data/destinations";
 import { Button } from "@/components/ui/button";
 import { destinationImageMap } from "@/data/destination-images";
+import heroDestinos from "@/assets/hero-destinos.jpg";
 
 const Destinos = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -29,8 +30,17 @@ const Destinos = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-gradient-to-b from-jade-dark to-primary">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src={heroDestinos}
+            alt="Tren Maya Destinations"
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
           <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Destinos</p>
           <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
             5 Estados, Miles de Historias
