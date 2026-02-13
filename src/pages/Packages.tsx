@@ -44,7 +44,7 @@ const Packages = () => {
       <ParallaxHero imageSrc={heroPaquetes} imageAlt="Tren Maya cruzando la selva tropical">
         <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Paquetes</p>
         <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-          Circuitos Prediseñados
+          Circuitos prediseñados
         </h1>
         <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl mx-auto">
           Elige entre nuestros itinerarios cuidadosamente diseñados o personaliza tu aventura perfecta.
