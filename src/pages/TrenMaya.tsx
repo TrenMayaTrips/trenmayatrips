@@ -246,7 +246,7 @@ const TrenMaya = () => {
               to="/experiencias"
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent text-accent-foreground font-semibold rounded-md hover:bg-gold-light transition-colors"
             >
-              Ver Experiencias
+              Ver experiencias
               <ArrowRight size={16} />
             </Link>
             <a

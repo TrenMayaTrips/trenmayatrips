@@ -57,13 +57,13 @@ const HeroSection = () => {
             href="#destinos"
             className="px-8 py-3.5 bg-accent text-accent-foreground font-semibold rounded-md hover:bg-gold-light transition-colors text-sm md:text-base"
           >
-            Explorar Destinos
+            Explorar destinos
           </a>
           <a
             href="#experiencias"
             className="px-8 py-3.5 border border-primary-foreground/30 text-primary-foreground font-medium rounded-md hover:bg-primary-foreground/10 transition-colors text-sm md:text-base"
           >
-            Ver Experiencias
+            Ver experiencias
           </a>
         </motion.div>
       </div>

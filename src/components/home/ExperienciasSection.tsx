@@ -4,7 +4,7 @@ import { Palmtree, Landmark, UtensilsCrossed, Sparkles } from "lucide-react";
 const experiences = [
   {
     icon: Landmark,
-    title: "Patrimonio Maya",
+    title: "Patrimonio maya",
     description: "Visita zonas arqueológicas como Chichén Itzá, Palenque, Uxmal y Calakmul con guías certificados.",
   },
   {

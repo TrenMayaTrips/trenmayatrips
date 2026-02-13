@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 const routes = [
-  { name: "Ruta de la Grandeza Maya", from: "Palenque", to: "Tulum", days: 7, stops: 8 },
+  { name: "Ruta de la grandeza maya", from: "Palenque", to: "Tulum", days: 7, stops: 8 },
   { name: "Caribe y Cenotes", from: "Cancún", to: "Bacalar", days: 4, stops: 5 },
   { name: "Ruta Puuc", from: "Mérida", to: "Uxmal", days: 2, stops: 4 },
   { name: "Selva y Cacao", from: "Villahermosa", to: "Palenque", days: 3, stops: 4 },

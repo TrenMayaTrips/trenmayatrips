@@ -130,7 +130,7 @@ const PlanificadorSection = () => {
                 onClick={() => setCurrentStep(Math.min(3, currentStep + 1))}
                 className="px-6 py-2.5 bg-accent text-accent-foreground text-sm font-semibold rounded-md hover:bg-gold-light transition-colors"
               >
-                {currentStep === 3 ? "Solicitar Cotización" : "Siguiente"}
+                {currentStep === 3 ? "Solicitar cotización" : "Siguiente"}
               </button>
             </div>
           </motion.div>

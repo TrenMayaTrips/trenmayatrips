@@ -25,7 +25,7 @@ const CTAFinalSection = () => {
               href="#reservar"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-accent-foreground font-bold rounded-md hover:bg-gold-light transition-colors text-base"
             >
-              Reservar Ahora
+              Reservar ahora
               <ArrowRight size={18} />
             </a>
             <a

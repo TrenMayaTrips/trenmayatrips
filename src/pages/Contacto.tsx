@@ -108,7 +108,7 @@ const Contacto = () => {
 
             {/* Contact Info */}
             <div className="lg:col-span-1 space-y-6">
-              <h2 className="font-heading text-2xl font-bold text-foreground">Información de Contacto</h2>
+              <h2 className="font-heading text-2xl font-bold text-foreground">Información de contacto</h2>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 Nuestro equipo de expertos en viajes está listo para asesorarte personalmente.
               </p>
@@ -167,7 +167,7 @@ const Contacto = () => {
                   className="flex flex-col items-center justify-center text-center p-12 bg-card rounded-2xl border border-border"
                 >
                   <CheckCircle size={64} className="text-primary mb-4" />
-                  <h3 className="font-heading text-2xl font-bold text-foreground mb-2">¡Mensaje Enviado!</h3>
+                  <h3 className="font-heading text-2xl font-bold text-foreground mb-2">¡Mensaje enviado!</h3>
                   <p className="text-muted-foreground mb-6 max-w-md">
                     Hemos recibido tu mensaje. Nuestro equipo te responderá en las próximas 24 horas hábiles.
                   </p>
@@ -279,7 +279,7 @@ const Contacto = () => {
                     ) : (
                       <>
                         <Send size={18} className="mr-2" />
-                        Enviar Mensaje
+                        Enviar mensaje
                       </>
                     )}
                   </Button>

@@ -35,7 +35,7 @@ const Destinos = () => {
       <ParallaxHero imageSrc={heroDestinos} imageAlt="Tren Maya Destinations" overlayClass="bg-black/40">
         <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Destinos</p>
         <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
-          5 Estados, Miles de Historias
+          5 estados, miles de historias
         </h1>
         <p className="mt-4 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto">
           Explora los destinos más fascinantes del sureste mexicano a lo largo de la ruta del Tren Maya.
@@ -46,7 +46,7 @@ const Destinos = () => {
       <section className="py-10 md:py-14 bg-card border-b border-border">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-6 text-center">
-            Selecciona un Estado
+            Selecciona un estado
           </h2>
 
           {/* State Selector - Metro Line Style */}
@@ -261,7 +261,7 @@ const Destinos = () => {
       <section className="py-12 md:py-16 bg-secondary/30 border-t border-border">
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground text-center mb-3">
-            Mapa de la Ruta
+            Mapa de la ruta
           </h2>
           <p className="text-center text-muted-foreground text-sm mb-10 max-w-xl mx-auto">
             1,554 km conectando los destinos más espectaculares del sureste mexicano
@@ -347,11 +347,11 @@ const Destinos = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/paquetes">
-              <Button variant="secondary" size="lg">Ver Paquetes</Button>
+              <Button variant="secondary" size="lg">Ver paquetes</Button>
             </Link>
             <Link to="/experiencias">
               <Button variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                Explorar Experiencias
+                Explorar experiencias
               </Button>
             </Link>
           </div>
