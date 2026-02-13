@@ -10,9 +10,10 @@ import ImageGallery from "@/components/experiences/ImageGallery";
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
 const ExperienciaDetalle = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const params = useParams();
+  const slug = params.slug || params.slugOrCategory || "";
   const [activeTab, setActiveTab] = useState("Resumen");
-  const exp = getExperienceBySlug(slug || "");
+  const exp = getExperienceBySlug(slug);
 
   if (!exp) return <Navigate to="/experiencias" replace />;
 

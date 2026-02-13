@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Experiencias from "./pages/Experiencias";
+import ExperienciaCategoria from "./pages/ExperienciaCategoria";
+import ExperienciaSubcategoria from "./pages/ExperienciaSubcategoria";
 import ExperienciaDetalle from "./pages/ExperienciaDetalle";
 import TrenMaya from "./pages/TrenMaya";
 import Packages from "./pages/Packages";
@@ -27,7 +29,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/experiencias" element={<Experiencias />} />
-          <Route path="/experiencias/:slug" element={<ExperienciaDetalle />} />
+          <Route path="/experiencias/:slugOrCategory" element={<ExperienciaCategoria />} />
+          <Route path="/experiencias/:categorySlug/:subcategorySlug" element={<ExperienciaSubcategoria />} />
           <Route path="/tren-maya" element={<TrenMaya />} />
           <Route path="/paquetes" element={<Packages />} />
           <Route path="/blog" element={<Blog />} />
