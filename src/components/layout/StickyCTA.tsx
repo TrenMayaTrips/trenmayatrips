@@ -12,7 +12,7 @@ const StickyCTA = () => {
         className="flex items-center justify-center gap-2 w-full py-3.5 bg-accent text-accent-foreground font-semibold text-sm rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
       >
         <CalendarDays size={18} />
-        Planifica tu Viaje
+        Planifica tu viaje
       </a>
     </div>
   );

@@ -115,7 +115,7 @@ const Header = () => {
                 onClick={() => setIsOpen(false)}
                 className="mt-2 py-3 px-4 bg-accent text-accent-foreground font-semibold text-center rounded-md"
               >
-                Reservar Ahora
+                Reservar ahora
               </a>
             </div>
           </motion.nav>

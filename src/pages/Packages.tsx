@@ -196,7 +196,7 @@ const Packages = () => {
                     {/* Highlights */}
                     <div className="mb-6">
                       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                        Destinos Incluidos
+                        Destinos incluidos
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {pkg.highlights.slice(0, 4).map((highlight) => (
@@ -264,7 +264,7 @@ const Packages = () => {
                             <div className="space-y-4">
                               <div>
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                                  Incluye Completo
+                                  Incluye completo
                                 </p>
                                 <ul className="space-y-1">
                                   {pkg.includes.map((include) => (
@@ -278,7 +278,7 @@ const Packages = () => {
 
                               <div>
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                                  No Incluye
+                                  No incluye
                                 </p>
                                 <ul className="space-y-1">
                                   {pkg.excludes.map((exclude) => (
@@ -292,7 +292,7 @@ const Packages = () => {
 
                               <div>
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                                  Ideal Para
+                                  Ideal para
                                 </p>
                                 <p className="text-sm text-foreground">{pkg.bestFor}</p>
                               </div>
@@ -315,7 +315,7 @@ const Packages = () => {
                         onClick={() => handleQuote(pkg.slug)}
                         className="w-full sm:w-auto"
                       >
-                        Solicitar Cotización
+                        Solicitar cotización
                       </Button>
                     </div>
                   </div>
@@ -330,7 +330,7 @@ const Packages = () => {
       {compareMode && toCompare.length >= 2 && (
         <section className="py-10 md:py-16 bg-secondary/50 border-t border-border">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-foreground mb-8">Comparador de Paquetes</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-8">Comparador de paquetes</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse bg-card rounded-lg overflow-hidden">
                 <thead>
@@ -346,7 +346,7 @@ const Packages = () => {
                 </thead>
                 <tbody>
                   <tr className="border-b border-border">
-                    <td className="p-4 font-semibold text-foreground">Precio Base</td>
+                    <td className="p-4 font-semibold text-foreground">Precio base</td>
                     {toCompare.map((pkg) => (
                       <td key={pkg.slug} className="p-4 text-foreground">
                         <p className="font-bold text-lg">${pkg.price.toLocaleString()} MXN</p>
@@ -366,7 +366,7 @@ const Packages = () => {
                     ))}
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-4 font-semibold text-foreground">Tamaño del Grupo</td>
+                    <td className="p-4 font-semibold text-foreground">Tamaño del grupo</td>
                     {toCompare.map((pkg) => (
                       <td key={pkg.slug} className="p-4 text-foreground text-sm">{pkg.groupSize}</td>
                     ))}
@@ -380,7 +380,7 @@ const Packages = () => {
                     ))}
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-4 font-semibold text-foreground">Transporte Privado</td>
+                    <td className="p-4 font-semibold text-foreground">Transporte privado</td>
                     {toCompare.map((pkg) => (
                       <td key={pkg.slug} className="p-4 text-foreground">
                         {pkg.includes.some((i) => i.includes("Transporte privado")) ? (
@@ -390,7 +390,7 @@ const Packages = () => {
                     ))}
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-4 font-semibold text-foreground">Guía Especializado</td>
+                    <td className="p-4 font-semibold text-foreground">Guía especializado</td>
                     {toCompare.map((pkg) => (
                       <td key={pkg.slug} className="p-4 text-foreground">
                         {pkg.includes.some((i) => i.includes("Guía")) ? (
@@ -447,7 +447,7 @@ const Packages = () => {
             variant="secondary"
             size="lg"
           >
-            Crear Paquete Personalizado
+            Crear paquete personalizado
           </Button>
         </div>
       </section>

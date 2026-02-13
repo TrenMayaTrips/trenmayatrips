@@ -95,7 +95,7 @@ const Blog = () => {
         <section className="py-10 md:py-16 bg-background">
           <div className="container mx-auto px-4">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-8">
-              Artículos Destacados
+              Artículos destacados
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {featuredPosts.slice(0, 2).map((post, i) => {
@@ -159,7 +159,7 @@ const Blog = () => {
                     ?.label
                 : searchQuery
                   ? "Resultados"
-                  : "Todos los Artículos"}
+                  : "Todos los artículos"}
             </h2>
             <p className="text-sm text-muted-foreground">
               {filtered.length} artículo{filtered.length !== 1 ? "s" : ""}
