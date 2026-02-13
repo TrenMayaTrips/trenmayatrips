@@ -4,6 +4,7 @@ import { MapPin, Clock, Users, Star, Check, X, ChevronDown } from "lucide-react"
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { packages, packageTypes } from "@/data/packages";
+import { packageImageMap } from "@/data/package-images";
 import { Button } from "@/components/ui/button";
 import heroPaquetes from "@/assets/hero-paquetes.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
@@ -123,11 +124,26 @@ const Packages = () => {
                     : "border-border bg-card"
                 } ${compareMode ? "cursor-pointer" : ""} hover:shadow-lg transition-all`}
               >
-                {/* Package Header */}
-                <div className="bg-gradient-to-br from-primary/20 to-jade-light/30 p-6 border-b border-border">
+                {/* Package Header with Image */}
+                <div className="relative overflow-hidden h-48 md:h-56">
+                  {packageImageMap[pkg.slug] ? (
+                    <img
+                      src={packageImageMap[pkg.slug]}
+                      alt={pkg.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-jade-light/30" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                </div>
+
+                {/* Package Details */}
+                <div className="p-6 border-b border-border relative z-10">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+                      <p className="text-xs font-medium text-primary uppercase tracking-wider mb-2 bg-primary/10 px-2 py-1 rounded-full w-fit">
                         {packageTypes[pkg.type]}
                       </p>
                       <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
