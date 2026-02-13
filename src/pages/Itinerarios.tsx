@@ -1,6 +1,9 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel } from "lucide-react";
+import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel, Save, Copy, Check, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import PageLayout from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -45,6 +48,11 @@ const Itinerarios = () => {
   const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
   const [stateFilter, setStateFilter] = useState<string | null>(null);
   const [lodgingByDest, setLodgingByDest] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  const [savedCode, setSavedCode] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const maxDestinations = selectedDuration ? Math.min(Math.floor(selectedDuration / 1.5), 8) : 4;
 
@@ -84,6 +92,54 @@ const Itinerarios = () => {
   };
 
   const progressValue = (currentStep / steps.length) * 100;
+
+  const totalCost = useMemo(() => {
+    return selectedDests.reduce((total, dest) => {
+      const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
+      return total + (lodging?.pricePerNight || 0) * (selectedDuration || 1);
+    }, 0);
+  }, [selectedDests, lodgingByDest, selectedDuration]);
+
+  const saveItinerary = async () => {
+    setSaving(true);
+    try {
+      const { data, error } = await supabase
+        .from("saved_itineraries")
+        .insert({
+          trip_type: selectedType!,
+          duration: selectedDuration!,
+          destinations: selectedDestinations,
+          lodging: lodgingByDest,
+          total_cost: totalCost,
+        })
+        .select("short_code")
+        .single();
+
+      if (error) throw error;
+
+      setSavedCode(data.short_code);
+      toast({
+        title: "¡Itinerario guardado!",
+        description: "Ya puedes compartir tu circuito con un enlace único.",
+      });
+    } catch {
+      toast({
+        title: "Error al guardar",
+        description: "Intenta de nuevo más tarde.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const copyShareLink = async () => {
+    if (!savedCode) return;
+    const url = `${window.location.origin}/itinerarios/${savedCode}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const whatsappMessage = useMemo(() => {
     if (currentStep !== 5) return "";
@@ -514,7 +570,38 @@ const Itinerarios = () => {
                  </Card>
 
                 {/* CTA */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+                  {!savedCode ? (
+                    <Button
+                      size="lg"
+                      onClick={saveItinerary}
+                      disabled={saving}
+                      className="text-base px-8"
+                    >
+                      {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                      {saving ? "Guardando..." : "Guardar y compartir"}
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={copyShareLink}
+                        className="text-base px-8"
+                      >
+                        {copied ? <Check size={16} /> : <Copy size={16} />}
+                        {copied ? "¡Enlace copiado!" : "Copiar enlace para compartir"}
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={() => navigate(`/itinerarios/${savedCode}`)}
+                        className="text-base"
+                      >
+                        <Sparkles size={16} /> Ver itinerario guardado
+                      </Button>
+                    </>
+                  )}
                   <Button
                     size="lg"
                     className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8"
@@ -529,7 +616,7 @@ const Itinerarios = () => {
                       Solicitar itinerario por WhatsApp
                     </a>
                   </Button>
-                  <Button variant="outline" size="lg" onClick={() => setCurrentStep(1)} className="text-base">
+                  <Button variant="outline" size="lg" onClick={() => { setCurrentStep(1); setSavedCode(null); }} className="text-base">
                     Empezar de nuevo
                   </Button>
                 </div>

@@ -44,6 +44,39 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_itineraries: {
+        Row: {
+          created_at: string
+          destinations: Json
+          duration: number
+          id: string
+          lodging: Json
+          short_code: string
+          total_cost: number
+          trip_type: string
+        }
+        Insert: {
+          created_at?: string
+          destinations: Json
+          duration: number
+          id?: string
+          lodging: Json
+          short_code?: string
+          total_cost?: number
+          trip_type: string
+        }
+        Update: {
+          created_at?: string
+          destinations?: Json
+          duration?: number
+          id?: string
+          lodging?: Json
+          short_code?: string
+          total_cost?: number
+          trip_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
