@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import { MapPin, Clock, Star } from "lucide-react";
+import destChichenItza from "@/assets/dest-chichen-itza.jpg";
+import destRivieraMaya from "@/assets/dest-riviera-maya.jpg";
+import destPalenque from "@/assets/dest-palenque.jpg";
+import destCalakmul from "@/assets/dest-calakmul-campeche.jpg";
 
 const destinations = [
   {
@@ -8,6 +12,8 @@ const destinations = [
     duration: "2 días",
     rating: 4.9,
     tag: "Más popular",
+    image: destChichenItza,
+    alt: "Pirámide de Kukulcán en Chichén Itzá al atardecer",
   },
   {
     name: "Riviera Maya y Tulum",
@@ -15,6 +21,8 @@ const destinations = [
     duration: "3 días",
     rating: 4.9,
     tag: "Imperdible",
+    image: destRivieraMaya,
+    alt: "Ruinas de Tulum sobre acantilado con mar turquesa",
   },
   {
     name: "Palenque y Agua Azul",
@@ -22,6 +30,8 @@ const destinations = [
     duration: "2 días",
     rating: 4.8,
     tag: "Aventura",
+    image: destPalenque,
+    alt: "Ruinas de Palenque emergiendo de la selva con neblina",
   },
   {
     name: "Calakmul y Campeche",
@@ -29,6 +39,8 @@ const destinations = [
     duration: "3 días",
     rating: 4.7,
     tag: "Cultural",
+    image: destCalakmul,
+    alt: "Ciudad amurallada de Campeche con fachadas coloridas",
   },
 ];
 
@@ -56,7 +68,13 @@ const DestinosSection = () => {
               transition={{ delay: i * 0.1 }}
               className="group relative bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all cursor-pointer"
             >
-              <div className="h-48 md:h-56 bg-gradient-to-br from-primary/20 to-jade-light/30 relative">
+              <div className="h-48 md:h-56 relative overflow-hidden">
+                <img
+                  src={dest.image}
+                  alt={dest.alt}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
                 <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
                   {dest.tag}
                 </span>
