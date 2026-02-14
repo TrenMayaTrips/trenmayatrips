@@ -9,6 +9,7 @@ import { experiences, categoryLabels, stateLabels, getExperienceBySlug } from "@
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ExperienciaDetalle from "./ExperienciaDetalle";
+import TestimoniosSection from "@/components/home/TestimoniosSection";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -231,6 +232,9 @@ const ExperienciaCategoria = () => {
           )}
         </div>
       </section>
+
+      {/* Testimonios */}
+      <TestimoniosSection />
 
       {/* FAQ */}
       <section className="py-10 md:py-16 bg-secondary">
