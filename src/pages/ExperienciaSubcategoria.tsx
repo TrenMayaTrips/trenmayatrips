@@ -8,6 +8,7 @@ import { getCategoryBySlug, getSubcategoryBySlug, guarantees } from "@/data/expe
 import { experiences, stateLabels } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
+import TestimoniosSection from "@/components/home/TestimoniosSection";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -229,6 +230,9 @@ const ExperienciaSubcategoria = () => {
           </div>
         </div>
       </section>
+
+      {/* Testimonios */}
+      <TestimoniosSection />
 
       {/* FAQ */}
       <section className="py-10 md:py-16 bg-background">
