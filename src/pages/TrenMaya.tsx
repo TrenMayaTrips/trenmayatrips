@@ -223,15 +223,16 @@ const TrenMaya = () => {
                         </li>
                       ))}
                     </ul>
-                    <button
-                      className={`w-full mt-5 py-2.5 rounded-lg font-semibold text-sm transition-colors ${
+                    <Link
+                      to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
+                      className={`w-full mt-5 py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center ${
                         isFeatured
                           ? "bg-primary text-primary-foreground hover:bg-primary/90"
                           : "border border-border text-foreground hover:bg-secondary"
                       }`}
                     >
                       Ver detalles
-                    </button>
+                    </Link>
                   </div>
                 </motion.div>
               );
