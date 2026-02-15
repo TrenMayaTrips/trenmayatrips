@@ -10,6 +10,7 @@ import ExperienciaSubcategoria from "./pages/ExperienciaSubcategoria";
 import ExperienciaDetalle from "./pages/ExperienciaDetalle";
 import TrenMaya from "./pages/TrenMaya";
 import VagonDetalle from "./pages/VagonDetalle";
+import EstacionDetalle from "./pages/EstacionDetalle";
 import Packages from "./pages/Packages";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/experiencias/:categorySlug/:subcategorySlug" element={<ExperienciaSubcategoria />} />
           <Route path="/tren-maya" element={<TrenMaya />} />
           <Route path="/tren-maya/clases/:slug" element={<VagonDetalle />} />
+          <Route path="/tren-maya/estaciones/:slug" element={<EstacionDetalle />} />
           <Route path="/paquetes" element={<Packages />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogArticle />} />
