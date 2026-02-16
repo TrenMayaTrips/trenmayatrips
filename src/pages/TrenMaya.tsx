@@ -263,7 +263,7 @@ const TrenMaya = () => {
                 transition={{ delay: i * 0.1 }}
                 className="snap-center min-w-[300px] md:min-w-0"
               >
-                <div className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all group">
+                <Link to={`/tren-maya/rutas/${route.slug}`} className="block bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all group">
                   <div className="p-5 md:p-6">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="px-2.5 py-1 bg-secondary rounded-full text-xs font-medium text-foreground">
@@ -292,7 +292,7 @@ const TrenMaya = () => {
                       </span>
                     </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </div>

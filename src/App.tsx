@@ -17,6 +17,7 @@ import BlogArticle from "./pages/BlogArticle";
 import Destinos from "./pages/Destinos";
 import Contacto from "./pages/Contacto";
 import Itinerarios from "./pages/Itinerarios";
+import RutaDetalle from "./pages/RutaDetalle";
 import ItinerarioCompartido from "./pages/ItinerarioCompartido";
 import NotFound from "./pages/NotFound";
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/tren-maya" element={<TrenMaya />} />
           <Route path="/tren-maya/clases/:slug" element={<VagonDetalle />} />
           <Route path="/tren-maya/estaciones/:slug" element={<EstacionDetalle />} />
+          <Route path="/tren-maya/rutas/:slug" element={<RutaDetalle />} />
           <Route path="/paquetes" element={<Packages />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogArticle />} />
