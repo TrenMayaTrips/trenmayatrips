@@ -5,6 +5,9 @@ import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight } from
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
+import EstelaCard from "@/components/maya/EstelaCard";
 import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
 import { routes, allStationNames } from "@/data/routes";
 import { stationDetails } from "@/data/station-details";
@@ -132,9 +135,13 @@ const TrenMaya = () => {
         </motion.div>
       </ParallaxHero>
 
+      {/* Greca divider after hero */}
+      <GrecaDivider variant="jade" size="md" />
+
       {/* Stats */}
-      <section className="bg-card border-b border-border">
-        <div className="container mx-auto px-4 py-8 md:py-10">
+      <section className="bg-card border-b border-border relative overflow-hidden">
+        <MayaPattern variant="pop" opacity={0.03} />
+        <div className="container mx-auto px-4 py-8 md:py-10 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { value: `${trenMayaStats.totalKm.toLocaleString()}`, unit: "km", label: "De ruta" },
@@ -159,9 +166,13 @@ const TrenMaya = () => {
         </div>
       </section>
 
+      {/* Greca divider */}
+      <GrecaDivider variant="gold" size="sm" />
+
       {/* Route Map */}
-      <section className="py-12 md:py-20 bg-secondary/50">
-        <div className="container mx-auto px-4">
+      <section className="py-12 md:py-20 bg-secondary/50 relative overflow-hidden">
+        <MayaPattern variant="greca" opacity={0.03} />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
             <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Mapa de la red</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
@@ -175,9 +186,13 @@ const TrenMaya = () => {
         </div>
       </section>
 
-      {/* Wagon Classes - Pricing Grid */}
-      <section className="py-12 md:py-20 bg-background">
-        <div className="container mx-auto px-4">
+      {/* Greca divider */}
+      <GrecaDivider variant="jade" size="lg" />
+
+      {/* Wagon Classes - Pricing Grid with Estela borders */}
+      <section className="py-12 md:py-20 bg-background relative overflow-hidden">
+        <MayaPattern variant="pop" opacity={0.025} />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
             <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Clases de servicio</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
@@ -196,49 +211,52 @@ const TrenMaya = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className={`bg-card rounded-xl border overflow-hidden relative ${
-                    isFeatured ? "border-primary ring-2 ring-primary/20 shadow-lg md:-mt-4 md:mb-4" : "border-border"
-                  }`}
                 >
-                  {isFeatured && (
-                    <div className="bg-primary text-primary-foreground text-xs font-semibold text-center py-1.5">
-                      ⭐ Más popular
+                  <EstelaCard variant={isFeatured ? "gold" : "jade"} className={isFeatured ? "md:-mt-4 md:mb-4" : ""}>
+                    <div className={`bg-card rounded-xl overflow-hidden relative ${
+                      isFeatured ? "shadow-lg" : ""
+                    }`}>
+                      {isFeatured && (
+                        <div className="bg-primary text-primary-foreground text-xs font-semibold text-center py-1.5">
+                          ⭐ Más popular
+                        </div>
+                      )}
+                      <div className="h-40 overflow-hidden">
+                        <img
+                          src={wagonImages[i]}
+                          alt={`Interior del vagón clase ${wagon.name}`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="p-5 md:p-6">
+                        <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.type}</p>
+                        <h3 className="font-heading text-xl font-bold text-foreground mt-1">{wagon.name}</h3>
+                        <p className="text-xs text-muted-foreground italic">"{wagon.meaning}"</p>
+                        <p className="font-heading text-2xl font-bold text-foreground mt-3">
+                          ${prices[i].toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN/tramo</span>
+                        </p>
+                        <ul className="mt-4 space-y-2">
+                          {wagon.amenities.map((a) => (
+                            <li key={a} className="flex items-center gap-2 text-sm text-foreground/80">
+                              <Check size={14} className="text-primary shrink-0" />
+                              {a}
+                            </li>
+                          ))}
+                        </ul>
+                        <Link
+                          to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
+                          className={`w-full mt-5 py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center ${
+                            isFeatured
+                              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                              : "border border-border text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          Ver detalles
+                        </Link>
+                      </div>
                     </div>
-                  )}
-                  <div className="h-40 overflow-hidden">
-                    <img
-                      src={wagonImages[i]}
-                      alt={`Interior del vagón clase ${wagon.name}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-5 md:p-6">
-                    <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.type}</p>
-                    <h3 className="font-heading text-xl font-bold text-foreground mt-1">{wagon.name}</h3>
-                    <p className="text-xs text-muted-foreground italic">"{wagon.meaning}"</p>
-                    <p className="font-heading text-2xl font-bold text-foreground mt-3">
-                      ${prices[i].toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN/tramo</span>
-                    </p>
-                    <ul className="mt-4 space-y-2">
-                      {wagon.amenities.map((a) => (
-                        <li key={a} className="flex items-center gap-2 text-sm text-foreground/80">
-                          <Check size={14} className="text-primary shrink-0" />
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
-                      className={`w-full mt-5 py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center ${
-                        isFeatured
-                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                          : "border border-border text-foreground hover:bg-secondary"
-                      }`}
-                    >
-                      Ver detalles
-                    </Link>
-                  </div>
+                  </EstelaCard>
                 </motion.div>
               );
             })}
@@ -246,9 +264,13 @@ const TrenMaya = () => {
         </div>
       </section>
 
+      {/* Greca divider */}
+      <GrecaDivider variant="terracotta" size="sm" />
+
       {/* Popular Routes */}
-      <section className="py-12 md:py-20 bg-secondary">
-        <div className="container mx-auto px-4">
+      <section className="py-12 md:py-20 bg-secondary relative overflow-hidden">
+        <MayaPattern variant="greca" opacity={0.025} />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-end justify-between mb-8 md:mb-12">
             <div>
               <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Rutas populares</p>
@@ -268,45 +290,51 @@ const TrenMaya = () => {
                 transition={{ delay: i * 0.1 }}
                 className="snap-center min-w-[300px] md:min-w-0"
               >
-                <Link to={`/tren-maya/rutas/${route.slug}`} className="block bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all group">
-                  <div className="p-5 md:p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="px-2.5 py-1 bg-secondary rounded-full text-xs font-medium text-foreground">
-                        {route.badgeEmoji} {route.badge}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-heading text-lg font-bold text-foreground">{route.origin}</span>
-                      <ArrowRight size={16} className="text-primary" />
-                      <span className="font-heading text-lg font-bold text-foreground">{route.destination}</span>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mt-3">
-                      <span>🕐 {route.duration}</span>
-                      <span>📍 {route.stops} paradas</span>
-                      <span>🚂 {route.dailyDepartures} diarios</span>
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
-                      <div>
-                        <span className="text-xs text-muted-foreground">Desde</span>
-                        <p className="font-heading text-xl font-bold text-foreground">
-                          ${route.prices.xiinbal.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
-                        </p>
+                <EstelaCard variant="jade">
+                  <Link to={`/tren-maya/rutas/${route.slug}`} className="block bg-card rounded-xl overflow-hidden hover:shadow-lg transition-all group">
+                    <div className="p-5 md:p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="px-2.5 py-1 bg-secondary rounded-full text-xs font-medium text-foreground">
+                          {route.badgeEmoji} {route.badge}
+                        </span>
                       </div>
-                      <span className="text-sm text-primary font-medium group-hover:underline">
-                        Ver ruta completa →
-                      </span>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="font-heading text-lg font-bold text-foreground">{route.origin}</span>
+                        <ArrowRight size={16} className="text-primary" />
+                        <span className="font-heading text-lg font-bold text-foreground">{route.destination}</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mt-3">
+                        <span>🕐 {route.duration}</span>
+                        <span>📍 {route.stops} paradas</span>
+                        <span>🚂 {route.dailyDepartures} diarios</span>
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+                        <div>
+                          <span className="text-xs text-muted-foreground">Desde</span>
+                          <p className="font-heading text-xl font-bold text-foreground">
+                            ${route.prices.xiinbal.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
+                          </p>
+                        </div>
+                        <span className="text-sm text-primary font-medium group-hover:underline">
+                          Ver ruta completa →
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </EstelaCard>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Greca divider */}
+      <GrecaDivider variant="gold" size="md" />
+
       {/* Stations by State */}
-      <section className="py-12 md:py-20 bg-background">
-        <div className="container mx-auto px-4">
+      <section className="py-12 md:py-20 bg-background relative overflow-hidden">
+        <MayaPattern variant="pop" opacity={0.02} />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
             <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Todas las estaciones</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
@@ -390,9 +418,13 @@ const TrenMaya = () => {
         </div>
       </section>
 
+      {/* Greca divider */}
+      <GrecaDivider variant="jade" size="sm" />
+
       {/* FAQ */}
-      <section className="py-12 md:py-20 bg-secondary">
-        <div className="container mx-auto px-4">
+      <section className="py-12 md:py-20 bg-secondary relative overflow-hidden">
+        <MayaPattern variant="greca" opacity={0.02} />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
             <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">FAQ</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
@@ -402,7 +434,7 @@ const TrenMaya = () => {
 
           <div className="max-w-2xl mx-auto space-y-3">
             {faqItems.map((item, i) => (
-              <div key={i} className="bg-card rounded-xl border border-border overflow-hidden">
+              <div key={i} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
                   className="w-full flex items-center justify-between p-4 md:p-5 text-left"
@@ -411,8 +443,8 @@ const TrenMaya = () => {
                   {expandedFaq === i ? <ChevronUp size={18} className="text-muted-foreground shrink-0" /> : <ChevronDown size={18} className="text-muted-foreground shrink-0" />}
                 </button>
                 {expandedFaq === i && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-4 md:px-5 pb-4 md:pb-5">
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.a}</p>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-4 md:px-5 pb-4 md:pb-5 border-t border-primary/10">
+                    <p className="text-sm text-muted-foreground leading-relaxed pt-3">{item.a}</p>
                   </motion.div>
                 )}
               </div>
@@ -421,9 +453,13 @@ const TrenMaya = () => {
         </div>
       </section>
 
+      {/* Greca divider */}
+      <GrecaDivider variant="gold" size="lg" />
+
       {/* CTA Final */}
-      <section className="py-14 md:py-20 bg-gradient-to-br from-primary via-jade-dark to-primary">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-14 md:py-20 bg-gradient-to-br from-primary via-jade-dark to-primary relative overflow-hidden">
+        <MayaPattern variant="pop" opacity={0.06} />
+        <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="font-heading text-2xl md:text-4xl font-bold text-primary-foreground">
             ¿Listo para recorrer la Península?
           </h2>
