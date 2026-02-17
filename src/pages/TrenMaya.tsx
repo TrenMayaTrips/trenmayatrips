@@ -7,6 +7,7 @@ import ParallaxHero from "@/components/layout/ParallaxHero";
 import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
 import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
 import { routes, allStationNames } from "@/data/routes";
+import { stationDetails } from "@/data/station-details";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
 import trenJanal from "@/assets/tren-janal-interior.jpg";
@@ -39,6 +40,10 @@ const TrenMaya = () => {
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
+
+  const stationSlugMap: Record<string, string> = Object.fromEntries(
+    stationDetails.map((sd) => [sd.name, sd.slug])
+  );
 
   const stateList = [...new Set(stations.map((s) => s.stateKey))];
   const filteredStations = selectedState
@@ -354,9 +359,18 @@ const TrenMaya = () => {
                 </div>
                 <div className={`pb-5 ${station.type === "principal" ? "" : "opacity-70"}`}>
                   <div className="flex items-center gap-2">
-                    <h3 className={`font-heading font-semibold text-foreground ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}>
-                      {station.name}
-                    </h3>
+                    {stationSlugMap[station.name] ? (
+                      <Link
+                        to={`/tren-maya/estaciones/${stationSlugMap[station.name]}`}
+                        className={`font-heading font-semibold text-foreground hover:text-primary transition-colors ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}
+                      >
+                        {station.name} →
+                      </Link>
+                    ) : (
+                      <h3 className={`font-heading font-semibold text-foreground ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}>
+                        {station.name}
+                      </h3>
+                    )}
                     {station.type === "principal" && <Train size={14} className="text-primary" />}
                     {station.type === "estacion" && <span className="text-[10px] text-muted-foreground font-medium">Estación</span>}
                     {station.type === "paradero" && <span className="text-[10px] text-muted-foreground">Paradero</span>}
