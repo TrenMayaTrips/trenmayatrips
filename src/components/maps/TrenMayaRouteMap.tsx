@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { stations, Station } from "@/data/stations";
+import { stationDetails } from "@/data/station-details";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 
 // SVG coordinates for each station on a stylized Yucatan Peninsula map
@@ -71,7 +73,12 @@ const routePath = routeSegments
   .map((c, i) => `${i === 0 ? "M" : "L"} ${c.x},${c.y}`)
   .join(" ");
 
+const stationSlugMap: Record<string, string> = Object.fromEntries(
+  stationDetails.map((sd) => [sd.name, sd.slug])
+);
+
 const TrenMayaRouteMap = () => {
+  const navigate = useNavigate();
   return (
     <TooltipProvider>
       <div className="w-full max-w-lg mx-auto">
@@ -146,7 +153,11 @@ const TrenMayaRouteMap = () => {
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 + i * 0.04, duration: 0.3, type: "spring" }}
-                    className="cursor-pointer"
+                    className={stationSlugMap[station.name] ? "cursor-pointer" : "cursor-default"}
+                    onClick={() => {
+                      const slug = stationSlugMap[station.name];
+                      if (slug) navigate(`/tren-maya/estaciones/${slug}`);
+                    }}
                   >
                     {/* Pulse for principal stations */}
                     {isPrincipal && (
