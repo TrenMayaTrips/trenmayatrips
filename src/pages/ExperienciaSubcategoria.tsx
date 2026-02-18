@@ -9,6 +9,7 @@ import { experiences, stateLabels } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import TestimoniosSection from "@/components/home/TestimoniosSection";
+import GrecaDivider from "@/components/maya/GrecaDivider";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -87,6 +88,8 @@ const ExperienciaSubcategoria = () => {
           {subcategory.heroDescription}
         </p>
       </ParallaxHero>
+
+      <GrecaDivider variant="jade" size="md" />
 
       {/* Filters */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">

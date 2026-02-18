@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Palmtree, Landmark, UtensilsCrossed, Sparkles } from "lucide-react";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const experiences = [
   {
@@ -26,8 +28,9 @@ const experiences = [
 
 const ExperienciasSection = () => {
   return (
-    <section id="experiencias" className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4">
+    <section id="experiencias" className="py-16 md:py-24 bg-secondary relative">
+      <MayaPattern variant="pop" opacity={0.03} />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Experiencias</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
@@ -36,6 +39,7 @@ const ExperienciasSection = () => {
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
             Cada parada del Tren Maya te conecta con experiencias únicas de cultura, aventura y tradición.
           </p>
+          <GrecaDivider variant="gold" size="sm" className="mt-6 max-w-xs mx-auto" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

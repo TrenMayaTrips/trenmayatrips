@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <section className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4">
+    <section className="py-16 md:py-24 bg-secondary relative">
+      <MayaPattern variant="pop" opacity={0.03} />
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -18,7 +21,8 @@ const NewsletterSection = () => {
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
             Recibe ofertas exclusivas
           </h2>
-          <p className="mt-3 text-muted-foreground">
+          <GrecaDivider variant="gold" size="sm" className="mt-4 mb-4 max-w-xs mx-auto" />
+          <p className="text-muted-foreground">
             Suscríbete y obtén una <strong className="text-foreground">guía gratuita en PDF</strong> con los 10 destinos imperdibles de la ruta del Tren Maya.
           </p>
 

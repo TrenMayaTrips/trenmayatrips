@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronUp, ChevronDown, CalendarDays, Users, MapPin } from "lucide-react";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const steps = [
   { id: 1, label: "Destino", icon: MapPin },
@@ -12,8 +14,9 @@ const PlanificadorSection = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
   return (
-    <section id="reservar" className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4">
+    <section id="reservar" className="py-16 md:py-24 bg-secondary relative">
+      <MayaPattern variant="pop" opacity={0.03} />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Planificador</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
@@ -22,6 +25,7 @@ const PlanificadorSection = () => {
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
             En 3 simples pasos, diseña la experiencia perfecta por la ruta del Tren Maya.
           </p>
+          <GrecaDivider variant="jade" size="sm" className="mt-6 max-w-xs mx-auto" />
         </div>
 
         {/* Step indicators */}

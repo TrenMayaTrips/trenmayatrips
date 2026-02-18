@@ -6,6 +6,8 @@ import PageLayout from "@/components/layout/PageLayout";
 import { getExperienceBySlug, experiences, categoryLabels } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import ImageGallery from "@/components/experiences/ImageGallery";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import EstelaCard from "@/components/maya/EstelaCard";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
@@ -54,6 +56,8 @@ const ExperienciaDetalle = () => {
       <div className="container mx-auto px-4 -mt-4 md:-mt-6">
         <ImageGallery images={experienceGallery[exp.slug] || []} title={exp.title} />
       </div>
+
+      <GrecaDivider variant="jade" size="md" />
 
       {/* Content */}
       <section className="py-8 md:py-12 bg-background">
@@ -150,49 +154,51 @@ const ExperienciaDetalle = () => {
 
             {/* Sidebar */}
             <div>
-              <div className="bg-card rounded-xl border border-border p-5 md:p-6 sticky top-28">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Desde</p>
-                <p className="font-heading text-3xl font-bold text-foreground">
-                  ${exp.price.toLocaleString()} <span className="text-base font-normal text-muted-foreground">MXN</span>
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">por persona</p>
+              <EstelaCard variant="gold" className="sticky top-28">
+                <div className="bg-card rounded-xl p-5 md:p-6">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Desde</p>
+                  <p className="font-heading text-3xl font-bold text-foreground">
+                    ${exp.price.toLocaleString()} <span className="text-base font-normal text-muted-foreground">MXN</span>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">por persona</p>
 
-                <a
-                  href="#reservar"
-                  className="mt-5 block text-center py-3 bg-accent text-accent-foreground font-semibold rounded-lg hover:bg-gold-light transition-colors text-sm"
-                >
-                  Solicitar Cotización
-                </a>
-                <a
-                  href="https://wa.me/529982186754"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 block text-center py-3 border border-border text-foreground font-medium rounded-lg hover:bg-secondary transition-colors text-sm"
-                >
-                  💬 WhatsApp
-                </a>
+                  <a
+                    href="#reservar"
+                    className="mt-5 block text-center py-3 bg-accent text-accent-foreground font-semibold rounded-lg hover:bg-gold-light transition-colors text-sm"
+                  >
+                    Solicitar Cotización
+                  </a>
+                  <a
+                    href="https://wa.me/529982186754"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 block text-center py-3 border border-border text-foreground font-medium rounded-lg hover:bg-secondary transition-colors text-sm"
+                  >
+                    💬 WhatsApp
+                  </a>
 
-                <div className="mt-5 pt-5 border-t border-border space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Duración</span>
-                    <span className="text-foreground font-medium">{exp.duration}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Grupo</span>
-                    <span className="text-foreground font-medium">{exp.groupSize}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Idiomas</span>
-                    <span className="text-foreground font-medium">{exp.languages.join(", ")}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Calificación</span>
-                    <span className="text-gold font-medium flex items-center gap-1">
-                      <Star size={12} fill="currentColor" /> {exp.rating}
-                    </span>
+                  <div className="mt-5 pt-5 border-t border-border space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Duración</span>
+                      <span className="text-foreground font-medium">{exp.duration}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Grupo</span>
+                      <span className="text-foreground font-medium">{exp.groupSize}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Idiomas</span>
+                      <span className="text-foreground font-medium">{exp.languages.join(", ")}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Calificación</span>
+                      <span className="text-gold font-medium flex items-center gap-1">
+                        <Star size={12} fill="currentColor" /> {exp.rating}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </EstelaCard>
             </div>
           </div>
         </div>

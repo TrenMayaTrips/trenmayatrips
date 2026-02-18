@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import vagonXiinbal from "@/assets/vagon-xiinbal.jpg";
 import vagonJanal from "@/assets/vagon-janal.jpg";
 import vagonPatal from "@/assets/vagon-patal.jpg";
+import GrecaDivider from "@/components/maya/GrecaDivider";
 
 const vagones = [
   {
@@ -41,6 +42,7 @@ const VagonesSection = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
             Tres clases, un mismo destino
           </h2>
+          <GrecaDivider variant="jade" size="sm" className="mt-6 max-w-xs mx-auto" />
         </div>
 
         {/* Mobile: swipeable cards */}
