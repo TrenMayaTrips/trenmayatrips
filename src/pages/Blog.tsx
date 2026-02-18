@@ -6,6 +6,8 @@ import PageLayout from "@/components/layout/PageLayout";
 import { blogPosts, blogCategories } from "@/data/blog";
 import heroBlog from "@/assets/hero-blog.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -42,6 +44,8 @@ const Blog = () => {
           Guías, descubrimientos y relatos para inspirar tu próxima aventura por el Tren Maya.
         </p>
       </ParallaxHero>
+
+      <GrecaDivider variant="jade" size="md" />
 
       {/* Search & Categories */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
@@ -235,8 +239,11 @@ const Blog = () => {
         </div>
       </section>
 
+      <GrecaDivider variant="gold" size="sm" />
+
       {/* Newsletter CTA */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light">
+      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light relative">
+        <MayaPattern variant="greca" opacity={0.05} />
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
             No te pierdas ninguna historia

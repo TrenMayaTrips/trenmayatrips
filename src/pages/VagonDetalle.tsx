@@ -5,6 +5,8 @@ import { useState } from "react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { findWagonBySlug, wagonClassesDetailed } from "@/data/wagon-classes";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const VagonDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -75,6 +77,8 @@ const VagonDetalle = () => {
           </div>
         </div>
       </section>
+
+      <GrecaDivider variant="jade" size="md" />
 
       {/* Gallery */}
       <section className="py-10 md:py-16 bg-background">
@@ -312,7 +316,8 @@ const VagonDetalle = () => {
       </section>
 
       {/* CTA Final */}
-      <section className="py-12 md:py-16 bg-primary">
+      <section className="py-12 md:py-16 bg-primary relative">
+        <MayaPattern variant="greca" opacity={0.05} />
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground">
             ¿Listo para viajar en clase {wagon.name}?

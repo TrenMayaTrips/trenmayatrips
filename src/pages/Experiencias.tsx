@@ -8,6 +8,8 @@ import { categories } from "@/data/experience-categories";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { experienceGallery } from "@/data/experience-gallery";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const Experiencias = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,8 +49,11 @@ const Experiencias = () => {
         </p>
       </ParallaxHero>
 
+      <GrecaDivider variant="jade" size="md" />
+
       {/* Categories */}
-      <section className="py-10 md:py-14 bg-secondary">
+      <section className="py-10 md:py-14 bg-secondary relative">
+        <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Categorías</p>

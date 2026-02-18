@@ -4,6 +4,7 @@ import destChichenItza from "@/assets/dest-chichen-itza.jpg";
 import destRivieraMaya from "@/assets/dest-riviera-maya.jpg";
 import destPalenque from "@/assets/dest-palenque.jpg";
 import destCalakmul from "@/assets/dest-calakmul-campeche.jpg";
+import GrecaDivider from "@/components/maya/GrecaDivider";
 
 const destinations = [
   {
@@ -56,6 +57,7 @@ const DestinosSection = () => {
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
             Cinco estados, miles de años de historia Maya y paisajes que solo el sureste de México puede ofrecer.
           </p>
+          <GrecaDivider variant="jade" size="sm" className="mt-6 max-w-xs mx-auto" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

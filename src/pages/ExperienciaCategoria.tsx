@@ -9,6 +9,8 @@ import { experiences, categoryLabels, stateLabels, getExperienceBySlug } from "@
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ExperienciaDetalle from "./ExperienciaDetalle";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 import TestimoniosSection from "@/components/home/TestimoniosSection";
 import {
   Breadcrumb,
@@ -79,8 +81,11 @@ const ExperienciaCategoria = () => {
         </p>
       </ParallaxHero>
 
+      <GrecaDivider variant="jade" size="md" />
+
       {/* Subcategories */}
-      <section className="py-10 md:py-14 bg-secondary">
+      <section className="py-10 md:py-14 bg-secondary relative">
+        <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Explora por tipo</h2>

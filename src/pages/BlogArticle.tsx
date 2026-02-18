@@ -3,6 +3,8 @@ import { ArrowLeft, Clock, User, Calendar, Tag, Share2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import { blogPosts, blogCategories } from "@/data/blog";
 import { Button } from "@/components/ui/button";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import EstelaCard from "@/components/maya/EstelaCard";
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -59,6 +61,8 @@ const BlogArticle = () => {
           </div>
         </div>
       </section>
+
+      <GrecaDivider variant="jade" size="md" />
 
       {/* Article Content */}
       <section className="py-10 md:py-16 bg-background">
@@ -161,19 +165,21 @@ const BlogArticle = () => {
           </div>
 
           {/* Author Card */}
-          <div className="mt-8 p-6 rounded-xl bg-secondary/50 border border-border">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                <User size={20} className="text-primary" />
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">{post.author}</p>
-                <p className="text-sm text-muted-foreground">
-                  {post.authorRole}
-                </p>
+          <EstelaCard variant="jade" className="mt-8">
+            <div className="p-6 rounded-xl bg-secondary/50">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <User size={20} className="text-primary" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">{post.author}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {post.authorRole}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </EstelaCard>
         </div>
       </section>
 

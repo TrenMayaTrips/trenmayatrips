@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import MayaPattern from "@/components/maya/MayaPattern";
+import GrecaDivider from "@/components/maya/GrecaDivider";
 
 const routes = [
   { name: "Ruta de la grandeza maya", from: "Palenque", to: "Tulum", days: 7, stops: 8 },
@@ -10,13 +12,15 @@ const routes = [
 
 const RutasSection = () => {
   return (
-    <section id="rutas" className="py-16 md:py-24 bg-jade-dark text-primary-foreground">
-      <div className="container mx-auto px-4">
+    <section id="rutas" className="py-16 md:py-24 bg-jade-dark text-primary-foreground relative">
+      <MayaPattern variant="greca" opacity={0.05} />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-gold font-medium tracking-widest uppercase text-xs mb-2">Rutas</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold">
             Circuitos por el sureste
           </h2>
+          <GrecaDivider variant="gold" size="sm" className="mt-6 max-w-xs mx-auto" />
         </div>
 
         <div className="space-y-4">

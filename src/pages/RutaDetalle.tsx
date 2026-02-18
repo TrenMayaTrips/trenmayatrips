@@ -5,6 +5,8 @@ import PageLayout from "@/components/layout/PageLayout";
 import { routes } from "@/data/routes";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { useState } from "react";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import EstelaCard from "@/components/maya/EstelaCard";
 
 const routeFaqs: Record<string, { q: string; a: string }[]> = {
   "cancun-merida": [
@@ -104,6 +106,8 @@ const RutaDetalle = () => {
         </div>
       </section>
 
+      <GrecaDivider variant="jade" size="md" />
+
       {/* Timeline */}
       <section className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
@@ -165,6 +169,8 @@ const RutaDetalle = () => {
           </div>
         </div>
       </section>
+
+      <GrecaDivider variant="gold" size="sm" />
 
       {/* Prices by class */}
       <section className="py-12 md:py-20 bg-secondary/50">

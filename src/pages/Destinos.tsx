@@ -10,6 +10,8 @@ import { destinationImageMap } from "@/data/destination-images";
 import heroDestinos from "@/assets/hero-destinos.jpg";
 import ctaDestinos from "@/assets/cta-destinos.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const Destinos = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -41,6 +43,8 @@ const Destinos = () => {
           Explora los destinos más fascinantes del sureste mexicano a lo largo de la ruta del Tren Maya.
         </p>
       </ParallaxHero>
+
+      <GrecaDivider variant="jade" size="md" />
 
       {/* Interactive State Map */}
       <section className="py-10 md:py-14 bg-card border-b border-border">
@@ -257,8 +261,11 @@ const Destinos = () => {
         </div>
       </section>
 
+      <GrecaDivider variant="gold" size="sm" />
+
       {/* Route Map - Metro Style */}
-      <section className="py-12 md:py-16 bg-secondary/30 border-t border-border">
+      <section className="py-12 md:py-16 bg-secondary/30 border-t border-border relative">
+        <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground text-center mb-3">
             Mapa de la ruta

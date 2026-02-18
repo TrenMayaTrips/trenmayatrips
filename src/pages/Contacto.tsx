@@ -12,6 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import EstelaCard from "@/components/maya/EstelaCard";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -101,6 +103,8 @@ const Contacto = () => {
           Estamos aquí para hacer de tu viaje en el Tren Maya una experiencia inolvidable.
         </p>
       </ParallaxHero>
+
+      <GrecaDivider variant="jade" size="md" />
 
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">

@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import EstelaCard from "@/components/maya/EstelaCard";
 
 const testimonials = [
   {
@@ -31,6 +33,7 @@ const TestimoniosSection = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
             Lo que dicen nuestros viajeros
           </h2>
+          <GrecaDivider variant="terracotta" size="sm" className="mt-6 max-w-xs mx-auto" />
         </div>
 
         <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
@@ -41,17 +44,21 @@ const TestimoniosSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="snap-center min-w-[300px] md:min-w-0 bg-card p-6 md:p-8 rounded-xl border border-border"
+              className="snap-center min-w-[300px] md:min-w-0"
             >
-              <Quote size={24} className="text-accent/40 mb-3" />
-              <p className="text-foreground/80 text-sm leading-relaxed mb-5">{t.text}</p>
-              <div className="flex items-center gap-1 mb-3">
-                {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} size={14} className="text-gold fill-gold" />
-                ))}
-              </div>
-              <p className="font-semibold text-foreground text-sm">{t.name}</p>
-              <p className="text-xs text-muted-foreground">{t.location}</p>
+              <EstelaCard variant="jade" className="h-full">
+                <div className="p-6 md:p-8">
+                  <Quote size={24} className="text-accent/40 mb-3" />
+                  <p className="text-foreground/80 text-sm leading-relaxed mb-5">{t.text}</p>
+                  <div className="flex items-center gap-1 mb-3">
+                    {Array.from({ length: t.rating }).map((_, j) => (
+                      <Star key={j} size={14} className="text-gold fill-gold" />
+                    ))}
+                  </div>
+                  <p className="font-semibold text-foreground text-sm">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.location}</p>
+                </div>
+              </EstelaCard>
             </motion.div>
           ))}
         </div>
