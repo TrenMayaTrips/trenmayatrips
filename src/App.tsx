@@ -15,6 +15,7 @@ import Packages from "./pages/Packages";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import Destinos from "./pages/Destinos";
+import DestinoDetalle from "./pages/DestinoDetalle";
 import Contacto from "./pages/Contacto";
 import Itinerarios from "./pages/Itinerarios";
 import RutaDetalle from "./pages/RutaDetalle";
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogArticle />} />
           <Route path="/destinos" element={<Destinos />} />
+          <Route path="/destinos/:slug" element={<DestinoDetalle />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/itinerarios" element={<Itinerarios />} />
           <Route path="/itinerarios/:code" element={<ItinerarioCompartido />} />
