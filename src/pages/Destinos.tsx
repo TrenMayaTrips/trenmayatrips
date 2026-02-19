@@ -171,7 +171,10 @@ const Destinos = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.04 }}
-                    className="rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all group"
+                  >
+                  <Link
+                    to={`/destinos/${dest.slug}`}
+                    className="rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all group block"
                   >
                     {/* Card Header with Image */}
                     <div className="relative h-48 overflow-hidden bg-muted">
@@ -245,14 +248,14 @@ const Destinos = () => {
                         variant="outline"
                         size="sm"
                         className="w-full mt-2"
-                        onClick={() => {
-                          const msg = `Hola, me interesa visitar ${dest.name} (${state?.name}) en el Tren Maya. ¿Pueden ayudarme a planificar?`;
-                          window.open(`https://wa.me/529982186754?text=${encodeURIComponent(msg)}`, "_blank");
-                        }}
+                        asChild
                       >
-                        Planificar visita <ChevronRight size={14} className="ml-1" />
+                        <span>
+                          Explorar destino <ChevronRight size={14} className="ml-1" />
+                        </span>
                       </Button>
                     </div>
+                  </Link>
                   </motion.div>
                 );
               })}
