@@ -17,9 +17,31 @@ interface NavItem {
 }
 
 const navLinks: NavItem[] = [
-  { label: "Experiencias", href: "/experiencias" },
-  { label: "Paquetes", href: "/paquetes" },
-  { label: "Itinerarios", href: "/itinerarios" },
+  {
+    label: "Experiencias",
+    href: "/experiencias",
+    children: [
+      { label: "Todas las experiencias", href: "/experiencias" },
+      { label: "Cultural y patrimonio", href: "/experiencias/cultural-patrimonio" },
+      { label: "Aventura y naturaleza", href: "/experiencias/aventura-naturaleza" },
+      { label: "Gastronómico", href: "/experiencias/gastronomico" },
+      { label: "Bienestar y relajación", href: "/experiencias/bienestar" },
+    ],
+  },
+  {
+    label: "Destinos",
+    href: "/destinos",
+    children: [
+      { label: "Todos los destinos", href: "/destinos" },
+      { label: "Cancún", href: "/destinos#cancun" },
+      { label: "Tulum", href: "/destinos#tulum" },
+      { label: "Mérida", href: "/destinos#merida" },
+      { label: "Chichén Itzá", href: "/destinos#chichen-itza" },
+      { label: "Palenque", href: "/destinos#palenque" },
+      { label: "Campeche", href: "/destinos#campeche-ciudad" },
+      { label: "Bacalar", href: "/destinos#bacalar" },
+    ],
+  },
   {
     label: "Tren Maya",
     href: "/tren-maya",
@@ -28,10 +50,20 @@ const navLinks: NavItem[] = [
       { label: "Clase Xiinbal", href: "/tren-maya/clases/xiinbal" },
       { label: "Clase Janal", href: "/tren-maya/clases/janal" },
       { label: "Clase P'atal", href: "/tren-maya/clases/patal" },
+      { label: "Ruta Cancún – Mérida", href: "/tren-maya/rutas/cancun-merida" },
+      { label: "Ruta Cancún – Tulum", href: "/tren-maya/rutas/cancun-tulum" },
+      { label: "Ruta Mérida – Palenque", href: "/tren-maya/rutas/merida-palenque" },
     ],
   },
+  {
+    label: "Paquetes",
+    href: "/paquetes",
+  },
+  {
+    label: "Itinerarios",
+    href: "/itinerarios",
+  },
   { label: "Blog", href: "/blog" },
-  { label: "Destinos", href: "/destinos" },
   { label: "Contacto", href: "/contacto" },
 ];
 
