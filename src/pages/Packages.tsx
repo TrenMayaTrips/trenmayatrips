@@ -125,19 +125,19 @@ const Packages = () => {
                 } ${compareMode ? "cursor-pointer" : ""} hover:shadow-lg transition-all`}
               >
                 {/* Package Header with Image */}
-                <div className="relative overflow-hidden h-48 md:h-56">
+                <Link to={`/paquetes/${pkg.slug}`} className="block relative overflow-hidden h-48 md:h-56">
                   {packageImageMap[pkg.slug] ? (
                     <img
                       src={packageImageMap[pkg.slug]}
                       alt={pkg.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary/20 to-jade-light/30" />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                </div>
+                </Link>
 
                 {/* Package Details */}
                 <div className="p-6 border-b border-border relative z-10">
@@ -146,9 +146,11 @@ const Packages = () => {
                       <p className="text-xs font-medium text-primary uppercase tracking-wider mb-2 bg-primary/10 px-2 py-1 rounded-full w-fit">
                         {packageTypes[pkg.type]}
                       </p>
-                      <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
-                        {pkg.title}
-                      </h3>
+                      <Link to={`/paquetes/${pkg.slug}`} className="hover:text-primary transition-colors">
+                        <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
+                          {pkg.title}
+                        </h3>
+                      </Link>
                       <p className="text-sm text-muted-foreground mt-2">{pkg.description}</p>
                     </div>
                     {compareMode && (
