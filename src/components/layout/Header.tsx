@@ -58,6 +58,13 @@ const navLinks: NavItem[] = [
   {
     label: "Paquetes",
     href: "/paquetes",
+    children: [
+      { label: "Todos los paquetes", href: "/paquetes" },
+      { label: "Ruta de la grandeza maya", href: "/paquetes/ruta-grandeza-maya" },
+      { label: "Cultura y gastronomía", href: "/paquetes/cultura-gastronomia-entretenimiento" },
+      { label: "Aventura 5 estados", href: "/paquetes/aventura-naturaleza-5-estados" },
+      { label: "Mundo Maya 4 días", href: "/paquetes/mundo-maya-classico-4-dias" },
+    ],
   },
   {
     label: "Itinerarios",
