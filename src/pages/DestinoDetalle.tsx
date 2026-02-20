@@ -5,10 +5,14 @@ import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { destinations, states, destinationTypes } from "@/data/destinations";
 import { destinationImageMap } from "@/data/destination-images";
+import { getDestinationGallery } from "@/data/destination-gallery";
 import { Button } from "@/components/ui/button";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
+import DestinoExperiencias from "@/components/destinos/DestinoExperiencias";
+import DestinoGallery from "@/components/destinos/DestinoGallery";
+import DestinoMap from "@/components/destinos/DestinoMap";
 
 const DestinoDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,6 +22,7 @@ const DestinoDetalle = () => {
 
   const state = states.find((s) => s.slug === dest.state);
   const image = destinationImageMap[dest.slug];
+  const galleryImages = getDestinationGallery(dest.slug, dest.state);
   const related = destinations
     .filter((d) => d.state === dest.state && d.slug !== dest.slug)
     .slice(0, 3);
@@ -132,6 +137,17 @@ const DestinoDetalle = () => {
           </div>
         </div>
       </section>
+
+      {/* Gallery */}
+      <DestinoGallery images={galleryImages} title={dest.name} />
+
+      <GrecaDivider variant="terracotta" size="sm" />
+
+      {/* Map */}
+      <DestinoMap slug={dest.slug} name={dest.name} nearestStation={dest.nearestStation} />
+
+      {/* Experiences */}
+      <DestinoExperiencias stateName={state?.name || ""} stateSlug={dest.state} />
 
       {/* Related Destinations */}
       {related.length > 0 && (
