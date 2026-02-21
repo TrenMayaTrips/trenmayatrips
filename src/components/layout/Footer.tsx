@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 import logoTmt from "@/assets/logo-tmt.png";
 
 const Footer = () => {
@@ -19,14 +20,14 @@ const Footer = () => {
             <h4 className="font-heading text-lg font-semibold mb-4">Explora</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               {[
-                { label: "Destinos", href: "#destinos" },
-                { label: "Experiencias", href: "#experiencias" },
-                { label: "Tren Maya", href: "#vagones" },
-                { label: "Rutas", href: "#rutas" },
-                { label: "Planifica tu viaje", href: "#reservar" },
+                { label: "Destinos", href: "/destinos" },
+                { label: "Experiencias", href: "/experiencias" },
+                { label: "Tren Maya", href: "/tren-maya" },
+                { label: "Paquetes", href: "/paquetes" },
+                { label: "Itinerarios", href: "/itinerarios" },
               ].map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="hover:text-gold transition-colors">{l.label}</a>
+                  <Link to={l.href} className="hover:text-gold transition-colors">{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -43,7 +44,7 @@ const Footer = () => {
                 { label: "Trabaja con nosotros", href: "#" },
               ].map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="hover:text-gold transition-colors">{l.label}</a>
+                  <Link to={l.href} className="hover:text-gold transition-colors">{l.label}</Link>
                 </li>
               ))}
             </ul>
