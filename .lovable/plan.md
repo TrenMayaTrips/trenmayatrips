@@ -1,38 +1,67 @@
 
+## Enriquecer las paginas de detalle de rutas
 
-## Pagina de detalle de paquete (`/paquetes/:slug`)
+Las paginas de ruta actuales (`/tren-maya/rutas/:slug`) tienen la informacion basica bien cubierta (timeline, precios, horarios, FAQs), pero les falta contenido visual y contextual que ayude al viajero a imaginar el recorrido y tomar una decision. Vamos a agregar varias secciones nuevas.
 
-Actualmente la pagina `/paquetes` muestra todos los paquetes en un grid con informacion expandible inline, pero no existe una pagina dedicada para ver cada paquete a detalle. Crearemos una pagina interior siguiendo el mismo patron que `DestinoDetalle.tsx`.
+---
 
-### Estructura de la pagina
+### Nuevas secciones a agregar
 
-1. **Hero parallax** con imagen del paquete, breadcrumb, badge de tipo, titulo, precio y rating
-2. **Descripcion** general del paquete
-3. **Metricas clave** en grid: duracion, grupo, dificultad, rating, estados
-4. **Itinerario dia a dia** con timeline vertical estilo piramide escalonada (cada dia es un "escalon")
-5. **Incluye / No incluye** en dos columnas con iconos Check/X
-6. **Highlights** (destinos incluidos) en chips con EstelaCard
-7. **Rating estacional** si el paquete lo tiene (grafico simple o indicadores)
-8. **CTA final** con boton de cotizacion por WhatsApp
-9. **Paquetes relacionados** del mismo tipo
+**1. Hero visual con imagen de fondo**
+- Reemplazar el hero actual (gradiente plano) por un `ParallaxHero` con una imagen representativa de la ruta (origen o destino)
+- Mantener el breadcrumb, badge, titulo y stats encima
 
-### Identidad visual maya
+**2. Destinos en la ruta**
+- Grid de cards con foto de cada destino que se puede visitar desde las paradas de la ruta
+- Cada card muestra nombre, tagline, tipo (playa/arqueologia/pueblo), tiempo desde la estacion
+- Clic lleva a `/destinos/:slug`
+- Se cruzan los datos de `destinations.ts` con los estados que toca la ruta
 
-- `GrecaDivider` entre secciones principales
-- `MayaPattern` de fondo en secciones alternas
-- `EstelaCard` en las tarjetas de itinerario y en la seccion de incluye/no incluye
-- Timeline del itinerario con estetica de piramide escalonada (linea vertical jade con puntos numericos)
+**3. Experiencias recomendadas**
+- Seccion con experiencias filtradas por los estados que cruza la ruta
+- Maximo 4-6 cards con foto, titulo, precio y duracion
+- Reutiliza el patron de `DestinoExperiencias`
+
+**4. Mapa visual del tramo**
+- Mini-mapa SVG mostrando solo el tramo de esta ruta destacado sobre la silueta de la peninsula
+- Reutiliza coordenadas de `TrenMayaRouteMap` pero resaltando solo las paradas de esta ruta
+
+**5. Consejos practicos**
+- Seccion con tips especificos por ruta en `EstelaCard`:
+  - Mejor asiento (ventanilla derecha/izquierda segun paisaje)
+  - Que llevar
+  - Conexiones de transporte al llegar
+  - Mejor horario de salida
+
+**6. Rutas relacionadas**
+- Al final, antes del CTA, mostrar 2-3 rutas que conectan con el origen o destino de la ruta actual
+- Cards horizontales con badge, duracion y precio desde
+
+---
 
 ### Cambios tecnicos
 
 | Archivo | Accion |
 |---|---|
-| `src/pages/PaqueteDetalle.tsx` | Crear -- pagina de detalle completa |
-| `src/App.tsx` | Agregar ruta `/paquetes/:slug` |
-| `src/pages/Packages.tsx` | Agregar `Link` al titulo/imagen de cada card apuntando a `/paquetes/:slug` |
-| `src/components/layout/Header.tsx` | Agregar submenus de paquetes populares en navegacion |
+| `src/data/routes.ts` | Agregar campos: `heroImage`, `statesTraversed`, `tips` (array de consejos practicos), y `scenicHighlights` (texto descriptivo del paisaje) |
+| `src/pages/RutaDetalle.tsx` | Reestructurar con las 6 secciones nuevas, usar `ParallaxHero`, agregar seccion de destinos, experiencias, mapa, tips y rutas relacionadas |
+| `src/components/routes/RutaDestinos.tsx` | Crear -- grid de destinos accesibles desde la ruta |
+| `src/components/routes/RutaMiniMap.tsx` | Crear -- mapa SVG mini que destaca solo el tramo de la ruta |
+| `src/components/routes/RutaTips.tsx` | Crear -- grid de consejos practicos con iconos |
+
+### Identidad visual maya
+
+- `GrecaDivider` entre cada seccion principal
+- `MayaPattern` sutil en fondo de la seccion de tips
+- `EstelaCard` para las cards de consejos y para el contenedor del mapa
+- Timeline existente se mantiene pero con iconos de destino en las paradas principales
 
 ### Flujo de datos
 
-Se reutiliza el archivo `src/data/packages.ts` existente (slug, itinerary, includes, excludes, seasonalRating, etc.) y `src/data/package-images.ts` para las imagenes. No se requiere backend ni tablas nuevas.
+Todo se resuelve con datos existentes en `src/data/`:
+- `destinations.ts` + `destination-images.ts` para las cards de destinos
+- `experiences.ts` para las experiencias filtradas por estado
+- `stations.ts` para las coordenadas del mapa
+- Los nuevos campos (`tips`, `statesTraversed`, `heroImage`) se agregan directamente en `routes.ts`
 
+No se requiere backend ni tablas nuevas.
