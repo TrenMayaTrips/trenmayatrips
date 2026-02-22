@@ -8,7 +8,7 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import { Button } from "@/components/ui/button";
 import { packages, packageTypes, type Package } from "@/data/packages";
 import { packageImageMap } from "@/data/package-images";
-import { litografias } from "@/data/litografias";
+import { paqueteCtaStela } from "@/data/litografias";
 import NotFound from "./NotFound";
 
 const difficultyColors: Record<string, string> = {
@@ -194,7 +194,7 @@ const PaqueteDetalle = () => {
       <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src={litografias[(pkg.title.length) % litografias.length].image}
+            src={paqueteCtaStela}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover opacity-[0.08] catherwood-mask-edges"
