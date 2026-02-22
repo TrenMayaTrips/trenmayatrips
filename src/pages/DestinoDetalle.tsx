@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Clock, Calendar, Train, ChevronRight, Star } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
@@ -13,6 +14,7 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import DestinoExperiencias from "@/components/destinos/DestinoExperiencias";
 import DestinoGallery from "@/components/destinos/DestinoGallery";
 import DestinoMap from "@/components/destinos/DestinoMap";
+import { litografias } from "@/data/litografias";
 
 const DestinoDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -197,10 +199,21 @@ const DestinoDetalle = () => {
         </section>
       )}
 
-      {/* CTA */}
-      <section className="py-12 md:py-16 bg-primary relative">
+      {/* CTA with lithograph */}
+      <section className="py-12 md:py-16 bg-primary relative overflow-hidden">
         <MayaPattern variant="greca" opacity={0.05} />
-        <div className="container mx-auto px-4 text-center">
+        {/* Subtle lithograph background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src={litografias[Math.floor(dest.name.length % litografias.length)].image}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover opacity-[0.08] catherwood-mask-edges"
+            style={{ filter: "sepia(20%) contrast(0.85) brightness(0.7)", mixBlendMode: "luminosity" }}
+            loading="lazy"
+          />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground">
             ¿Listo para visitar {dest.name}?
           </h2>
