@@ -107,24 +107,3 @@
     text-wrap: balance;
   }
 }
-
-/* Catherwood lithograph treatment */
-.catherwood-lithograph {
-  filter: sepia(30%) contrast(0.9);
-  mix-blend-mode: multiply;
-}
-
-.catherwood-lithograph-dark {
-  filter: sepia(20%) contrast(0.85) brightness(0.9);
-  mix-blend-mode: luminosity;
-}
-
-.catherwood-mask {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-}
-
-.catherwood-mask-edges {
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
-  mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
-}

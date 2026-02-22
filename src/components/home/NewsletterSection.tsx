@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
-import idoloRoto from "@/assets/litografias/idolo-roto-copan.jpg";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
@@ -50,28 +49,6 @@ const NewsletterSection = () => {
           <p className="mt-4 text-xs text-muted-foreground">
             Sin spam. Cancela cuando quieras. Respetamos tu privacidad.
           </p>
-
-          {/* Catherwood vignette */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="mt-10 mx-auto max-w-xs"
-          >
-            <div className="relative rounded-lg overflow-hidden border-2 border-border/60">
-              <div className="absolute inset-[3px] border border-border/40 rounded pointer-events-none z-10" />
-              <img
-                src={idoloRoto}
-                alt="Ídolo Roto de Copán — Litografía de Frederick Catherwood"
-                className="w-full h-[160px] object-cover catherwood-lithograph opacity-40 catherwood-mask-edges"
-                loading="lazy"
-              />
-            </div>
-            <p className="mt-2 text-[10px] text-muted-foreground/50 italic">
-              F. Catherwood — Ídolo Roto de Copán, 1844
-            </p>
-          </motion.div>
         </motion.div>
       </div>
     </section>

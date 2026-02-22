@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
-import izamalJaguar from "@/assets/litografias/izamal-jaguar.jpg";
 
 const testimonials = [
   {
@@ -27,19 +26,8 @@ const testimonials = [
 
 const TestimoniosSection = () => {
   return (
-    <section className="py-16 md:py-24 bg-background relative overflow-hidden">
-      {/* Decorative lithograph — desktop only */}
-      <div className="hidden xl:block absolute -left-16 top-1/2 -translate-y-1/2 w-[280px] pointer-events-none">
-        <img
-          src={izamalJaguar}
-          alt=""
-          aria-hidden="true"
-          className="w-full h-auto catherwood-lithograph opacity-[0.08] catherwood-mask"
-          loading="lazy"
-        />
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-16 md:py-24 bg-background">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Testimonios</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">

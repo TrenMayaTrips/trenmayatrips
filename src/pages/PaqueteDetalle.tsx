@@ -8,7 +8,6 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import { Button } from "@/components/ui/button";
 import { packages, packageTypes, type Package } from "@/data/packages";
 import { packageImageMap } from "@/data/package-images";
-import { litografias } from "@/data/litografias";
 import NotFound from "./NotFound";
 
 const difficultyColors: Record<string, string> = {
@@ -190,19 +189,9 @@ const PaqueteDetalle = () => {
         </>
       )}
 
-      {/* CTA with lithograph */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <img
-            src={litografias[(pkg.title.length) % litografias.length].image}
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-cover opacity-[0.08] catherwood-mask-edges"
-            style={{ filter: "sepia(20%) contrast(0.85) brightness(0.7)", mixBlendMode: "luminosity" }}
-            loading="lazy"
-          />
-        </div>
-        <div className="container mx-auto px-4 text-center relative z-10">
+      {/* CTA */}
+      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light">
+        <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
             ¿Listo para vivir esta experiencia?
           </h2>

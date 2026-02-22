@@ -1,25 +1,10 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoTmt from "@/assets/logo-tmt.png";
-import palenquePalace from "@/assets/litografias/palenque-palace.jpg";
 
 const Footer = () => {
   return (
     <footer className="bg-jade-dark text-primary-foreground">
-      {/* Decorative lithograph strip */}
-      <div className="relative h-[140px] md:h-[180px] overflow-hidden">
-        <img
-          src={palenquePalace}
-          alt=""
-          aria-hidden="true"
-          className="w-full h-full object-cover catherwood-lithograph-dark opacity-[0.18] catherwood-mask"
-          style={{ filter: "sepia(20%) contrast(0.85) brightness(0.7)", mixBlendMode: "luminosity" }}
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-jade-dark" />
-        <div className="absolute inset-0 bg-gradient-to-t from-jade-dark via-jade-dark/60 to-transparent" />
-      </div>
-
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
