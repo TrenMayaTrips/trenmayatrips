@@ -1,7 +1,7 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoTmt from "@/assets/logo-tmt.png";
-import { footerPanoramic } from "@/data/litografias";
+import palenquePalace from "@/assets/litografias/palenque-palace.jpg";
 
 const Footer = () => {
   return (
@@ -9,7 +9,7 @@ const Footer = () => {
       {/* Decorative lithograph strip */}
       <div className="relative h-[140px] md:h-[180px] overflow-hidden">
         <img
-          src={footerPanoramic}
+          src={palenquePalace}
           alt=""
           aria-hidden="true"
           className="w-full h-full object-cover catherwood-lithograph-dark opacity-[0.18] catherwood-mask"

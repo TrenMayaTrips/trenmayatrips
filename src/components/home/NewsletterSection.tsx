@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
-import { newsletterRuins } from "@/data/litografias";
+import idoloRoto from "@/assets/litografias/idolo-roto-copan.jpg";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
@@ -62,8 +62,8 @@ const NewsletterSection = () => {
             <div className="relative rounded-lg overflow-hidden border-2 border-border/60">
               <div className="absolute inset-[3px] border border-border/40 rounded pointer-events-none z-10" />
               <img
-                src={newsletterRuins}
-                alt="Ilustración estilo litografía de ruinas mayas"
+                src={idoloRoto}
+                alt="Ídolo Roto de Copán — Litografía de Frederick Catherwood"
                 className="w-full h-[160px] object-cover catherwood-lithograph opacity-40 catherwood-mask-edges"
                 loading="lazy"
               />

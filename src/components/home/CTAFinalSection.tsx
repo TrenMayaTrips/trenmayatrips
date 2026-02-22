@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import MayaPattern from "@/components/maya/MayaPattern";
-import { ctaMayaTemple } from "@/data/litografias";
+import lasMonjas from "@/assets/litografias/las-monjas-chichen.jpg";
 
 const CTAFinalSection = () => {
   return (
@@ -52,7 +52,7 @@ const CTAFinalSection = () => {
             <div className="relative rounded-xl overflow-hidden border-2 border-primary-foreground/15">
               <div className="absolute inset-[3px] border border-primary-foreground/10 rounded-lg z-10 pointer-events-none" />
               <img
-                src={ctaMayaTemple}
+                src={lasMonjas}
                 alt="Las Monjas, Chichén Itzá — Litografía de Frederick Catherwood, 1844"
                 className="w-full h-auto cathewood-lithograph-dark opacity-70"
                 style={{ filter: "sepia(20%) contrast(0.85) brightness(0.8)", mixBlendMode: "luminosity" }}
@@ -70,7 +70,7 @@ const CTAFinalSection = () => {
       {/* Mobile: lithograph as subtle bg */}
       <div className="absolute inset-0 lg:hidden pointer-events-none">
         <img
-          src={ctaMayaTemple}
+          src={lasMonjas}
           alt=""
           aria-hidden="true"
           className="w-full h-full object-cover opacity-10 catherwood-mask"
