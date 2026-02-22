@@ -14,7 +14,7 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import DestinoExperiencias from "@/components/destinos/DestinoExperiencias";
 import DestinoGallery from "@/components/destinos/DestinoGallery";
 import DestinoMap from "@/components/destinos/DestinoMap";
-import { litografias } from "@/data/litografias";
+import { destinoCtaPyramid } from "@/data/litografias";
 
 const DestinoDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -205,7 +205,7 @@ const DestinoDetalle = () => {
         {/* Subtle lithograph background */}
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src={litografias[Math.floor(dest.name.length % litografias.length)].image}
+            src={destinoCtaPyramid}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover opacity-[0.08] catherwood-mask-edges"

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
-import izamalJaguar from "@/assets/litografias/izamal-jaguar.jpg";
+import { testimoniosJaguar } from "@/data/litografias";
 
 const testimonials = [
   {
@@ -31,7 +31,7 @@ const TestimoniosSection = () => {
       {/* Decorative lithograph — desktop only */}
       <div className="hidden xl:block absolute -left-16 top-1/2 -translate-y-1/2 w-[280px] pointer-events-none">
         <img
-          src={izamalJaguar}
+          src={testimoniosJaguar}
           alt=""
           aria-hidden="true"
           className="w-full h-auto catherwood-lithograph opacity-[0.08] catherwood-mask"
