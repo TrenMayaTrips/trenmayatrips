@@ -107,3 +107,26 @@
     text-wrap: balance;
   }
 }
+
+/* Catherwood lithograph background texture */
+.catherwood-lithograph {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: sepia(40%) contrast(0.85) saturate(0.6);
+  mix-blend-mode: multiply;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.catherwood-lithograph--light {
+  mix-blend-mode: multiply;
+  opacity: 0.06;
+}
+
+.catherwood-lithograph--dark {
+  mix-blend-mode: luminosity;
+  opacity: 0.12;
+}

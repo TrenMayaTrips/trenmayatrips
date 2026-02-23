@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ChevronUp, ChevronDown, CalendarDays, Users, MapPin } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
+import sabachtsche from "@/assets/litografias/sabachtsche.jpg";
 
 const steps = [
   { id: 1, label: "Destino", icon: MapPin },
@@ -14,8 +15,12 @@ const PlanificadorSection = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
   return (
-    <section id="reservar" className="py-16 md:py-24 bg-secondary relative">
+    <section id="reservar" className="py-16 md:py-24 bg-secondary relative overflow-hidden">
       <MayaPattern variant="pop" opacity={0.03} />
+      <div
+        className="catherwood-lithograph catherwood-lithograph--light"
+        style={{ backgroundImage: `url(${sabachtsche})` }}
+      />
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Planificador</p>

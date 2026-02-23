@@ -1,11 +1,20 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import MayaPattern from "@/components/maya/MayaPattern";
+import lasMonjas from "@/assets/litografias/las-monjas.jpg";
 
 const CTAFinalSection = () => {
   return (
     <section className="py-20 md:py-28 bg-gradient-to-br from-primary via-jade-dark to-primary relative overflow-hidden">
       <MayaPattern variant="greca" opacity={0.06} />
+
+      {/* Catherwood lithograph background */}
+      <div
+        className="catherwood-lithograph catherwood-lithograph--dark"
+        style={{ backgroundImage: `url(${lasMonjas})` }}
+      />
+      {/* Gradient overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-jade-dark/90 via-primary/80 to-jade-dark/70 pointer-events-none" />
 
       <div className="relative z-10 container mx-auto px-4 text-center">
         <motion.div
