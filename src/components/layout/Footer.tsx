@@ -1,18 +1,11 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoTmt from "@/assets/logo-tmt.png";
-import palenquePalace from "@/assets/litografias/palenque-palace.jpg";
 
 const Footer = () => {
   return (
-    <footer className="bg-jade-dark text-primary-foreground relative overflow-hidden">
-      {/* Catherwood lithograph background texture */}
-      <div
-        className="catherwood-lithograph catherwood-lithograph--dark"
-        style={{ backgroundImage: `url(${palenquePalace})` }}
-      />
-
-      <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
+    <footer className="bg-jade-dark text-primary-foreground">
+      <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
           <div className="md:col-span-1">

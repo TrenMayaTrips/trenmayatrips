@@ -1,72 +1,67 @@
 
+## Enriquecer las paginas de detalle de rutas
 
-## Incorporar litografias de Catherwood como elemento visual distintivo
+Las paginas de ruta actuales (`/tren-maya/rutas/:slug`) tienen la informacion basica bien cubierta (timeline, precios, horarios, FAQs), pero les falta contenido visual y contextual que ayude al viajero a imaginar el recorrido y tomar una decision. Vamos a agregar varias secciones nuevas.
 
-Las litografias de Frederick Catherwood (siglo XIX) son el complemento perfecto para la identidad maya del sitio. Su paleta sepia/jade natural armoniza con los colores del proyecto y aportan una capa de autenticidad historica que ninguna foto moderna puede replicar.
+---
 
-### Estrategia: "Tesoros escondidos"
+### Nuevas secciones a agregar
 
-Las litografias no deben competir con la fotografia moderna del sitio. Se usan como acentos decorativos en secciones donde aportan profundidad narrativa -- aparecen como vinettas, fondos sutiles o ilustraciones laterales que evocan la historia de la exploracion maya.
+**1. Hero visual con imagen de fondo**
+- Reemplazar el hero actual (gradiente plano) por un `ParallaxHero` con una imagen representativa de la ruta (origen o destino)
+- Mantener el breadcrumb, badge, titulo y stats encima
 
-### Donde colocarlas
+**2. Destinos en la ruta**
+- Grid de cards con foto de cada destino que se puede visitar desde las paradas de la ruta
+- Cada card muestra nombre, tagline, tipo (playa/arqueologia/pueblo), tiempo desde la estacion
+- Clic lleva a `/destinos/:slug`
+- Se cruzan los datos de `destinations.ts` con los estados que toca la ruta
 
-**1. CTA Final del Home (CTAFinalSection.tsx)**
-- Actualmente es un bloque jade plano con texto centrado
-- Transformar en layout de dos columnas: texto/botones a la izquierda, litografia a la derecha
-- La litografia aparece con opacidad reducida (~70%), un tratamiento sepia/duotone via CSS, y un borde estilo estela
-- Imagen: Las Monjas de Chichen Itza (la mas arquitectonica y monumental)
-- En movil la litografia pasa a fondo sutil detras del texto
+**3. Experiencias recomendadas**
+- Seccion con experiencias filtradas por los estados que cruza la ruta
+- Maximo 4-6 cards con foto, titulo, precio y duracion
+- Reutiliza el patron de `DestinoExperiencias`
 
-**2. Newsletter Section (NewsletterSection.tsx)**
-- Agregar una litografia como vineta decorativa debajo del formulario
-- Estilo: centrada, pequena (~200px alto), con opacidad baja y blend-mode multiply para que se funda con el fondo arena
-- Imagen: El idolo roto de Copan (composicion horizontal, evocadora)
-- Enmarcada con borde doble estilo EstelaCard
+**4. Mapa visual del tramo**
+- Mini-mapa SVG mostrando solo el tramo de esta ruta destacado sobre la silueta de la peninsula
+- Reutiliza coordenadas de `TrenMayaRouteMap` pero resaltando solo las paradas de esta ruta
 
-**3. Footer (Footer.tsx)**
-- Agregar una franja decorativa arriba del footer con una litografia panoramica a ancho completo
-- Estilo: altura fija (~180px), objeto cover, opacidad al 15-20%, como textura de fondo
-- Imagen: Palenque Palace Courtyard (horizontal, atmos ferica)
-- Se funde con el fondo jade-dark del footer via gradient overlay
+**5. Consejos practicos**
+- Seccion con tips especificos por ruta en `EstelaCard`:
+  - Mejor asiento (ventanilla derecha/izquierda segun paisaje)
+  - Que llevar
+  - Conexiones de transporte al llegar
+  - Mejor horario de salida
 
-**4. Seccion de Testimonios (TestimoniosSection.tsx)**
-- Agregar una litografia como elemento decorativo lateral (posicion absoluta) en desktop
-- Solo visible en pantallas grandes, a un lado, recortada y con opacidad baja
-- Imagen: Izamal Jaguar (la mas misteriosa y evocadora)
+**6. Rutas relacionadas**
+- Al final, antes del CTA, mostrar 2-3 rutas que conectan con el origen o destino de la ruta actual
+- Cards horizontales con badge, duracion y precio desde
 
-**5. Paginas interiores -- CTA de destinos y paquetes**
-- En los CTAs finales de DestinoDetalle y PaqueteDetalle, usar litografias como fondo sutil alternativo al MayaPattern
-- Rotacion aleatoria entre las 6 imagenes para variedad
+---
 
-### Tratamiento visual consistente
-
-Todas las litografias reciben el mismo tratamiento CSS:
-- `mix-blend-mode: multiply` o `luminosity` segun fondo claro/oscuro
-- `filter: sepia(30%) contrast(0.9)` para unificar tonos
-- Opacidad controlada (15-70% segun contexto)
-- Mascara de degradado en los bordes para fusion suave con el entorno
-- Clase utilitaria reutilizable `.catherwood-lithograph` en index.css
-
-### Archivos a crear/modificar
+### Cambios tecnicos
 
 | Archivo | Accion |
 |---|---|
-| `src/assets/litografias/` | Copiar las 6 imagenes subidas a esta carpeta |
-| `src/data/litografias.ts` | Crear -- array con metadata de cada litografia (titulo, autor, sitio, imagen) |
-| `src/index.css` | Agregar clase utilitaria `.catherwood-lithograph` con los filtros CSS |
-| `src/components/home/CTAFinalSection.tsx` | Redisenar con layout 2 columnas + litografia lateral |
-| `src/components/home/NewsletterSection.tsx` | Agregar vineta decorativa de litografia |
-| `src/components/home/TestimoniosSection.tsx` | Agregar litografia decorativa lateral en desktop |
-| `src/components/layout/Footer.tsx` | Agregar franja decorativa con litografia panoramica |
-| `src/pages/DestinoDetalle.tsx` | Usar litografia como fondo sutil en CTA final |
-| `src/pages/PaqueteDetalle.tsx` | Usar litografia como fondo sutil en CTA final |
+| `src/data/routes.ts` | Agregar campos: `heroImage`, `statesTraversed`, `tips` (array de consejos practicos), y `scenicHighlights` (texto descriptivo del paisaje) |
+| `src/pages/RutaDetalle.tsx` | Reestructurar con las 6 secciones nuevas, usar `ParallaxHero`, agregar seccion de destinos, experiencias, mapa, tips y rutas relacionadas |
+| `src/components/routes/RutaDestinos.tsx` | Crear -- grid de destinos accesibles desde la ruta |
+| `src/components/routes/RutaMiniMap.tsx` | Crear -- mapa SVG mini que destaca solo el tramo de la ruta |
+| `src/components/routes/RutaTips.tsx` | Crear -- grid de consejos practicos con iconos |
 
-### Detalles de las imagenes
+### Identidad visual maya
 
-1. **Palenque Palace** -- horizontal, arquitectura entre selva. Para footer y fondos.
-2. **Ruinas de Sabachtsche** -- vertical, greca Puuc detallada. Para vinetas.
-3. **Idolo de Copan** -- vertical, estela monumental. Para vinetas y laterales.
-4. **Idolo Roto de Copan** -- horizontal, atmosferica con agua. Para newsletter.
-5. **Las Monjas, Chichen Itza** -- horizontal, fachada monumental. Para CTA principal.
-6. **Izamal Jaguar** -- horizontal, misteriosa y oscura. Para testimonios.
+- `GrecaDivider` entre cada seccion principal
+- `MayaPattern` sutil en fondo de la seccion de tips
+- `EstelaCard` para las cards de consejos y para el contenedor del mapa
+- Timeline existente se mantiene pero con iconos de destino en las paradas principales
 
+### Flujo de datos
+
+Todo se resuelve con datos existentes en `src/data/`:
+- `destinations.ts` + `destination-images.ts` para las cards de destinos
+- `experiences.ts` para las experiencias filtradas por estado
+- `stations.ts` para las coordenadas del mapa
+- Los nuevos campos (`tips`, `statesTraversed`, `heroImage`) se agregan directamente en `routes.ts`
+
+No se requiere backend ni tablas nuevas.

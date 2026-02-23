@@ -2,19 +2,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
-import brokenIdol from "@/assets/litografias/broken-idol-copan.jpg";
+import MayaPattern from "@/components/maya/MayaPattern";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <section className="py-16 md:py-24 bg-secondary relative overflow-hidden">
-      {/* Catherwood lithograph background */}
-      <div
-        className="catherwood-lithograph catherwood-lithograph--light"
-        style={{ backgroundImage: `url(${brokenIdol})` }}
-      />
-
+    <section className="py-16 md:py-24 bg-secondary relative">
+      <MayaPattern variant="pop" opacity={0.03} />
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
