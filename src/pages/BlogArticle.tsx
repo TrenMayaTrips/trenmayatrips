@@ -34,21 +34,27 @@ const BlogArticle = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="pt-24 md:pt-32 pb-10 md:pb-14 bg-gradient-to-b from-jade-dark to-primary">
-        <div className="container mx-auto px-4 max-w-3xl">
+      <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
+        <img
+          src={post.image}
+          alt={post.title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
+        <div className="container mx-auto px-4 max-w-3xl relative z-10">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground text-sm mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm mb-6 transition-colors"
           >
             <ArrowLeft size={16} /> Volver al Blog
           </Link>
           <span className="inline-block text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full mb-4">
             {category?.emoji} {category?.label}
           </span>
-          <h1 className="font-heading text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground leading-tight mb-6">
+          <h1 className="font-heading text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-primary-foreground/60">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
             <span className="flex items-center gap-1.5">
               <User size={14} /> {post.author}
             </span>

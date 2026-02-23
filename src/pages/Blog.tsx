@@ -117,13 +117,21 @@ const Blog = () => {
                       to={`/blog/${post.slug}`}
                       className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all"
                     >
-                      <div className="bg-gradient-to-br from-primary/20 to-jade-light/30 p-8 min-h-[180px] flex flex-col justify-end">
-                        <span className="text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full w-fit mb-3">
-                          {category?.emoji} {category?.label}
-                        </span>
-                        <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
-                          {post.title}
-                        </h3>
+                      <div className="relative min-h-[180px] overflow-hidden">
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                        <div className="relative z-10 p-8 flex flex-col justify-end min-h-[180px]">
+                          <span className="text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full w-fit mb-3">
+                            {category?.emoji} {category?.label}
+                          </span>
+                          <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-gold transition-colors">
+                            {post.title}
+                          </h3>
+                        </div>
                       </div>
                       <div className="p-6">
                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
@@ -202,13 +210,22 @@ const Blog = () => {
                       to={`/blog/${post.slug}`}
                       className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all h-full"
                     >
-                      <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-6 min-h-[120px] flex flex-col justify-end">
-                        <span className="text-xs font-medium text-muted-foreground mb-2">
-                          {category?.emoji} {category?.label}
-                        </span>
-                        <h3 className="font-heading text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
-                          {post.title}
-                        </h3>
+                      <div className="relative min-h-[160px] overflow-hidden">
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          loading="lazy"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                        <div className="relative z-10 p-6 flex flex-col justify-end min-h-[160px]">
+                          <span className="text-xs font-medium text-white/80 mb-2">
+                            {category?.emoji} {category?.label}
+                          </span>
+                          <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors line-clamp-2">
+                            {post.title}
+                          </h3>
+                        </div>
                       </div>
                       <div className="p-5">
                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
