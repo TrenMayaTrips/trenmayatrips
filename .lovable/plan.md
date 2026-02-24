@@ -1,67 +1,82 @@
 
-## Enriquecer las paginas de detalle de rutas
 
-Las paginas de ruta actuales (`/tren-maya/rutas/:slug`) tienen la informacion basica bien cubierta (timeline, precios, horarios, FAQs), pero les falta contenido visual y contextual que ayude al viajero a imaginar el recorrido y tomar una decision. Vamos a agregar varias secciones nuevas.
+## Incorporar video como complemento (no reemplazo) de las fotos
 
----
-
-### Nuevas secciones a agregar
-
-**1. Hero visual con imagen de fondo**
-- Reemplazar el hero actual (gradiente plano) por un `ParallaxHero` con una imagen representativa de la ruta (origen o destino)
-- Mantener el breadcrumb, badge, titulo y stats encima
-
-**2. Destinos en la ruta**
-- Grid de cards con foto de cada destino que se puede visitar desde las paradas de la ruta
-- Cada card muestra nombre, tagline, tipo (playa/arqueologia/pueblo), tiempo desde la estacion
-- Clic lleva a `/destinos/:slug`
-- Se cruzan los datos de `destinations.ts` con los estados que toca la ruta
-
-**3. Experiencias recomendadas**
-- Seccion con experiencias filtradas por los estados que cruza la ruta
-- Maximo 4-6 cards con foto, titulo, precio y duracion
-- Reutiliza el patron de `DestinoExperiencias`
-
-**4. Mapa visual del tramo**
-- Mini-mapa SVG mostrando solo el tramo de esta ruta destacado sobre la silueta de la peninsula
-- Reutiliza coordenadas de `TrenMayaRouteMap` pero resaltando solo las paradas de esta ruta
-
-**5. Consejos practicos**
-- Seccion con tips especificos por ruta en `EstelaCard`:
-  - Mejor asiento (ventanilla derecha/izquierda segun paisaje)
-  - Que llevar
-  - Conexiones de transporte al llegar
-  - Mejor horario de salida
-
-**6. Rutas relacionadas**
-- Al final, antes del CTA, mostrar 2-3 rutas que conectan con el origen o destino de la ruta actual
-- Cards horizontales con badge, duracion y precio desde
+El video se agrega como una capa adicional junto a las galerias existentes. El usuario decide si quiere ver fotos, video, o ambos. Nadie pierde nada.
 
 ---
 
-### Cambios tecnicos
+### Componente reutilizable: VideoEmbed
+
+Crear `src/components/ui/VideoEmbed.tsx`:
+
+- Muestra poster (imagen estatica) con boton de play superpuesto
+- No carga el iframe hasta que el usuario hace clic (zero-cost en datos)
+- Soporta YouTube, Vimeo y MP4 directo
+- Props: `url`, `poster`, `aspectRatio` (16/9 default), `badge` ("360", "Recorrido virtual"), `className`
+- Boton de play: circulo `bg-black/50 backdrop-blur-sm` con icono Play, hover con acento gold
+- Badge posicion absoluta top-left
+
+### Piloto: Seccion de Vagones en el Home
+
+La imagen estatica se **mantiene** como esta. Se agrega un boton de play encima que, al hacer clic, revela el video inline reemplazando temporalmente la imagen. Un boton de "cerrar" o "volver a foto" permite regresar a la imagen estatica.
+
+**Cambios en datos:**
+- `src/data/wagon-classes.ts`: agregar campo opcional `videoUrl?: string` a la interfaz `WagonClass`
+- Agregar URLs de YouTube placeholder a cada vagon
+
+**Cambios en UI:**
+- `src/components/home/VagonesSection.tsx`: en la zona de imagen (h-44), superponer un icono de play sutil. Al hacer clic, montar el `VideoEmbed` en lugar de la imagen. Mostrar un boton "Ver fotos" para volver.
+
+### Asi se ve la card de vagon
+
+```text
+Estado inicial (foto):
++----------------------------------+
+|  [imagen estatica del vagon]     |
+|                                  |
+|        ▶  (play sutil)          |
+|                                  |
++----------------------------------+
+
+Despues de clic en play (video):
++----------------------------------+
+|  [iframe YouTube autoplay]       |
+|                                  |
+|                        [✕ Foto]  |
++----------------------------------+
+```
+
+El usuario siempre puede volver a la foto. Quien no quiera gastar datos simplemente no toca el play.
+
+---
+
+### Archivos a crear/modificar
 
 | Archivo | Accion |
 |---|---|
-| `src/data/routes.ts` | Agregar campos: `heroImage`, `statesTraversed`, `tips` (array de consejos practicos), y `scenicHighlights` (texto descriptivo del paisaje) |
-| `src/pages/RutaDetalle.tsx` | Reestructurar con las 6 secciones nuevas, usar `ParallaxHero`, agregar seccion de destinos, experiencias, mapa, tips y rutas relacionadas |
-| `src/components/routes/RutaDestinos.tsx` | Crear -- grid de destinos accesibles desde la ruta |
-| `src/components/routes/RutaMiniMap.tsx` | Crear -- mapa SVG mini que destaca solo el tramo de la ruta |
-| `src/components/routes/RutaTips.tsx` | Crear -- grid de consejos practicos con iconos |
+| `src/components/ui/VideoEmbed.tsx` | Crear -- componente reutilizable con lazy-load, poster, boton play, badge |
+| `src/data/wagon-classes.ts` | Agregar `videoUrl?: string` a `WagonClass` y URLs placeholder |
+| `src/components/home/VagonesSection.tsx` | Agregar overlay de play sobre la imagen existente, toggle foto/video |
 
-### Identidad visual maya
+### Detalle tecnico del VideoEmbed
 
-- `GrecaDivider` entre cada seccion principal
-- `MayaPattern` sutil en fondo de la seccion de tips
-- `EstelaCard` para las cards de consejos y para el contenedor del mapa
-- Timeline existente se mantiene pero con iconos de destino en las paradas principales
+**Props:**
+- `url`: string (YouTube/Vimeo/MP4)
+- `poster?`: string (imagen fallback, se muestra antes del clic)
+- `aspectRatio?`: string (default "16/9")
+- `badge?`: string
+- `className?`: string
+- `onClose?`: () => void (callback para volver a foto)
 
-### Flujo de datos
+**Comportamiento:**
+1. Si se usa standalone: muestra poster + play, clic carga iframe
+2. Si se usa dentro de VagonCard: el padre controla el toggle foto/video con un estado `showVideo`
+3. Para YouTube: extrae video ID via regex, construye embed con `autoplay=1&rel=0`
+4. Boton play: icono `Play` de lucide-react, acento gold en hover
 
-Todo se resuelve con datos existentes en `src/data/`:
-- `destinations.ts` + `destination-images.ts` para las cards de destinos
-- `experiences.ts` para las experiencias filtradas por estado
-- `stations.ts` para las coordenadas del mapa
-- Los nuevos campos (`tips`, `statesTraversed`, `heroImage`) se agregan directamente en `routes.ts`
+### Estilo maya
 
-No se requiere backend ni tablas nuevas.
+- Borde del contenedor consistente con el resto (`rounded-xl border-border`)
+- Boton play: `bg-black/40 backdrop-blur-sm`, hover `bg-accent/80` (gold)
+- Badge: `bg-accent text-accent-foreground text-xs font-semibold rounded-full`
