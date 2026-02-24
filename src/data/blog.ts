@@ -6,12 +6,27 @@ import destPalenque from "@/assets/dest-palenque.jpg";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import destRivieraMaya from "@/assets/dest-riviera-maya.jpg";
 import destComalcalco from "@/assets/dest-comalcalco.jpg";
+import destChichenItzaDetail from "@/assets/dest-chichen-itza-detail.jpg";
+import destValladolid from "@/assets/dest-valladolid.jpg";
+import destTulum from "@/assets/dest-tulum.jpg";
+import destPalenqueDetail from "@/assets/dest-palenque-detail.jpg";
+import destAguaAzul from "@/assets/dest-agua-azul.jpg";
+import destCampecheCiudad from "@/assets/dest-campeche-ciudad.jpg";
+import destIzamal from "@/assets/dest-izamal.jpg";
+import destVillahermosa from "@/assets/dest-villahermosa.jpg";
 
 export interface BlogCategory {
   slug: string;
   label: string;
   emoji: string;
   description: string;
+}
+
+export interface BlogContentImage {
+  src: string;
+  alt: string;
+  caption?: string;
+  afterBlock: number; // insert after this content block index
 }
 
 export interface BlogPost {
@@ -27,6 +42,7 @@ export interface BlogPost {
   tags: string[];
   content: string[];
   image: string;
+  contentImages?: BlogContentImage[];
 }
 
 export const blogCategories: BlogCategory[] = [
@@ -70,6 +86,11 @@ export const blogPosts: BlogPost[] = [
     featured: true,
     tags: ["Tren Maya", "Guía", "Planificación", "2025"],
     image: heroTrenMaya,
+    contentImages: [
+      { src: heroTrenMayaPage, alt: "Tren Maya recorriendo la selva del sureste mexicano", caption: "El Tren Maya conecta cinco estados del sureste mexicano", afterBlock: 0 },
+      { src: destValladolid, alt: "Estación de Valladolid, punto de conexión clave", caption: "Valladolid, una de las estaciones más pintorescas de la ruta", afterBlock: 2 },
+      { src: destTulum, alt: "Ruinas de Tulum frente al mar Caribe", caption: "Tulum combina arqueología maya con playas del Caribe", afterBlock: 4 },
+    ],
     content: [
       "El Tren Maya se ha convertido en la experiencia de viaje más emocionante del sureste mexicano. Con más de 1,554 kilómetros de vía que conectan cinco estados — Quintana Roo, Yucatán, Campeche, Tabasco y Chiapas — este proyecto ferroviario no es solo un medio de transporte: es una puerta de entrada a una de las regiones más ricas en historia, cultura y naturaleza del mundo.",
       "## Rutas y Estaciones Principales\n\nEl Tren Maya opera en un circuito que conecta 34 estaciones distribuidas en siete tramos. Desde la moderna Cancún hasta la mística Palenque, cada parada ofrece una ventana única a la diversidad del sureste mexicano. Las estaciones más importantes incluyen Mérida, Valladolid, Tulum, Campeche y Escárcega.",
@@ -92,6 +113,10 @@ export const blogPosts: BlogPost[] = [
     featured: true,
     tags: ["Chichén Itzá", "Arqueología", "Mayas", "Yucatán"],
     image: destChichenItza,
+    contentImages: [
+      { src: destChichenItzaDetail, alt: "Detalle arquitectónico de Chichén Itzá", caption: "Los detalles escultóricos de Chichén Itzá revelan la maestría maya", afterBlock: 1 },
+      { src: destValladolid, alt: "Valladolid, ciudad colonial cercana a Chichén Itzá", caption: "Valladolid es la puerta de entrada a Chichén Itzá desde el Tren Maya", afterBlock: 4 },
+    ],
     content: [
       "Chichén Itzá recibe más de 2.5 millones de visitantes al año, pero la mayoría dedica apenas dos horas a recorrer el sitio, enfocándose casi exclusivamente en la icónica Pirámide de Kukulcán. Sin embargo, esta ciudad maya esconde secretos fascinantes que merecen una exploración mucho más profunda.",
       "## El Observatorio (El Caracol)\n\nUna de las estructuras más impresionantes es El Caracol, un observatorio astronómico cuya torre circular permitía a los astrónomos mayas rastrear los movimientos de Venus con una precisión asombrosa. Las ventanas superiores están alineadas exactamente con las posiciones extremas del planeta.",
@@ -114,6 +139,10 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     tags: ["Cenotes", "Yucatán", "Naturaleza", "Buceo"],
     image: destRivieraMaya,
+    contentImages: [
+      { src: destTulum, alt: "Gran Cenote cerca de Tulum", caption: "Los cenotes cerca de Tulum ofrecen aguas cristalinas para snorkel", afterBlock: 2 },
+      { src: destBacalar, alt: "Aguas turquesas de la laguna de Bacalar", caption: "Los tonos azules de Bacalar se repiten en sus cenotes cercanos", afterBlock: 3 },
+    ],
     content: [
       "La Península de Yucatán alberga más de 6,000 cenotes — piscinas naturales formadas por el colapso de la roca caliza que revelan los ríos subterráneos del acuífero más grande de México. Para los antiguos mayas, estos espejos de agua eran portales sagrados al inframundo.",
       "## 1. Cenote Suytun (Valladolid)\n\nFamoso por su rayo de luz que atraviesa la bóveda a mediodía, creando un efecto mágico sobre la plataforma de piedra central. Mejor entre 11:00 am y 1:00 pm para la foto perfecta.",
@@ -136,6 +165,10 @@ export const blogPosts: BlogPost[] = [
     featured: true,
     tags: ["Gastronomía", "Yucatán", "Cocina Maya", "Comida"],
     image: destMerida,
+    contentImages: [
+      { src: destIzamal, alt: "Mercado local de Izamal con ingredientes frescos", caption: "Los mercados del sureste son el corazón de la gastronomía yucateca", afterBlock: 1 },
+      { src: destCampecheCiudad, alt: "Ciudad de Campeche, destino gastronómico", caption: "Campeche ofrece una escena culinaria única en el Golfo de México", afterBlock: 4 },
+    ],
     content: [
       "La gastronomía yucateca es reconocida como una de las cocinas regionales más ricas y complejas de México. Su singularidad nace de la fusión entre la tradición culinaria maya milenaria y las influencias europeas, caribeñas y libanesas que se integraron a lo largo de los siglos.",
       "## Cochinita Pibil: El Alma de Yucatán\n\nEste platillo emblemático se prepara con cerdo marinado en achiote y jugo de naranja agria, envuelto en hojas de plátano y cocinado bajo tierra durante horas. El resultado es una carne deshebrada increíblemente tierna con un sabor ahumado único. Los mejores lugares para probarla están en Mérida y Valladolid.",
@@ -158,6 +191,10 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     tags: ["Palenque", "Chiapas", "Arqueología", "Selva"],
     image: destPalenque,
+    contentImages: [
+      { src: destPalenqueDetail, alt: "Detalle del Templo de las Inscripciones en Palenque", caption: "El Templo de las Inscripciones alberga la tumba de Pakal el Grande", afterBlock: 1 },
+      { src: destAguaAzul, alt: "Cascadas de Agua Azul en Chiapas", caption: "Las cascadas de Agua Azul, a una hora de Palenque, son una parada obligatoria", afterBlock: 3 },
+    ],
     content: [
       "Palenque es, quizás, el sitio arqueológico más atmosférico de todo el mundo maya. Enclavada en la densa selva tropical de Chiapas, con cascadas y arroyos serpenteando entre sus templos, esta ciudad alcanzó su apogeo bajo el reinado de K'inich Janaab Pakal (615-683 d.C.).",
       "## El Templo de las Inscripciones\n\nEste imponente templo-pirámide alberga la tumba de Pakal el Grande, descubierta en 1952 por el arqueólogo Alberto Ruz Lhuillier. La lápida que cubría el sarcófago es una de las obras maestras del arte maya, representando al gobernante en su descenso al inframundo.",
@@ -179,6 +216,9 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     tags: ["Equipaje", "Tips", "Planificación", "Viaje"],
     image: heroTrenMayaPage,
+    contentImages: [
+      { src: heroTrenMaya, alt: "Interior del Tren Maya con equipaje", caption: "Prepara tu maleta pensando en comodidad y clima tropical", afterBlock: 1 },
+    ],
     content: [
       "Preparar la maleta para un viaje por el Tren Maya requiere pensar en climas tropicales, actividades al aire libre, visitas a zonas arqueológicas y cenas en restaurantes. Aquí te damos la lista definitiva para que no olvides nada.",
       "## Ropa Esencial\n\n- Ropa ligera de algodón o lino (el clima es cálido y húmedo)\n- Un suéter ligero para el aire acondicionado del tren\n- Zapatos cómodos para caminar en ruinas\n- Sandalias o zapatos acuáticos para cenotes\n- Sombrero o gorra de ala ancha\n- Traje de baño (¡los cenotes te esperan!)",
@@ -200,6 +240,9 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     tags: ["Bacalar", "Quintana Roo", "Laguna", "Naturaleza"],
     image: destBacalar,
+    contentImages: [
+      { src: destRivieraMaya, alt: "Aguas turquesas del Caribe mexicano", caption: "Bacalar rivaliza con las mejores playas del Caribe en belleza natural", afterBlock: 1 },
+    ],
     content: [
       "Bacalar es el secreto mejor guardado del Caribe mexicano. Su laguna de 42 kilómetros de largo presenta hasta siete tonalidades de azul y turquesa, gracias a los estromatolitos (formaciones rocosas vivientes de más de 3,500 millones de años) y la variación en la profundidad del agua.",
       "## Qué Hacer en Bacalar\n\n**Navegar en velero:** La mejor forma de experimentar los siete colores es desde un velero al atardecer. Los tours salen del muelle principal y duran entre 2 y 4 horas.\n\n**Canal de los Piratas:** Un estrecho canal de aguas cristalinas rodeado de manglar, perfecto para kayak o paddleboard.\n\n**Cenote Azul:** Un cenote de 90 metros de profundidad conectado a la laguna, ideal para snorkel y clavados.",
@@ -220,6 +263,9 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     tags: ["Cacao", "Chocolate", "Cultura Maya", "Tabasco"],
     image: destComalcalco,
+    contentImages: [
+      { src: destVillahermosa, alt: "Plantación de cacao en Tabasco", caption: "Tabasco produce más del 70% del cacao mexicano", afterBlock: 1 },
+    ],
     content: [
       "Para los antiguos mayas, el cacao era literalmente el 'alimento de los dioses'. Las semillas servían como moneda, ofrenda ceremonial y base de una bebida espumosa mezclada con chile, vainilla y achiote que solo la nobleza podía consumir.",
       "## La Ruta del Cacao en Tabasco\n\nTabasco es el corazón cacaotero de México, produciendo más del 70% del cacao nacional. La Ruta del Cacao te lleva por plantaciones centenarias donde puedes participar en todo el proceso: desde la cosecha del fruto hasta la elaboración del chocolate.",

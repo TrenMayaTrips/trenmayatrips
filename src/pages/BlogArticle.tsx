@@ -78,75 +78,96 @@ const BlogArticle = () => {
             {post.excerpt}
           </p>
 
-          {/* Content Blocks */}
+          {/* Content Blocks with inline images */}
           <div className="prose-custom space-y-6">
             {post.content.map((block, i) => {
-              // Parse markdown-style headers and content
+              const inlineImage = post.contentImages?.find((img) => img.afterBlock === i);
               const lines = block.split("\n").filter(Boolean);
               return (
-                <div key={i} className="space-y-3">
-                  {lines.map((line, j) => {
-                    if (line.startsWith("## ")) {
-                      return (
-                        <h2
-                          key={j}
-                          className="font-heading text-xl md:text-2xl font-bold text-foreground mt-8 mb-3"
-                        >
-                          {line.replace("## ", "")}
-                        </h2>
-                      );
-                    }
-                    if (line.startsWith("**") && line.endsWith("**")) {
-                      return (
-                        <h3
-                          key={j}
-                          className="font-heading text-lg font-semibold text-foreground mt-4"
-                        >
-                          {line.replace(/\*\*/g, "")}
-                        </h3>
-                      );
-                    }
-                    if (line.startsWith("**")) {
-                      const parts = line.split("**");
+                <div key={i}>
+                  <div className="space-y-3">
+                    {lines.map((line, j) => {
+                      if (line.startsWith("## ")) {
+                        return (
+                          <h2
+                            key={j}
+                            className="font-heading text-xl md:text-2xl font-bold text-foreground mt-8 mb-3"
+                          >
+                            {line.replace("## ", "")}
+                          </h2>
+                        );
+                      }
+                      if (line.startsWith("**") && line.endsWith("**")) {
+                        return (
+                          <h3
+                            key={j}
+                            className="font-heading text-lg font-semibold text-foreground mt-4"
+                          >
+                            {line.replace(/\*\*/g, "")}
+                          </h3>
+                        );
+                      }
+                      if (line.startsWith("**")) {
+                        const parts = line.split("**");
+                        return (
+                          <p
+                            key={j}
+                            className="text-foreground leading-relaxed text-base"
+                          >
+                            <strong className="font-semibold">{parts[1]}</strong>
+                            {parts[2]}
+                          </p>
+                        );
+                      }
+                      if (line.startsWith("- ")) {
+                        return (
+                          <li
+                            key={j}
+                            className="text-foreground leading-relaxed ml-4 list-disc"
+                          >
+                            {line.replace("- ", "")}
+                          </li>
+                        );
+                      }
+                      if (/^\d+\.\s/.test(line)) {
+                        return (
+                          <li
+                            key={j}
+                            className="text-foreground leading-relaxed ml-4 list-decimal"
+                          >
+                            {line.replace(/^\d+\.\s/, "")}
+                          </li>
+                        );
+                      }
                       return (
                         <p
                           key={j}
                           className="text-foreground leading-relaxed text-base"
                         >
-                          <strong className="font-semibold">{parts[1]}</strong>
-                          {parts[2]}
+                          {line}
                         </p>
                       );
-                    }
-                    if (line.startsWith("- ")) {
-                      return (
-                        <li
-                          key={j}
-                          className="text-foreground leading-relaxed ml-4 list-disc"
-                        >
-                          {line.replace("- ", "")}
-                        </li>
-                      );
-                    }
-                    if (/^\d+\.\s/.test(line)) {
-                      return (
-                        <li
-                          key={j}
-                          className="text-foreground leading-relaxed ml-4 list-decimal"
-                        >
-                          {line.replace(/^\d+\.\s/, "")}
-                        </li>
-                      );
-                    }
-                    return (
-                      <p
-                        key={j}
-                        className="text-foreground leading-relaxed text-base"
-                      >
-                        {line}
-                      </p>
-                    );
-                  })}
+                    })}
+                  </div>
+
+                  {/* Inline image after this block */}
+                  {inlineImage && (
+                    <figure className="my-8 -mx-4 md:mx-0">
+                      <div className="overflow-hidden rounded-lg md:rounded-xl border border-border shadow-sm">
+                        <img
+                          src={inlineImage.src}
+                          alt={inlineImage.alt}
+                          className="w-full h-auto object-cover max-h-[400px]"
+                          loading="lazy"
+                        />
+                      </div>
+                      {inlineImage.caption && (
+                        <figcaption className="mt-3 text-sm text-muted-foreground text-center italic px-4">
+                          {inlineImage.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  )}
                 </div>
               );
             })}
