@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Play } from "lucide-react";
 import vagonXiinbal from "@/assets/vagon-xiinbal.jpg";
 import vagonJanal from "@/assets/vagon-janal.jpg";
 import vagonPatal from "@/assets/vagon-patal.jpg";
 import GrecaDivider from "@/components/maya/GrecaDivider";
+import VideoEmbed from "@/components/ui/VideoEmbed";
 
 const vagones = [
   {
@@ -13,6 +15,7 @@ const vagones = [
     price: "Desde $800 MXN",
     image: vagonXiinbal,
     alt: "Interior del vagón clase económica Xiinbal con asientos cómodos",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     name: "Janal",
@@ -22,6 +25,7 @@ const vagones = [
     featured: true,
     image: vagonJanal,
     alt: "Interior del vagón clase intermedia Janal con bar y sofás",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     name: "P'atal",
@@ -30,6 +34,7 @@ const vagones = [
     price: "Desde $3,200 MXN",
     image: vagonPatal,
     alt: "Interior del vagón clase premium P'atal con cena gourmet",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
 ];
 
@@ -63,60 +68,87 @@ const VagonesSection = () => {
   );
 };
 
-const VagonCard = ({ vagon, index, isFeatured }: { vagon: typeof vagones[0]; index: number; isFeatured?: boolean }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: index * 0.1 }}
-    className={`snap-center min-w-[280px] md:min-w-0 flex flex-col rounded-xl border overflow-hidden transition-all ${
-      isFeatured
-        ? "border-accent shadow-lg ring-1 ring-accent/20"
-        : "border-border hover:shadow-md"
-    }`}
-  >
-    <div className="h-44 md:h-52 relative overflow-hidden">
-      <img
-        src={vagon.image}
-        alt={vagon.alt}
-        className="w-full h-full object-cover"
-        loading="lazy"
-      />
-      {isFeatured && (
-        <div className="absolute top-3 left-3 px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
-          Más elegido
-        </div>
-      )}
-    </div>
+const VagonCard = ({ vagon, index, isFeatured }: { vagon: typeof vagones[0]; index: number; isFeatured?: boolean }) => {
+  const [showVideo, setShowVideo] = useState(false);
 
-    <div className="flex flex-col flex-1 p-5 md:p-6 bg-card">
-      <p className="text-xs text-accent font-medium uppercase tracking-wider">{vagon.tagline}</p>
-      <h3 className="font-heading text-xl font-bold text-foreground mt-1">{vagon.name}</h3>
-
-      <ul className="mt-4 space-y-2 flex-1">
-        {vagon.features.map((f) => (
-          <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Check size={14} className="text-primary shrink-0" />
-            {f}
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-5 pt-4 border-t border-border">
-        <p className="font-heading text-lg font-bold text-foreground">{vagon.price}</p>
-        <a
-          href="#reservar"
-          className={`mt-3 block text-center py-2.5 rounded-md text-sm font-semibold transition-colors ${
-            isFeatured
-              ? "bg-accent text-accent-foreground hover:bg-gold-light"
-              : "bg-primary text-primary-foreground hover:bg-jade-light"
-          }`}
-        >
-          Seleccionar
-        </a>
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className={`snap-center min-w-[280px] md:min-w-0 flex flex-col rounded-xl border overflow-hidden transition-all ${
+        isFeatured
+          ? "border-accent shadow-lg ring-1 ring-accent/20"
+          : "border-border hover:shadow-md"
+      }`}
+    >
+      <div className="h-44 md:h-52 relative overflow-hidden">
+        {showVideo && vagon.videoUrl ? (
+          <VideoEmbed
+            url={vagon.videoUrl}
+            poster={vagon.image}
+            className="h-full"
+            onClose={() => setShowVideo(false)}
+          />
+        ) : (
+          <>
+            <img
+              src={vagon.image}
+              alt={vagon.alt}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            {/* Play overlay */}
+            {vagon.videoUrl && (
+              <button
+                onClick={() => setShowVideo(true)}
+                className="absolute inset-0 flex items-center justify-center group/play"
+                aria-label="Ver video del vagón"
+              >
+                <span className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-colors group-hover/play:bg-accent/80">
+                  <Play size={20} className="text-white ml-0.5" fill="white" />
+                </span>
+              </button>
+            )}
+          </>
+        )}
+        {isFeatured && !showVideo && (
+          <div className="absolute top-3 left-3 px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
+            Más elegido
+          </div>
+        )}
       </div>
-    </div>
-  </motion.div>
-);
+
+      <div className="flex flex-col flex-1 p-5 md:p-6 bg-card">
+        <p className="text-xs text-accent font-medium uppercase tracking-wider">{vagon.tagline}</p>
+        <h3 className="font-heading text-xl font-bold text-foreground mt-1">{vagon.name}</h3>
+
+        <ul className="mt-4 space-y-2 flex-1">
+          {vagon.features.map((f) => (
+            <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Check size={14} className="text-primary shrink-0" />
+              {f}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-5 pt-4 border-t border-border">
+          <p className="font-heading text-lg font-bold text-foreground">{vagon.price}</p>
+          <a
+            href="#reservar"
+            className={`mt-3 block text-center py-2.5 rounded-md text-sm font-semibold transition-colors ${
+              isFeatured
+                ? "bg-accent text-accent-foreground hover:bg-gold-light"
+                : "bg-primary text-primary-foreground hover:bg-jade-light"
+            }`}
+          >
+            Seleccionar
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 export default VagonesSection;
