@@ -31,6 +31,7 @@ export interface WagonClass {
   description: string;
   heroImage: string;
   galleryImages: string[];
+  videoUrl?: string;
   isFeatured?: boolean;
   badge?: string;
   amenities: WagonAmenity[];
