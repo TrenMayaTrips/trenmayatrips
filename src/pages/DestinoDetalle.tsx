@@ -13,6 +13,7 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import DestinoExperiencias from "@/components/destinos/DestinoExperiencias";
 import DestinoGallery from "@/components/destinos/DestinoGallery";
 import DestinoMap from "@/components/destinos/DestinoMap";
+import VideoModule from "@/components/ui/VideoModule";
 
 const DestinoDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -140,6 +141,18 @@ const DestinoDetalle = () => {
 
       {/* Gallery */}
       <DestinoGallery images={galleryImages} title={dest.name} />
+
+      {/* Video */}
+      {dest.videoUrl && (
+        <div className="container mx-auto px-4 -mt-4 mb-6">
+          <VideoModule
+            url={dest.videoUrl}
+            poster={image}
+            title={`Descubre ${dest.name} en video`}
+            badge="Recorrido virtual"
+          />
+        </div>
+      )}
 
       <GrecaDivider variant="terracotta" size="sm" />
 

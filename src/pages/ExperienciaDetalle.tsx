@@ -8,6 +8,7 @@ import { experienceGallery } from "@/data/experience-gallery";
 import ImageGallery from "@/components/experiences/ImageGallery";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
+import VideoModule from "@/components/ui/VideoModule";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
@@ -53,8 +54,16 @@ const ExperienciaDetalle = () => {
       </section>
 
       {/* Image Gallery */}
-      <div className="container mx-auto px-4 -mt-4 md:-mt-6">
+      <div className="container mx-auto px-4 -mt-4 md:-mt-6 space-y-3">
         <ImageGallery images={experienceGallery[exp.slug] || []} title={exp.title} />
+        {exp.videoUrl && (
+          <VideoModule
+            url={exp.videoUrl}
+            poster={(experienceGallery[exp.slug] || [])[0]}
+            title={`Video: ${exp.title}`}
+            badge="Recorrido"
+          />
+        )}
       </div>
 
       <GrecaDivider variant="jade" size="md" />
