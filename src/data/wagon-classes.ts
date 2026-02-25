@@ -61,6 +61,7 @@ export const wagonClassesDetailed: WagonClass[] = [
     description: "Ideal para viajeros que buscan comodidad a un precio accesible. Asientos reclinables con vista panorámica y aire acondicionado en todo el trayecto.",
     heroImage: trenXiinbalInterior,
     galleryImages: [trenXiinbalInterior, vagonXiinbal],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
     amenities: [
       { icon: "🪑", name: "Asientos reclinables", detail: "Configuración 2+2 con reposacabeza ajustable" },
       { icon: "❄", name: "Climatización", detail: "Aire acondicionado en todo el vagón" },
@@ -99,6 +100,7 @@ export const wagonClassesDetailed: WagonClass[] = [
     description: "La mejor relación calidad-precio con amenidades mejoradas. Incluye snack box regional, pantalla individual y el espacio que necesitas para disfrutar el viaje.",
     heroImage: trenJanalInterior,
     galleryImages: [trenJanalInterior, vagonJanal],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
     isFeatured: true,
     badge: "⭐ Más popular",
     amenities: [
@@ -139,6 +141,7 @@ export const wagonClassesDetailed: WagonClass[] = [
     description: "La experiencia de lujo definitiva sobre rieles. Gastronomía gourmet de autor, servicio personalizado, bar premium y acceso VIP en todas las estaciones.",
     heroImage: trenPatalInterior,
     galleryImages: [trenPatalInterior, vagonPatal],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
     amenities: [
       { icon: "🪑", name: "Asientos VIP", detail: "Reclinables de cuero con reposapies eléctrico, máximo confort" },
       { icon: "🍽", name: "Gastronomía gourmet", detail: "Menú de autor con platillos regionales, maridaje incluido" },
