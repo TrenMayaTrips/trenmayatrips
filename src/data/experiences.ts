@@ -18,6 +18,7 @@ export interface Experience {
   recommendations: string[];
   itinerary: { time: string; activity: string }[];
   related: string[];
+  videoUrl?: string;
 }
 
 export const categoryLabels: Record<string, string> = {
@@ -64,6 +65,7 @@ export const experiences: Experience[] = [
       { time: "12:30", activity: "Regreso a Mérida" },
     ],
     related: ["coba-tulum-cenote", "ek-balam-valladolid", "ruta-del-cacao"],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "coba-tulum-cenote",
@@ -94,6 +96,7 @@ export const experiences: Experience[] = [
       { time: "17:00", activity: "Regreso" },
     ],
     related: ["amanecer-maya-uxmal", "catamaran-isla-mujeres", "snorkel-arrecife"],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "ek-balam-valladolid",
@@ -183,6 +186,7 @@ export const experiences: Experience[] = [
       { time: "Día 2 - 12:00", activity: "Regreso a Campeche" },
     ],
     related: ["palenque-agua-azul", "ruta-del-cacao", "amanecer-maya-uxmal"],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "ruta-del-cacao",
@@ -241,6 +245,7 @@ export const experiences: Experience[] = [
       { time: "16:30", activity: "Regreso" },
     ],
     related: ["calakmul-biosfera", "ruta-del-cacao", "temazcal-selva"],
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "temazcal-selva",

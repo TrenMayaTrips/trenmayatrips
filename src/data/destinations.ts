@@ -10,6 +10,7 @@ export interface Destination {
   travelTime: string;
   bestMonths: string;
   emoji: string;
+  videoUrl?: string;
 }
 
 export interface StateInfo {
@@ -44,6 +45,7 @@ export const destinations: Destination[] = [
     travelTime: "Estación de inicio",
     bestMonths: "Nov – Abr",
     emoji: "🏖️",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "tulum",
@@ -57,6 +59,7 @@ export const destinations: Destination[] = [
     travelTime: "Estación directa",
     bestMonths: "Nov – Mar",
     emoji: "🏛️",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "bacalar",
@@ -123,6 +126,7 @@ export const destinations: Destination[] = [
     travelTime: "40 min desde estación",
     bestMonths: "Sep – Mar",
     emoji: "⭐",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "izamal",
@@ -217,6 +221,7 @@ export const destinations: Destination[] = [
     travelTime: "Estación directa",
     bestMonths: "Nov – Abr",
     emoji: "🌿",
+    videoUrl: "https://www.youtube.com/watch?v=xKBSfMCFhiY",
   },
   {
     slug: "san-cristobal",
