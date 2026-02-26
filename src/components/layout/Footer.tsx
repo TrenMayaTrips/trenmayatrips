@@ -1,11 +1,21 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoTmt from "@/assets/logo-tmt.png";
+import mayaPatternBg from "@/assets/maya-pattern-bg.jpg";
 
 const Footer = () => {
   return (
-    <footer className="bg-jade-dark text-primary-foreground">
-      <div className="container mx-auto px-4 py-12 md:py-16">
+    <footer className="bg-jade-dark text-primary-foreground relative overflow-hidden">
+      {/* Maya pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04] mix-blend-soft-light pointer-events-none"
+        style={{
+          backgroundImage: `url(${mayaPatternBg})`,
+          backgroundSize: "280px",
+          backgroundRepeat: "repeat",
+        }}
+      />
+      <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
           <div className="md:col-span-1">
