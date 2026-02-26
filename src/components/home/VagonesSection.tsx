@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import vagonXiinbal from "@/assets/vagon-xiinbal.jpg";
 import vagonJanal from "@/assets/vagon-janal.jpg";
 import vagonPatal from "@/assets/vagon-patal.jpg";
@@ -8,6 +9,7 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 const vagones = [
   {
     name: "Xiinbal",
+    slug: "xiinbal",
     tagline: "Clase económica",
     features: ["Asientos reclinables", "Vista panorámica", "Servicio de snacks", "Amenidades básicas"],
     price: "Desde $800 MXN",
@@ -16,6 +18,7 @@ const vagones = [
   },
   {
     name: "Janal",
+    slug: "janal",
     tagline: "Clase intermedia",
     features: ["Asientos premium", "Comida a bordo", "Wi-Fi incluido", "Amenidades mejoradas", "Bar a bordo"],
     price: "Desde $1,500 MXN",
@@ -25,6 +28,7 @@ const vagones = [
   },
   {
     name: "P'atal",
+    slug: "patal",
     tagline: "Clase premium",
     features: ["Cabina de lujo", "Gastronomía gourmet", "Servicio personalizado", "Amenidades completas", "Acceso VIP"],
     price: "Desde $3,200 MXN",
@@ -57,6 +61,12 @@ const VagonesSection = () => {
           {vagones.map((v, i) => (
             <VagonCard key={v.name} vagon={v} index={i} isFeatured={v.featured} />
           ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <Link to="/tren-maya" className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-jade-light transition-colors underline underline-offset-4">
+            Conoce más del Tren Maya <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </section>
@@ -104,16 +114,16 @@ const VagonCard = ({ vagon, index, isFeatured }: { vagon: typeof vagones[0]; ind
 
       <div className="mt-5 pt-4 border-t border-border">
         <p className="font-heading text-lg font-bold text-foreground">{vagon.price}</p>
-        <a
-          href="#reservar"
+        <Link
+          to={`/tren-maya/clases/${vagon.slug}`}
           className={`mt-3 block text-center py-2.5 rounded-md text-sm font-semibold transition-colors ${
             isFeatured
               ? "bg-accent text-accent-foreground hover:bg-gold-light"
               : "bg-primary text-primary-foreground hover:bg-jade-light"
           }`}
         >
-          Seleccionar
-        </a>
+          Ver detalles
+        </Link>
       </div>
     </div>
   </motion.div>
