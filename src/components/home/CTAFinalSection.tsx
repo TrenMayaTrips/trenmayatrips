@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import MayaPattern from "@/components/maya/MayaPattern";
@@ -21,19 +22,19 @@ const CTAFinalSection = () => {
             Solicita tu cotización y diseñamos el circuito perfecto por la ruta del Tren Maya. Plazas limitadas por temporada.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#reservar"
+            <Link
+              to="/paquetes"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-accent-foreground font-bold rounded-md hover:bg-gold-light transition-colors text-base"
             >
-              Reservar ahora
+              Ver paquetes
               <ArrowRight size={18} />
-            </a>
-            <a
-              href="#contacto"
+            </Link>
+            <Link
+              to="/contacto"
               className="inline-flex items-center justify-center px-8 py-4 border border-primary-foreground/30 text-primary-foreground font-medium rounded-md hover:bg-primary-foreground/10 transition-colors text-base"
             >
               Hablar con un asesor
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Clock, Star } from "lucide-react";
+import { MapPin, Clock, Star, ArrowRight } from "lucide-react";
 import destChichenItza from "@/assets/dest-chichen-itza.jpg";
 import destRivieraMaya from "@/assets/dest-riviera-maya.jpg";
 import destPalenque from "@/assets/dest-palenque.jpg";
@@ -9,6 +10,7 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 const destinations = [
   {
     name: "Chichén Itzá y Valladolid",
+    slug: "chichen-itza",
     region: "Yucatán",
     duration: "2 días",
     rating: 4.9,
@@ -18,6 +20,7 @@ const destinations = [
   },
   {
     name: "Riviera Maya y Tulum",
+    slug: "tulum",
     region: "Quintana Roo",
     duration: "3 días",
     rating: 4.9,
@@ -27,6 +30,7 @@ const destinations = [
   },
   {
     name: "Palenque y Agua Azul",
+    slug: "palenque",
     region: "Chiapas",
     duration: "2 días",
     rating: 4.8,
@@ -36,6 +40,7 @@ const destinations = [
   },
   {
     name: "Calakmul y Campeche",
+    slug: "calakmul",
     region: "Campeche",
     duration: "3 días",
     rating: 4.7,
@@ -68,47 +73,54 @@ const DestinosSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all cursor-pointer"
             >
-              <div className="h-48 md:h-56 relative overflow-hidden">
-                <img
-                  src={dest.image}
-                  alt={dest.alt}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
-                  {dest.tag}
-                </span>
-              </div>
+              <Link
+                to={`/destinos/${dest.slug}`}
+                className="group relative bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all block h-full"
+              >
+                <div className="h-48 md:h-56 relative overflow-hidden">
+                  <img
+                    src={dest.image}
+                    alt={dest.alt}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
+                    {dest.tag}
+                  </span>
+                </div>
 
-              <div className="p-4 md:p-5">
-                <h3 className="font-heading text-lg md:text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
-                  {dest.name}
-                </h3>
-                <div className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
-                  <MapPin size={14} />
-                  <span>{dest.region}</span>
-                </div>
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Clock size={14} />
-                    <span>{dest.duration}</span>
+                <div className="p-4 md:p-5">
+                  <h3 className="font-heading text-lg md:text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {dest.name}
+                  </h3>
+                  <div className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
+                    <MapPin size={14} />
+                    <span>{dest.region}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-gold">
-                    <Star size={14} fill="currentColor" />
-                    <span className="font-medium">{dest.rating}</span>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Clock size={14} />
+                      <span>{dest.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-gold">
+                      <Star size={14} fill="currentColor" />
+                      <span className="font-medium">{dest.rating}</span>
+                    </div>
                   </div>
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+                    Ver destino <ArrowRight size={12} />
+                  </span>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
 
         <div className="text-center mt-8">
-          <a href="#rutas" className="text-sm font-medium text-primary hover:text-jade-light transition-colors underline underline-offset-4">
-            Ver todas las rutas →
-          </a>
+          <Link to="/destinos" className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-jade-light transition-colors underline underline-offset-4">
+            Ver todos los destinos <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </section>
