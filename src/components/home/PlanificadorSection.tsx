@@ -10,8 +10,36 @@ const steps = [
   { id: 3, label: "Viajeros", icon: Users },
 ];
 
+const destinos = [
+  { name: "Chichén Itzá y Valladolid", state: "Yucatán" },
+  { name: "Riviera Maya y Tulum", state: "Quintana Roo" },
+  { name: "Palenque y Agua Azul", state: "Chiapas" },
+  { name: "Calakmul y Campeche", state: "Campeche" },
+];
+
+const periodos = ["Enero - Marzo", "Abril - Junio", "Julio - Sept", "Oct - Diciembre"];
+
+const WHATSAPP_NUMBER = "529982186754";
+
 const PlanificadorSection = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [selectedDestino, setSelectedDestino] = useState("");
+  const [selectedPeriodo, setSelectedPeriodo] = useState("");
+  const [adultos, setAdultos] = useState(2);
+  const [ninos, setNinos] = useState(0);
+
+  const handleCotizar = () => {
+    const parts = [
+      `¡Hola! Me interesa un viaje en el Tren Maya.`,
+      selectedDestino && `📍 Destino: ${selectedDestino}`,
+      selectedPeriodo && `📅 Fechas: ${selectedPeriodo}`,
+      `👥 Viajeros: ${adultos} adulto${adultos !== 1 ? "s" : ""}${ninos > 0 ? ` y ${ninos} niño${ninos !== 1 ? "s" : ""}` : ""}`,
+      `¿Me pueden enviar opciones y precios?`,
+    ].filter(Boolean).join("\n");
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(parts)}`;
+    window.open(url, "_blank", "noopener");
+  };
 
   return (
     <section id="reservar" className="py-16 md:py-24 bg-secondary relative">
@@ -65,15 +93,15 @@ const PlanificadorSection = () => {
               <div>
                 <h3 className="font-heading text-xl font-semibold mb-4">¿A dónde quieres ir?</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {[
-                    { name: "Chichén Itzá y Valladolid", state: "Yucatán" },
-                    { name: "Riviera Maya y Tulum", state: "Quintana Roo" },
-                    { name: "Palenque y Agua Azul", state: "Chiapas" },
-                    { name: "Calakmul y Campeche", state: "Campeche" },
-                  ].map((dest) => (
+                  {destinos.map((dest) => (
                     <button
                       key={dest.name}
-                      className="p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 text-left transition-all min-h-[48px]"
+                      onClick={() => setSelectedDestino(dest.name)}
+                      className={`p-4 rounded-lg border text-left transition-all min-h-[48px] ${
+                        selectedDestino === dest.name
+                          ? "border-primary bg-primary/10 ring-1 ring-primary"
+                          : "border-border hover:border-primary hover:bg-primary/5"
+                      }`}
                     >
                       <p className="font-medium text-foreground">{dest.name}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">{dest.state}</p>
@@ -86,10 +114,15 @@ const PlanificadorSection = () => {
               <div>
                 <h3 className="font-heading text-xl font-semibold mb-4">¿Cuándo viajas?</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {["Enero - Marzo", "Abril - Junio", "Julio - Sept", "Oct - Diciembre"].map((period) => (
+                  {periodos.map((period) => (
                     <button
                       key={period}
-                      className="p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 text-center transition-all min-h-[48px]"
+                      onClick={() => setSelectedPeriodo(period)}
+                      className={`p-4 rounded-lg border text-center transition-all min-h-[48px] ${
+                        selectedPeriodo === period
+                          ? "border-primary bg-primary/10 ring-1 ring-primary"
+                          : "border-border hover:border-primary hover:bg-primary/5"
+                      }`}
                     >
                       <p className="font-medium text-foreground text-sm">{period}</p>
                     </button>
@@ -101,18 +134,27 @@ const PlanificadorSection = () => {
               <div>
                 <h3 className="font-heading text-xl font-semibold mb-4">¿Cuántos viajeros?</h3>
                 <div className="space-y-4">
-                  {[{ label: "Adultos", sub: "13+ años" }, { label: "Niños", sub: "2-12 años" }].map((type) => (
+                  {[
+                    { label: "Adultos", sub: "13+ años", value: adultos, setValue: setAdultos, min: 1 },
+                    { label: "Niños", sub: "2-12 años", value: ninos, setValue: setNinos, min: 0 },
+                  ].map((type) => (
                     <div key={type.label} className="flex items-center justify-between p-4 rounded-lg border border-border">
                       <div>
                         <p className="font-medium text-foreground">{type.label}</p>
                         <p className="text-xs text-muted-foreground">{type.sub}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors">
+                        <button
+                          onClick={() => type.setValue(Math.max(type.min, type.value - 1))}
+                          className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
+                        >
                           <ChevronDown size={18} />
                         </button>
-                        <span className="w-6 text-center font-semibold">2</span>
-                        <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors">
+                        <span className="w-6 text-center font-semibold">{type.value}</span>
+                        <button
+                          onClick={() => type.setValue(Math.min(10, type.value + 1))}
+                          className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
+                        >
                           <ChevronUp size={18} />
                         </button>
                       </div>
@@ -131,7 +173,13 @@ const PlanificadorSection = () => {
                 Atrás
               </button>
               <button
-                onClick={() => setCurrentStep(Math.min(3, currentStep + 1))}
+                onClick={() => {
+                  if (currentStep === 3) {
+                    handleCotizar();
+                  } else {
+                    setCurrentStep(Math.min(3, currentStep + 1));
+                  }
+                }}
                 className="px-6 py-2.5 bg-accent text-accent-foreground text-sm font-semibold rounded-md hover:bg-gold-light transition-colors"
               >
                 {currentStep === 3 ? "Solicitar cotización" : "Siguiente"}

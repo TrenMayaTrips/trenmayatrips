@@ -47,11 +47,11 @@ const Footer = () => {
             <h4 className="font-heading text-lg font-semibold mb-4">Empresa</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               {[
-                { label: "Nosotros", href: "#" },
-                { label: "Sostenibilidad", href: "#" },
+                { label: "Nosotros", href: "/nosotros" },
+                { label: "Sostenibilidad", href: "/sostenibilidad" },
                 { label: "Blog", href: "/blog" },
                 { label: "Contacto", href: "/contacto" },
-                { label: "Trabaja con nosotros", href: "#" },
+                { label: "Trabaja con nosotros", href: "/contacto" },
               ].map((l) => (
                 <li key={l.label}>
                   <Link to={l.href} className="hover:text-gold transition-colors">{l.label}</Link>
@@ -83,9 +83,8 @@ const Footer = () => {
         <div className="mt-10 pt-6 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-foreground/50">
           <p>© 2026 Tren Maya Trips. Todos los derechos reservados.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-gold transition-colors">Privacidad</a>
-            <a href="#" className="hover:text-gold transition-colors">Términos</a>
-            <a href="#" className="hover:text-gold transition-colors">Cookies</a>
+            <Link to="/aviso-de-privacidad" className="hover:text-gold transition-colors">Privacidad</Link>
+            <Link to="/terminos-y-condiciones" className="hover:text-gold transition-colors">Términos</Link>
           </div>
         </div>
       </div>

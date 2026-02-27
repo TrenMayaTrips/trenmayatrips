@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import Index from "./pages/Index";
 import Experiencias from "./pages/Experiencias";
 import ExperienciaCategoria from "./pages/ExperienciaCategoria";
@@ -21,6 +22,10 @@ import Contacto from "./pages/Contacto";
 import Itinerarios from "./pages/Itinerarios";
 import RutaDetalle from "./pages/RutaDetalle";
 import ItinerarioCompartido from "./pages/ItinerarioCompartido";
+import SobreNosotros from "./pages/SobreNosotros";
+import Sostenibilidad from "./pages/Sostenibilidad";
+import AvisoPrivacidad from "./pages/AvisoPrivacidad";
+import TerminosCondiciones from "./pages/TerminosCondiciones";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +36,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/experiencias" element={<Experiencias />} />
@@ -49,6 +55,10 @@ const App = () => (
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/itinerarios" element={<Itinerarios />} />
           <Route path="/itinerarios/:code" element={<ItinerarioCompartido />} />
+          <Route path="/nosotros" element={<SobreNosotros />} />
+          <Route path="/sostenibilidad" element={<Sostenibilidad />} />
+          <Route path="/aviso-de-privacidad" element={<AvisoPrivacidad />} />
+          <Route path="/terminos-y-condiciones" element={<TerminosCondiciones />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
