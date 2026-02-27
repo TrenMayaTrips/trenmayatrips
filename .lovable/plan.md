@@ -1,82 +1,140 @@
 
 
-## Incorporar video como complemento (no reemplazo) de las fotos
+## Funcionalidades a implementar antes de la migracion a HubSpot
 
-El video se agrega como una capa adicional junto a las galerias existentes. El usuario decide si quiere ver fotos, video, o ambos. Nadie pierde nada.
-
----
-
-### Componente reutilizable: VideoEmbed
-
-Crear `src/components/ui/VideoEmbed.tsx`:
-
-- Muestra poster (imagen estatica) con boton de play superpuesto
-- No carga el iframe hasta que el usuario hace clic (zero-cost en datos)
-- Soporta YouTube, Vimeo y MP4 directo
-- Props: `url`, `poster`, `aspectRatio` (16/9 default), `badge` ("360", "Recorrido virtual"), `className`
-- Boton de play: circulo `bg-black/50 backdrop-blur-sm` con icono Play, hover con acento gold
-- Badge posicion absoluta top-left
-
-### Piloto: Seccion de Vagones en el Home
-
-La imagen estatica se **mantiene** como esta. Se agrega un boton de play encima que, al hacer clic, revela el video inline reemplazando temporalmente la imagen. Un boton de "cerrar" o "volver a foto" permite regresar a la imagen estatica.
-
-**Cambios en datos:**
-- `src/data/wagon-classes.ts`: agregar campo opcional `videoUrl?: string` a la interfaz `WagonClass`
-- Agregar URLs de YouTube placeholder a cada vagon
-
-**Cambios en UI:**
-- `src/components/home/VagonesSection.tsx`: en la zona de imagen (h-44), superponer un icono de play sutil. Al hacer clic, montar el `VideoEmbed` en lugar de la imagen. Mostrar un boton "Ver fotos" para volver.
-
-### Asi se ve la card de vagon
-
-```text
-Estado inicial (foto):
-+----------------------------------+
-|  [imagen estatica del vagon]     |
-|                                  |
-|        ▶  (play sutil)          |
-|                                  |
-+----------------------------------+
-
-Despues de clic en play (video):
-+----------------------------------+
-|  [iframe YouTube autoplay]       |
-|                                  |
-|                        [✕ Foto]  |
-+----------------------------------+
-```
-
-El usuario siempre puede volver a la foto. Quien no quiera gastar datos simplemente no toca el play.
+Basado en el analisis del sitio y tus prioridades, estas son las funcionalidades que recomiendo implementar, organizadas por impacto.
 
 ---
 
-### Archivos a crear/modificar
+### 1. Newsletter funcional
+
+El formulario actual no hace nada. Conectarlo a la base de datos para capturar suscriptores.
+
+**Cambios:**
+- Crear tabla `newsletter_subscribers` (email, created_at) con RLS insert-only
+- Crear Edge Function `subscribe-newsletter` con validacion y deduplicacion
+- Actualizar `NewsletterSection.tsx` con estados de carga, exito y error
+- Los emails quedan listos para sincronizar con HubSpot despues de la migracion
+
+---
+
+### 2. Pagina "Sobre nosotros"
+
+Pagina institucional con historia, mision, valores y equipo.
+
+**Archivos:**
+- Crear `src/pages/SobreNosotros.tsx` con secciones: hero, historia/mision, valores (con iconografia maya), equipo
+- Agregar ruta `/nosotros` en `App.tsx`
+- Actualizar link en Footer (actualmente apunta a `#`)
+
+---
+
+### 3. Pagina "Sostenibilidad"
+
+Compromiso ambiental y con comunidades mayas.
+
+**Archivos:**
+- Crear `src/pages/Sostenibilidad.tsx` con secciones: hero, compromisos ambientales, trabajo con comunidades, acciones concretas
+- Agregar ruta `/sostenibilidad` en `App.tsx`
+- Actualizar link en Footer
+
+---
+
+### 4. Pagina 404 con branding maya
+
+La pagina actual es generica y sin navegacion. Redisenarla con la identidad del sitio.
+
+**Cambios en `src/pages/NotFound.tsx`:**
+- Integrar PageLayout (header + footer)
+- Diseno con motivos mayas (glifo decorativo, greca)
+- Sugerencias de destinos populares
+- Boton de regreso al inicio
+- Textos en espanol
+
+---
+
+### 5. Paginas legales
+
+Obligatorio para sitios comerciales en Mexico.
+
+**Archivos:**
+- Crear `src/pages/AvisoPrivacidad.tsx` con contenido LFPDPPP
+- Crear `src/pages/TerminosCondiciones.tsx`
+- Agregar rutas `/aviso-de-privacidad` y `/terminos-y-condiciones` en `App.tsx`
+- Agregar links en el Footer (seccion inferior)
+
+---
+
+### 6. SEO y meta tags dinamicos
+
+Mejorar la presencia en buscadores y redes sociales.
+
+**Cambios:**
+- Crear componente `src/components/seo/SEOHead.tsx` usando `document.title` y meta tags dinamicos via `useEffect`
+- Integrar en todas las paginas de detalle (destinos, experiencias, paquetes, blog, vagones)
+- Datos: titulo, descripcion, imagen OG, URL canonica
+- Agregar datos estructurados JSON-LD basicos (Organization, TouristTrip)
+
+---
+
+### 7. Scroll to top en navegacion
+
+Actualmente al cambiar de pagina el scroll no se resetea.
+
+**Cambios:**
+- Crear `src/components/layout/ScrollToTop.tsx` usando `useLocation` + `useEffect`
+- Montarlo dentro del `BrowserRouter` en `App.tsx`
+
+---
+
+### 8. Planificador del Home conectado
+
+Los botones del planificador no hacen nada. Conectar el ultimo paso para abrir WhatsApp con el resumen.
+
+**Cambios en `PlanificadorSection.tsx`:**
+- Guardar selecciones en estado (destino, fechas, viajeros)
+- En "Solicitar cotizacion", abrir WhatsApp con mensaje pre-llenado incluyendo las selecciones
+- Alternativa: redirigir a `/itinerarios` con parametros pre-seleccionados
+
+---
+
+### 9. Links muertos en Footer
+
+Actualizar los links que actualmente apuntan a `#`.
+
+**Cambios en `Footer.tsx`:**
+- "Nosotros" → `/nosotros`
+- "Sostenibilidad" → `/sostenibilidad`
+- "Trabaja con nosotros" → abrir mailto o formulario de contacto
+- Agregar links legales en la barra inferior
+
+---
+
+### Resumen de archivos
 
 | Archivo | Accion |
 |---|---|
-| `src/components/ui/VideoEmbed.tsx` | Crear -- componente reutilizable con lazy-load, poster, boton play, badge |
-| `src/data/wagon-classes.ts` | Agregar `videoUrl?: string` a `WagonClass` y URLs placeholder |
-| `src/components/home/VagonesSection.tsx` | Agregar overlay de play sobre la imagen existente, toggle foto/video |
+| `supabase/migrations/` | Nueva migracion para `newsletter_subscribers` |
+| `supabase/functions/subscribe-newsletter/index.ts` | Crear Edge Function |
+| `src/components/home/NewsletterSection.tsx` | Conectar formulario |
+| `src/pages/SobreNosotros.tsx` | Crear pagina |
+| `src/pages/Sostenibilidad.tsx` | Crear pagina |
+| `src/pages/AvisoPrivacidad.tsx` | Crear pagina |
+| `src/pages/TerminosCondiciones.tsx` | Crear pagina |
+| `src/pages/NotFound.tsx` | Redisenar con branding |
+| `src/components/seo/SEOHead.tsx` | Crear componente |
+| `src/components/layout/ScrollToTop.tsx` | Crear componente |
+| `src/components/home/PlanificadorSection.tsx` | Conectar con WhatsApp |
+| `src/components/layout/Footer.tsx` | Corregir links, agregar legales |
+| `src/App.tsx` | Agregar 4 rutas nuevas + ScrollToTop |
+| Multiples paginas de detalle | Integrar SEOHead |
 
-### Detalle tecnico del VideoEmbed
+### Orden de implementacion sugerido
 
-**Props:**
-- `url`: string (YouTube/Vimeo/MP4)
-- `poster?`: string (imagen fallback, se muestra antes del clic)
-- `aspectRatio?`: string (default "16/9")
-- `badge?`: string
-- `className?`: string
-- `onClose?`: () => void (callback para volver a foto)
-
-**Comportamiento:**
-1. Si se usa standalone: muestra poster + play, clic carga iframe
-2. Si se usa dentro de VagonCard: el padre controla el toggle foto/video con un estado `showVideo`
-3. Para YouTube: extrae video ID via regex, construye embed con `autoplay=1&rel=0`
-4. Boton play: icono `Play` de lucide-react, acento gold en hover
-
-### Estilo maya
-
-- Borde del contenedor consistente con el resto (`rounded-xl border-border`)
-- Boton play: `bg-black/40 backdrop-blur-sm`, hover `bg-accent/80` (gold)
-- Badge: `bg-accent text-accent-foreground text-xs font-semibold rounded-full`
+1. ScrollToTop + 404 (rapido, mejora inmediata en UX)
+2. Newsletter funcional (captura de leads desde ya)
+3. Planificador conectado (conversion)
+4. Paginas institucionales (Nosotros, Sostenibilidad)
+5. Paginas legales
+6. SEO y meta tags
+7. Footer actualizado (depende de que existan las paginas)
