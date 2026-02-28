@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp, Check, ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -342,20 +343,14 @@ const VagonDetalle = () => {
             Solicita tu cotización personalizada y reserva tu lugar
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
-            <Link
-              to="/contacto"
-              className="px-6 py-3 bg-accent text-accent-foreground font-semibold rounded-lg hover:bg-accent/90 transition-colors text-sm"
-            >
-              Reservar clase {wagon.name}
-            </Link>
-            <a
-              href="https://wa.me/529811234567"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 border border-primary-foreground/30 text-primary-foreground font-semibold rounded-lg hover:bg-primary-foreground/10 transition-colors text-sm"
-            >
-              💬 WhatsApp
-            </a>
+            <Button variant="cta" asChild>
+              <Link to="/contacto">Reservar clase {wagon.name}</Link>
+            </Button>
+            <Button variant="ctaOutline" asChild>
+              <a href="https://wa.me/529811234567" target="_blank" rel="noopener noreferrer">
+                💬 WhatsApp
+              </a>
+            </Button>
           </div>
         </div>
       </section>

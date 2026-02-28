@@ -160,7 +160,7 @@ const Header = () => {
             })}
             <a
               href="#reservar"
-              className="ml-2 px-5 py-2.5 bg-accent text-accent-foreground font-semibold text-sm rounded-md hover:bg-gold-light transition-colors"
+              className="ml-2 px-5 py-2.5 bg-jade-dark text-primary-foreground font-semibold text-sm rounded-md hover:bg-primary transition-colors"
             >
               Reservar
             </a>
@@ -242,7 +242,7 @@ const Header = () => {
               <a
                 href="#reservar"
                 onClick={() => setIsOpen(false)}
-                className="mt-2 py-3 px-4 bg-accent text-accent-foreground font-semibold text-center rounded-md"
+                className="mt-2 py-3 px-4 bg-jade-dark text-primary-foreground font-semibold text-center rounded-md"
               >
                 Reservar ahora
               </a>

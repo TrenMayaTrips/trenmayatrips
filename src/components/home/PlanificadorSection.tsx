@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronUp, ChevronDown, CalendarDays, Users, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 
@@ -172,7 +173,8 @@ const PlanificadorSection = () => {
               >
                 Atrás
               </button>
-              <button
+              <Button
+                variant="cta"
                 onClick={() => {
                   if (currentStep === 3) {
                     handleCotizar();
@@ -180,10 +182,9 @@ const PlanificadorSection = () => {
                     setCurrentStep(Math.min(3, currentStep + 1));
                   }
                 }}
-                className="px-6 py-2.5 bg-accent text-accent-foreground text-sm font-semibold rounded-md hover:bg-gold-light transition-colors"
               >
                 {currentStep === 3 ? "Solicitar cotización" : "Siguiente"}
-              </button>
+              </Button>
             </div>
           </motion.div>
         </div>

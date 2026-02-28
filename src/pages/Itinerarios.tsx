@@ -614,8 +614,8 @@ const Itinerarios = () => {
                     </>
                   )}
                   <Button
+                    variant="cta"
                     size="lg"
-                    className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8"
                     asChild
                   >
                     <a

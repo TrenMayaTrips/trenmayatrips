@@ -80,15 +80,16 @@ const Packages = () => {
                 </button>
               ))}
             </div>
-            <button
+            <Button
+              variant="cta"
+              size="sm"
               onClick={() => {
                 setCompareMode(!compareMode);
                 if (compareMode) setSelectedForCompare([]);
               }}
-              className="px-4 py-2 bg-accent text-accent-foreground font-semibold text-sm rounded-md hover:bg-gold-light transition-colors"
             >
               {compareMode ? "Cancelar" : "Comparar"}
-            </button>
+            </Button>
           </div>
 
           {compareMode && (
