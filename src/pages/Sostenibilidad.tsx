@@ -33,7 +33,7 @@ const Sostenibilidad = () => {
         <MayaPattern variant="greca" opacity={0.03} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Nuestro compromiso</p>
+            <p className="section-label">Nuestro compromiso</p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
               Viajar bien, hacer bien
             </h2>
@@ -52,7 +52,7 @@ const Sostenibilidad = () => {
         <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Acciones concretas</p>
+            <p className="section-label">Acciones concretas</p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">Nuestros compromisos</h2>
             <GrecaDivider variant="gold" size="sm" className="mt-4 max-w-xs mx-auto" />
           </div>

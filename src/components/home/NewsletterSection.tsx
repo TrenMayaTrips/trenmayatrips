@@ -41,7 +41,7 @@ const NewsletterSection = () => {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto text-center"
         >
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Newsletter</p>
+          <p className="section-label">Newsletter</p>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
             Recibe ofertas exclusivas
           </h2>

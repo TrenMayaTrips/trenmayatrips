@@ -86,7 +86,7 @@ const VagonDetalle = () => {
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-6">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Galería</p>
+            <p className="section-label">Galería</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Interior del vagón</h2>
           </div>
 
@@ -140,7 +140,7 @@ const VagonDetalle = () => {
       <section className="py-10 md:py-16 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Distribución</p>
+            <p className="section-label">Distribución</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Layout de asientos</h2>
           </div>
 
@@ -182,7 +182,7 @@ const VagonDetalle = () => {
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">A bordo</p>
+            <p className="section-label">A bordo</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Amenidades detalladas</h2>
           </div>
 
@@ -209,7 +209,7 @@ const VagonDetalle = () => {
       <section className="py-10 md:py-16 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Comparativa</p>
+            <p className="section-label">Comparativa</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">¿Cómo se compara?</h2>
           </div>
 
@@ -261,7 +261,7 @@ const VagonDetalle = () => {
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Preguntas frecuentes</p>
+            <p className="section-label">Preguntas frecuentes</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
               Preguntas sobre {wagon.name}
             </h2>

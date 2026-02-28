@@ -128,7 +128,7 @@ const RutaDetalle = () => {
       {/* Scenic highlights */}
       <section className="py-8 md:py-12 bg-background">
         <div className="container mx-auto px-4 max-w-3xl text-center">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-3">🌄 Paisaje</p>
+          <p className="section-label">🌄 Paisaje</p>
           <p className="text-muted-foreground text-sm md:text-base leading-relaxed italic">
             "{route.scenicHighlights}"
           </p>
@@ -141,7 +141,7 @@ const RutaDetalle = () => {
       <section className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Recorrido</p>
+            <p className="section-label">Recorrido</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Paradas de la ruta</h2>
           </div>
 
@@ -216,7 +216,7 @@ const RutaDetalle = () => {
         <section className="py-10 md:py-16 bg-secondary/30 border-y border-border">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
-              <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">
+              <p className="section-label">
                 Vive la experiencia
               </p>
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
@@ -268,7 +268,7 @@ const RutaDetalle = () => {
       <section className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Tarifas</p>
+            <p className="section-label">Tarifas</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Precios por clase</h2>
             <p className="text-muted-foreground mt-2 text-sm">Precios por persona, tramo sencillo</p>
           </div>
@@ -313,7 +313,7 @@ const RutaDetalle = () => {
       <section className="py-12 md:py-20 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Horarios</p>
+            <p className="section-label">Horarios</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Salidas diarias</h2>
           </div>
           <div className="max-w-xl mx-auto">
@@ -361,7 +361,7 @@ const RutaDetalle = () => {
         <section className="py-12 md:py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-10">
-              <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Preguntas frecuentes</p>
+              <p className="section-label">Preguntas frecuentes</p>
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Sobre esta ruta</h2>
             </div>
             <div className="max-w-2xl mx-auto space-y-3">
@@ -404,7 +404,7 @@ const RutaDetalle = () => {
         <section className="py-10 md:py-16 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
-              <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Conecta tu viaje</p>
+              <p className="section-label">Conecta tu viaje</p>
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Rutas relacionadas</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">

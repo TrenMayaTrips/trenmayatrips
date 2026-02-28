@@ -51,7 +51,7 @@ const RutaMiniMap = ({ stopNames }: RutaMiniMapProps) => {
   return (
     <EstelaCard className="p-4 md:p-6" variant="gold">
       <div className="text-center mb-3">
-        <p className="text-accent font-medium tracking-widest uppercase text-xs mb-1">
+        <p className="section-label mb-1">
           Tramo
         </p>
         <h3 className="font-heading text-lg font-bold text-foreground">

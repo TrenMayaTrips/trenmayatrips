@@ -42,7 +42,7 @@ const VagonesSection = () => {
     <section id="vagones" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-14">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Vagones</p>
+          <p className="section-label">Vagones</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
             Tres clases, un mismo destino
           </h2>
