@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Clock, User, ArrowRight, Search } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -275,9 +276,7 @@ const Blog = () => {
               placeholder="tu@email.com"
               className="flex-1 px-4 py-3 rounded-lg text-foreground bg-card border border-border text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
-            <button className="px-6 py-3 bg-accent text-accent-foreground font-semibold text-sm rounded-lg hover:bg-gold-light transition-colors">
-              Suscribirse
-            </button>
+            <Button variant="cta">Suscribirse</Button>
           </div>
         </div>
       </section>

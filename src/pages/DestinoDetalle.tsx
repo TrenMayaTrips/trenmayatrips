@@ -221,20 +221,18 @@ const DestinoDetalle = () => {
             Te ayudamos a planificar tu viaje perfecto al sureste mexicano
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
-            <a
-              href={`https://wa.me/529982186754?text=${encodeURIComponent(`Hola, me interesa visitar ${dest.name} (${state?.name}) en el Tren Maya. ¿Pueden ayudarme a planificar?`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-accent text-accent-foreground font-semibold rounded-lg hover:bg-accent/90 transition-colors text-sm"
-            >
-              💬 Planificar por WhatsApp
-            </a>
-            <Link
-              to="/paquetes"
-              className="px-6 py-3 border border-primary-foreground/30 text-primary-foreground font-semibold rounded-lg hover:bg-primary-foreground/10 transition-colors text-sm"
-            >
-              Ver paquetes
-            </Link>
+            <Button variant="cta" asChild>
+              <a
+                href={`https://wa.me/529982186754?text=${encodeURIComponent(`Hola, me interesa visitar ${dest.name} (${state?.name}) en el Tren Maya. ¿Pueden ayudarme a planificar?`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                💬 Planificar por WhatsApp
+              </a>
+            </Button>
+            <Button variant="ctaOutline" asChild>
+              <Link to="/paquetes">Ver paquetes</Link>
+            </Button>
           </div>
         </div>
       </section>

@@ -356,14 +356,12 @@ const Destinos = () => {
             Diseñamos tu itinerario perfecto combinando los mejores destinos de cada estado.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/paquetes">
-              <Button variant="secondary" size="lg">Ver paquetes</Button>
-            </Link>
-            <Link to="/experiencias">
-              <Button variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                Explorar experiencias
-              </Button>
-            </Link>
+            <Button variant="cta" size="lg" asChild>
+              <Link to="/paquetes">Ver paquetes</Link>
+            </Button>
+            <Button variant="ctaOutline" size="lg" asChild>
+              <Link to="/experiencias">Explorar experiencias</Link>
+            </Button>
           </div>
         </div>
       </section>

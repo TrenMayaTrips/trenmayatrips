@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-tren-maya.jpg";
 import { useParallax } from "@/hooks/use-parallax";
@@ -54,18 +55,12 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.45 }}
           className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <Link
-            to="/destinos"
-            className="px-8 py-3.5 bg-accent text-accent-foreground font-semibold rounded-md hover:bg-gold-light transition-colors text-sm md:text-base"
-          >
-            Explorar destinos
-          </Link>
-          <Link
-            to="/experiencias"
-            className="px-8 py-3.5 border border-primary-foreground/30 text-primary-foreground font-medium rounded-md hover:bg-primary-foreground/10 transition-colors text-sm md:text-base"
-          >
-            Ver experiencias
-          </Link>
+          <Button variant="cta" size="lg" asChild>
+            <Link to="/destinos">Explorar destinos</Link>
+          </Button>
+          <Button variant="ctaOutline" size="lg" asChild>
+            <Link to="/experiencias">Ver experiencias</Link>
+          </Button>
         </motion.div>
       </div>
 

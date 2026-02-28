@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft } from "lucide-react";
@@ -171,20 +172,18 @@ const ExperienciaDetalle = () => {
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">por persona</p>
 
-                  <a
-                    href="#reservar"
-                    className="mt-5 block text-center py-3 bg-accent text-accent-foreground font-semibold rounded-lg hover:bg-gold-light transition-colors text-sm"
-                  >
-                    Solicitar Cotización
-                  </a>
-                  <a
-                    href="https://wa.me/529982186754"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 block text-center py-3 border border-border text-foreground font-medium rounded-lg hover:bg-secondary transition-colors text-sm"
-                  >
-                    💬 WhatsApp
-                  </a>
+                  <Button variant="cta" className="mt-5 w-full" asChild>
+                    <a href="#reservar">Solicitar Cotización</a>
+                  </Button>
+                  <Button variant="ghost" className="mt-3 w-full border border-border hover:bg-secondary" asChild>
+                    <a
+                      href="https://wa.me/529982186754"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      💬 WhatsApp
+                    </a>
+                  </Button>
 
                   <div className="mt-5 pt-5 border-t border-border space-y-3 text-sm">
                     <div className="flex justify-between">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight } from "lucide-react";
@@ -467,21 +468,17 @@ const TrenMaya = () => {
             Diseñamos el circuito perfecto para ti. Tren Maya + experiencias + hospedaje en un solo lugar.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/paquetes"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent text-accent-foreground font-semibold rounded-md hover:bg-gold-light transition-colors"
-            >
-              Ver paquetes todo incluido
-              <ArrowRight size={16} />
-            </Link>
-            <a
-              href="https://wa.me/529982186754"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-3.5 border border-primary-foreground/30 text-primary-foreground font-medium rounded-md hover:bg-primary-foreground/10 transition-colors"
-            >
-              Contactar asesor
-            </a>
+            <Button variant="cta" size="lg" asChild>
+              <Link to="/paquetes">
+                Ver paquetes todo incluido
+                <ArrowRight size={16} />
+              </Link>
+            </Button>
+            <Button variant="ctaOutline" size="lg" asChild>
+              <a href="https://wa.me/529982186754" target="_blank" rel="noopener noreferrer">
+                Contactar asesor
+              </a>
+            </Button>
           </div>
         </div>
       </section>
