@@ -55,7 +55,7 @@ const DestinosSection = () => {
     <section id="destinos" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-14">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Destinos</p>
+          <p className="section-label">Destinos</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
             Descubre el sureste mexicano
           </h2>

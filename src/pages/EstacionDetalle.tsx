@@ -90,7 +90,7 @@ const EstacionDetalle = () => {
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">En la estación</p>
+            <p className="section-label">En la estación</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Servicios disponibles</h2>
           </div>
 
@@ -116,7 +116,7 @@ const EstacionDetalle = () => {
       <section className="py-10 md:py-16 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Conexiones</p>
+            <p className="section-label">Conexiones</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
               Rutas disponibles desde {station.name}
             </h2>
@@ -154,7 +154,7 @@ const EstacionDetalle = () => {
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Qué visitar</p>
+            <p className="section-label">Qué visitar</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Destinos cercanos</h2>
           </div>
 
@@ -190,7 +190,7 @@ const EstacionDetalle = () => {
       <section className="py-10 md:py-16 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Acceso</p>
+            <p className="section-label">Acceso</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Cómo llegar</h2>
           </div>
 

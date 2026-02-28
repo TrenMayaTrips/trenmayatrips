@@ -19,7 +19,7 @@ const DestinoGallery = ({ images, title }: DestinoGalleryProps) => {
     <section className="py-10 md:py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Galería</p>
+          <p className="section-label">Galería</p>
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
             Fotos de {title}
           </h2>

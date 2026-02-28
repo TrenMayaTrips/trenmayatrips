@@ -33,7 +33,7 @@ const SobreNosotros = () => {
         <MayaPattern variant="greca" opacity={0.03} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Nuestra misión</p>
+            <p className="section-label">Nuestra misión</p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
               Conectar viajeros con la riqueza del Mundo Maya
             </h2>
@@ -53,7 +53,7 @@ const SobreNosotros = () => {
         <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2 text-center">Nuestra historia</p>
+            <p className="section-label text-center">Nuestra historia</p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground text-center">
               Del sueño a la realidad
             </h2>
@@ -84,7 +84,7 @@ const SobreNosotros = () => {
         <MayaPattern variant="greca" opacity={0.03} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Lo que nos guía</p>
+            <p className="section-label">Lo que nos guía</p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">Nuestros valores</h2>
             <GrecaDivider variant="jade" size="sm" className="mt-4 max-w-xs mx-auto" />
           </div>

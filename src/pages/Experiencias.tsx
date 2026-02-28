@@ -56,7 +56,7 @@ const Experiencias = () => {
         <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Categorías</p>
+            <p className="section-label">Categorías</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
               Explora por tipo de experiencia
             </h2>

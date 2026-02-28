@@ -175,7 +175,7 @@ const TrenMaya = () => {
         <MayaPattern variant="greca" opacity={0.03} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Mapa de la red</p>
+            <p className="section-label">Mapa de la red</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
               Recorrido completo del Tren Maya
             </h2>
@@ -195,7 +195,7 @@ const TrenMaya = () => {
         <MayaPattern variant="pop" opacity={0.025} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Clases de servicio</p>
+            <p className="section-label">Clases de servicio</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
               Compara y elige tu experiencia a bordo
             </h2>
@@ -274,7 +274,7 @@ const TrenMaya = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-end justify-between mb-8 md:mb-12">
             <div>
-              <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Rutas populares</p>
+              <p className="section-label">Rutas populares</p>
               <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
                 Las rutas más solicitadas
               </h2>
@@ -337,7 +337,7 @@ const TrenMaya = () => {
         <MayaPattern variant="pop" opacity={0.02} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Todas las estaciones</p>
+            <p className="section-label">Todas las estaciones</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
               34 estaciones en 5 estados
             </h2>
@@ -427,7 +427,7 @@ const TrenMaya = () => {
         <MayaPattern variant="greca" opacity={0.02} />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">FAQ</p>
+            <p className="section-label">FAQ</p>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
               Preguntas frecuentes sobre el Tren Maya
             </h2>

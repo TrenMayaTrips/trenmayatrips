@@ -47,7 +47,7 @@ const PlanificadorSection = () => {
       <MayaPattern variant="pop" opacity={0.03} />
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10 md:mb-14">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Planificador</p>
+          <p className="section-label">Planificador</p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
             Planifica tu viaje
           </h2>

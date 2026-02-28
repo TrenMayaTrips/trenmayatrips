@@ -37,7 +37,7 @@ const DestinoMap = ({ slug, name, nearestStation }: DestinoMapProps) => {
     <section className="py-10 md:py-16 bg-card border-y border-border">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Ubicación</p>
+          <p className="section-label">Ubicación</p>
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
             ¿Dónde está {name}?
           </h2>

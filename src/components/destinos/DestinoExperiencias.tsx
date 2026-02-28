@@ -21,7 +21,7 @@ const DestinoExperiencias = ({ stateName, stateSlug }: DestinoExperienciasProps)
       <MayaPattern variant="pop" opacity={0.03} />
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">
+          <p className="section-label">
             Vive la experiencia
           </p>
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">

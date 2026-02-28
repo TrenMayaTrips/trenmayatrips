@@ -81,7 +81,7 @@ const DestinoDetalle = () => {
         <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Imperdibles</p>
+            <p className="section-label">Imperdibles</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
               Qué ver y hacer en {dest.name}
             </h2>
@@ -112,7 +112,7 @@ const DestinoDetalle = () => {
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Información práctica</p>
+            <p className="section-label">Información práctica</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Cómo llegar</h2>
           </div>
 
@@ -168,7 +168,7 @@ const DestinoDetalle = () => {
           <MayaPattern variant="greca" opacity={0.03} />
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
-              <p className="text-accent font-medium tracking-widest uppercase text-xs mb-2">Explora más</p>
+              <p className="section-label">Explora más</p>
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
                 Otros destinos en {state?.name}
               </h2>
