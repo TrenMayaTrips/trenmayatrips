@@ -19,7 +19,7 @@ const HeroSection = () => {
           loading="eager"
           style={{ transform: `translateY(${offset}px) scale(1.1)` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/55 to-black/70" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
@@ -27,7 +27,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-gold font-medium tracking-[0.3em] uppercase text-xs md:text-sm mb-4"
+          className="text-gold font-semibold tracking-[0.3em] uppercase text-xs md:text-sm mb-4 drop-shadow-md"
         >
           Explora el Mundo Maya
         </motion.p>
@@ -44,7 +44,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-6 text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+          className="mt-6 text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed drop-shadow-sm"
         >
           Recorre la Península de Yucatán y el sureste de México a bordo del Tren Maya. 
           Cultura, naturaleza y aventura en un solo viaje.
