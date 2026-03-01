@@ -115,12 +115,8 @@ const VagonCard = ({ vagon, index, isFeatured }: { vagon: typeof vagones[0]; ind
       <div className="mt-5 pt-4 border-t border-border">
         <p className="font-heading text-lg font-bold text-foreground">{vagon.price}</p>
         <Link
-          to={`/tren-maya/clases/${vagon.slug}`}
-          className={`mt-3 block text-center py-2.5 rounded-md text-sm font-semibold transition-colors ${
-            isFeatured
-              ? "bg-accent text-accent-foreground hover:bg-gold-light"
-              : "bg-primary text-primary-foreground hover:bg-jade-light"
-          }`}
+to={`/tren-maya/clases/${vagon.slug}`}
+          className="mt-3 block text-center py-2.5 rounded-md text-sm font-semibold transition-colors bg-accent text-accent-foreground hover:bg-gold-light"
         >
           Ver detalles
         </Link>
