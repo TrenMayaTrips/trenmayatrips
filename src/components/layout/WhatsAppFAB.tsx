@@ -10,7 +10,7 @@ const WhatsAppFAB = () => {
       target="_blank"
       rel="noopener noreferrer"
       className={`fixed z-40 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all ${
-        isMobile ? "bottom-[136px] right-4" : "bottom-6 right-6"
+        isMobile ? "bottom-[84px] right-4" : "bottom-6 right-6"
       }`}
       aria-label="Contactar por WhatsApp"
     >
