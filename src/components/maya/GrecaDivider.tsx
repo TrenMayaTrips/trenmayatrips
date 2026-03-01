@@ -2,45 +2,52 @@ import { cn } from "@/lib/utils";
 
 interface GrecaDividerProps {
   className?: string;
+  /** @deprecated Variant is ignored — B2 greca is always gold */
   variant?: "jade" | "gold" | "terracotta";
+  /** @deprecated Size is ignored — B2 greca is fixed 150×16 */
   size?: "sm" | "md" | "lg";
 }
 
 /**
- * Greca escalonada — stepped fret motif from Uxmal/Mitla architecture.
- * Renders as a repeating SVG pattern divider.
+ * Greca Maya B2 — Espiral escalonada con pirámide central.
+ * Dos espirales tipo Uxmal conectadas por escalones piramidales
+ * con opacidad gradual al centro. Color dorado de marca.
  */
-const GrecaDivider = ({ className, variant = "jade", size = "md" }: GrecaDividerProps) => {
-  const colorMap = {
-    jade: "hsl(var(--jade))",
-    gold: "hsl(var(--gold))",
-    terracotta: "hsl(var(--terracotta))",
-  };
-  const color = colorMap[variant];
-  const heights = { sm: 8, md: 12, lg: 16 };
-  const h = heights[size];
-  const stepW = h * 2;
-
+const GrecaDivider = ({ className }: GrecaDividerProps) => {
   return (
-    <div className={cn("w-full overflow-hidden", className)} aria-hidden="true">
+    <div className={cn("w-full flex justify-center my-4", className)} aria-hidden="true">
       <svg
-        width="100%"
-        height={h}
-        viewBox={`0 0 ${stepW * 6} ${h}`}
-        preserveAspectRatio="xMidYMid meet"
-        className="w-full"
+        width="150"
+        height="16"
+        viewBox="0 0 150 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="shrink-0"
       >
-        <defs>
-          <pattern id={`greca-${variant}-${size}`} x="0" y="0" width={stepW} height={h} patternUnits="userSpaceOnUse">
-            {/* Stepped fret: 3 ascending steps then 3 descending */}
-            <path
-              d={`M0 ${h} L0 ${h * 0.66} L${stepW * 0.166} ${h * 0.66} L${stepW * 0.166} ${h * 0.33} L${stepW * 0.33} ${h * 0.33} L${stepW * 0.33} 0 L${stepW * 0.5} 0 L${stepW * 0.5} ${h * 0.33} L${stepW * 0.66} ${h * 0.33} L${stepW * 0.66} ${h * 0.66} L${stepW * 0.833} ${h * 0.66} L${stepW * 0.833} ${h} Z`}
-              fill={color}
-              opacity="0.15"
-            />
-          </pattern>
-        </defs>
-        <rect width="100%" height={h} fill={`url(#greca-${variant}-${size})`} />
+        {/* Espiral izquierda */}
+        <rect x="0" y="12" width="14" height="3" fill="hsl(var(--gold))" />
+        <rect x="11" y="6" width="3" height="9" fill="hsl(var(--gold))" />
+        <rect x="5" y="6" width="9" height="3" fill="hsl(var(--gold))" />
+        <rect x="5" y="0" width="3" height="9" fill="hsl(var(--gold))" />
+        <rect x="5" y="0" width="14" height="3" fill="hsl(var(--gold))" />
+
+        {/* Escalones piramidales centrales */}
+        <rect x="32" y="12" width="8" height="3" fill="hsl(var(--gold))" opacity="0.4" />
+        <rect x="42" y="9" width="8" height="3" fill="hsl(var(--gold))" opacity="0.5" />
+        <rect x="52" y="6" width="8" height="3" fill="hsl(var(--gold))" opacity="0.6" />
+        <rect x="62" y="3" width="10" height="3" fill="hsl(var(--gold))" opacity="0.8" />
+        <rect x="68" y="0" width="14" height="3" fill="hsl(var(--gold))" />
+        <rect x="78" y="3" width="10" height="3" fill="hsl(var(--gold))" opacity="0.8" />
+        <rect x="90" y="6" width="8" height="3" fill="hsl(var(--gold))" opacity="0.6" />
+        <rect x="100" y="9" width="8" height="3" fill="hsl(var(--gold))" opacity="0.5" />
+        <rect x="110" y="12" width="8" height="3" fill="hsl(var(--gold))" opacity="0.4" />
+
+        {/* Espiral derecha (espejo) */}
+        <rect x="136" y="12" width="14" height="3" fill="hsl(var(--gold))" />
+        <rect x="136" y="6" width="3" height="9" fill="hsl(var(--gold))" />
+        <rect x="136" y="6" width="9" height="3" fill="hsl(var(--gold))" />
+        <rect x="142" y="0" width="3" height="9" fill="hsl(var(--gold))" />
+        <rect x="131" y="0" width="14" height="3" fill="hsl(var(--gold))" />
       </svg>
     </div>
   );
