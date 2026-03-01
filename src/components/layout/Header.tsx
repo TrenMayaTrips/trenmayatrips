@@ -18,28 +18,12 @@ interface NavItem {
 
 const navLinks: NavItem[] = [
   {
-    label: "Experiencias",
-    href: "/experiencias",
-    children: [
-      { label: "Todas las experiencias", href: "/experiencias" },
-      { label: "Cultural y patrimonio", href: "/experiencias/cultural-patrimonio" },
-      { label: "Aventura y naturaleza", href: "/experiencias/aventura-naturaleza" },
-      { label: "Gastronómico", href: "/experiencias/gastronomico" },
-      { label: "Bienestar y relajación", href: "/experiencias/bienestar" },
-    ],
-  },
-  {
-    label: "Destinos",
+    label: "Explorar",
     href: "/destinos",
     children: [
-      { label: "Todos los destinos", href: "/destinos" },
-      { label: "Cancún", href: "/destinos/cancun" },
-      { label: "Tulum", href: "/destinos/tulum" },
-      { label: "Mérida", href: "/destinos/merida" },
-      { label: "Chichén Itzá", href: "/destinos/chichen-itza" },
-      { label: "Palenque", href: "/destinos/palenque" },
-      { label: "Campeche", href: "/destinos/campeche-ciudad" },
-      { label: "Bacalar", href: "/destinos/bacalar" },
+      { label: "Destinos", href: "/destinos" },
+      { label: "Experiencias", href: "/experiencias" },
+      { label: "Paquetes", href: "/paquetes" },
     ],
   },
   {
@@ -53,17 +37,6 @@ const navLinks: NavItem[] = [
       { label: "Ruta Cancún – Mérida", href: "/tren-maya/rutas/cancun-merida" },
       { label: "Ruta Cancún – Tulum", href: "/tren-maya/rutas/cancun-tulum" },
       { label: "Ruta Mérida – Palenque", href: "/tren-maya/rutas/merida-palenque" },
-    ],
-  },
-  {
-    label: "Paquetes",
-    href: "/paquetes",
-    children: [
-      { label: "Todos los paquetes", href: "/paquetes" },
-      { label: "Ruta de la grandeza maya", href: "/paquetes/ruta-grandeza-maya" },
-      { label: "Cultura y gastronomía", href: "/paquetes/cultura-gastronomia-entretenimiento" },
-      { label: "Aventura 5 estados", href: "/paquetes/aventura-naturaleza-5-estados" },
-      { label: "Mundo Maya 4 días", href: "/paquetes/mundo-maya-classico-4-dias" },
     ],
   },
   {
