@@ -4,7 +4,6 @@ import DestinosSection from "@/components/home/DestinosSection";
 import ExperienciasSection from "@/components/home/ExperienciasSection";
 import VagonesSection from "@/components/home/VagonesSection";
 import RutasSection from "@/components/home/RutasSection";
-import PlanificadorSection from "@/components/home/PlanificadorSection";
 import TestimoniosSection from "@/components/home/TestimoniosSection";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import CTAFinalSection from "@/components/home/CTAFinalSection";
@@ -17,7 +16,6 @@ const Index = () => {
       <ExperienciasSection />
       <VagonesSection />
       <RutasSection />
-      <PlanificadorSection />
       <TestimoniosSection />
       <NewsletterSection />
       <CTAFinalSection />
