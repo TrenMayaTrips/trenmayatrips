@@ -15,7 +15,7 @@ const ParallaxHero = ({
   imageAlt,
   children,
   className = "pt-24 md:pt-32 pb-12 md:pb-16 min-h-[340px] md:min-h-[420px]",
-  overlayClass = "bg-black/45",
+  overlayClass = "bg-gradient-to-b from-black/50 via-black/55 to-black/70",
   speed = 0.3,
   eager = true,
 }: ParallaxHeroProps) => {

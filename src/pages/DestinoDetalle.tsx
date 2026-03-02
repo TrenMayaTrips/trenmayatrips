@@ -35,7 +35,7 @@ const DestinoDetalle = () => {
         imageSrc={image}
         imageAlt={dest.name}
         className="pt-24 md:pt-32 pb-14 md:pb-20 min-h-[340px] md:min-h-[460px]"
-        overlayClass="bg-black/50"
+        overlayClass="bg-gradient-to-b from-black/50 via-black/55 to-black/70"
       >
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
           <nav className="flex items-center justify-center gap-2 text-white/60 text-xs mb-4">

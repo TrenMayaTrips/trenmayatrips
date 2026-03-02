@@ -27,7 +27,7 @@ const EstacionDetalle = () => {
         imageSrc={station.image}
         imageAlt={`Estación ${station.name} del Tren Maya`}
         className="pt-24 md:pt-32 pb-14 md:pb-20 min-h-[340px] md:min-h-[460px]"
-        overlayClass="bg-black/55"
+        overlayClass="bg-gradient-to-b from-black/50 via-black/55 to-black/70"
       >
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
           {/* Breadcrumb */}

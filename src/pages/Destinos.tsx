@@ -34,7 +34,7 @@ const Destinos = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <ParallaxHero imageSrc={heroDestinos} imageAlt="Tren Maya Destinations" overlayClass="bg-black/40">
+      <ParallaxHero imageSrc={heroDestinos} imageAlt="Tren Maya Destinations" overlayClass="bg-gradient-to-b from-black/50 via-black/55 to-black/70">
         <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">Destinos</p>
         <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
           5 estados, miles de historias
