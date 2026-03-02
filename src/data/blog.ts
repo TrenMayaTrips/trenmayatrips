@@ -4,6 +4,7 @@ import destBacalar from "@/assets/dest-bacalar.jpg";
 import destMerida from "@/assets/dest-merida.jpg";
 import destPalenque from "@/assets/dest-palenque.jpg";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
+import destSanCristobal from "@/assets/dest-san-cristobal.jpg";
 import destRivieraMaya from "@/assets/dest-riviera-maya.jpg";
 import destComalcalco from "@/assets/dest-comalcalco.jpg";
 import destChichenItzaDetail from "@/assets/dest-chichen-itza-detail.jpg";
@@ -271,6 +272,31 @@ export const blogPosts: BlogPost[] = [
       "## La Ruta del Cacao en Tabasco\n\nTabasco es el corazón cacaotero de México, produciendo más del 70% del cacao nacional. La Ruta del Cacao te lleva por plantaciones centenarias donde puedes participar en todo el proceso: desde la cosecha del fruto hasta la elaboración del chocolate.",
       "## Hacienda Cacaotera La Luz\n\nUbicada cerca de Comalcalco, esta hacienda ofrece tours guiados donde aprendes sobre las variedades criollo y trinitario, y puedes crear tu propia tableta de chocolate. El aroma del cacao tostándose es inolvidable.",
       "## Cómo Conectar con el Tren Maya\n\nDesde la estación Villahermosa o Tenosique, puedes organizar excursiones de medio día a las plantaciones de cacao. Es una experiencia perfecta para combinar con la visita a las ruinas de Comalcalco, la única ciudad maya construida con ladrillos de barro cocido.",
+    ],
+  },
+  {
+    slug: "pueblos-magicos-ruta-tren-maya",
+    title: "Pueblos mágicos en la ruta del Tren Maya que no puedes perderte",
+    excerpt:
+      "Izamal, Valladolid, San Cristóbal y más: los pueblos con encanto colonial y alma maya que el tren conecta a lo largo de su recorrido.",
+    category: "destinos-magicos",
+    author: "Marina Sánchez",
+    authorRole: "Fotógrafa de Naturaleza",
+    publishedAt: "2025-07-20",
+    readTime: 9,
+    featured: false,
+    tags: ["Pueblos Mágicos", "Colonial", "Cultura", "Ruta"],
+    image: destSanCristobal,
+    contentImages: [
+      { src: destIzamal, alt: "Ciudad amarilla de Izamal en Yucatán", caption: "Izamal, la Ciudad Amarilla, es uno de los pueblos más fotogénicos de la ruta", afterBlock: 1 },
+      { src: destValladolid, alt: "Centro histórico de Valladolid", caption: "Valladolid combina elegancia colonial con tradiciones mayas vivas", afterBlock: 3 },
+    ],
+    content: [
+      "La ruta del Tren Maya no solo conecta grandes sitios arqueológicos y playas espectaculares: también atraviesa algunos de los pueblos más encantadores de México. Estas localidades, donde el tiempo parece haberse detenido, ofrecen una experiencia auténtica de la vida en el sureste mexicano.",
+      "## Izamal: La Ciudad Amarilla\n\nTodo en Izamal está pintado de amarillo ocre, desde las fachadas coloniales hasta el imponente Convento de San Antonio de Padua, construido sobre una pirámide maya. Es uno de los destinos más fotogénicos de la península y un lugar donde la convivencia entre lo prehispánico y lo colonial se vive en cada esquina.",
+      "## Valladolid: Elegancia Colonial\n\nCon su catedral de San Gervasio, el cenote Zací en pleno centro y calles empedradas llenas de restaurantes y galerías, Valladolid es la base perfecta para explorar Chichén Itzá y Ek Balam. Su mercado municipal es imprescindible para probar la longaniza de Valladolid.",
+      "## San Cristóbal de las Casas\n\nEnclavada en los Altos de Chiapas a 2,200 metros de altitud, esta ciudad ofrece un contraste refrescante con el calor tropical del resto de la ruta. Sus iglesias barrocas, mercados indígenas y cafés bohemios la convierten en un destino irresistible.",
+      "## Cómo Recorrerlos en Tren Maya\n\nLa belleza de estos pueblos es que todos tienen estación propia o están a pocos minutos de una. Recomendamos dedicar al menos un día completo a cada uno para caminar sus calles sin prisa, comer en sus mercados y conversar con sus habitantes.",
     ],
   },
 ];
