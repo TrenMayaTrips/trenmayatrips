@@ -81,7 +81,7 @@ const RutaDetalle = () => {
         imageSrc={route.heroImage}
         imageAlt={`Ruta ${route.origin} a ${route.destination}`}
         className="pt-24 md:pt-32 pb-14 md:pb-20 min-h-[380px] md:min-h-[460px]"
-        overlayClass="bg-gradient-to-t from-black/70 via-black/40 to-black/20"
+        overlayClass="bg-gradient-to-b from-black/50 via-black/55 to-black/70"
       >
         <Breadcrumb className="mb-6 justify-center">
           <BreadcrumbList>

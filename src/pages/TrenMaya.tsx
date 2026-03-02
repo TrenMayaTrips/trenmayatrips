@@ -77,7 +77,7 @@ const TrenMaya = () => {
         imageSrc={heroTrenMayaPage}
         imageAlt="Tren Maya llegando a estación rodeada de selva tropical"
         className="pt-24 md:pt-32 pb-14 md:pb-20 min-h-[380px] md:min-h-[500px]"
-        overlayClass="bg-black/55"
+        overlayClass="bg-gradient-to-b from-black/50 via-black/55 to-black/70"
       >
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <p className="text-gold font-medium tracking-[0.3em] uppercase text-xs mb-3">La guía más completa</p>
