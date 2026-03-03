@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Calendar, Star, ChevronRight, Train } from "lucide-react";
+import { MapPin, Clock, Calendar, Star, ChevronRight, Train, LayoutGrid, List } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { destinations, states, destinationTypes } from "@/data/destinations";
@@ -16,6 +16,7 @@ import MayaPattern from "@/components/maya/MayaPattern";
 const Destinos = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const filtered = useMemo(() => {
     let results = destinations;
@@ -151,10 +152,33 @@ const Destinos = () => {
       {/* Destinations Grid */}
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
-          <p className="text-sm text-muted-foreground mb-8">
-            {filtered.length} destino{filtered.length !== 1 ? "s" : ""}
-            {selectedState && ` en ${states.find((s) => s.slug === selectedState)?.name}`}
-          </p>
+          {/* Header with count and view toggle */}
+          <div className="flex items-center justify-between mb-8">
+            <p className="text-sm text-muted-foreground">
+              {filtered.length} destino{filtered.length !== 1 ? "s" : ""}
+              {selectedState && ` en ${states.find((s) => s.slug === selectedState)?.name}`}
+            </p>
+            <div className="flex items-center gap-1 bg-secondary rounded-lg p-1">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-2 rounded-md transition-colors ${
+                  viewMode === "grid" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-label="Vista grid"
+              >
+                <LayoutGrid size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-2 rounded-md transition-colors ${
+                  viewMode === "list" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-label="Vista lista"
+              >
+                <List size={16} />
+              </button>
+            </div>
+          </div>
 
           {filtered.length === 0 ? (
             <div className="text-center py-16">
@@ -166,7 +190,8 @@ const Destinos = () => {
                 Ver todos los destinos
               </button>
             </div>
-          ) : (
+          ) : viewMode === "grid" ? (
+            /* === GRID VIEW === */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((dest, i) => {
                 const state = states.find((s) => s.slug === dest.state);
@@ -181,7 +206,6 @@ const Destinos = () => {
                     to={`/destinos/${dest.slug}`}
                     className="rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all group block"
                   >
-                    {/* Card Header with Image */}
                     <div className="relative h-48 overflow-hidden bg-muted">
                       {destinationImageMap[dest.slug] && (
                         <img
@@ -192,16 +216,11 @@ const Destinos = () => {
                         />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/70" />
-                      
-                      {/* Overlay Content */}
                       <div className="absolute inset-0 p-6 flex flex-col justify-end">
                         <span className="text-4xl mb-2 drop-shadow-md">{dest.emoji}</span>
                         <div className="flex items-center gap-2 mb-1.5">
                           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm text-[10px] font-medium text-white/90 uppercase tracking-wider">
-                            <span
-                              className="w-2 h-2 rounded-full inline-block"
-                              style={{ backgroundColor: state?.color }}
-                            />
+                            <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: state?.color }} />
                             {state?.name}
                           </span>
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm text-[10px] font-medium text-white/90 uppercase tracking-wider">
@@ -214,28 +233,18 @@ const Destinos = () => {
                         <p className="text-xs text-white/80 italic mt-1 drop-shadow-sm">{dest.tagline}</p>
                       </div>
                     </div>
-
-                    {/* Card Body */}
                     <div className="p-5 space-y-4">
                       <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
                         {dest.description}
                       </p>
-
-                      {/* Highlights */}
                       <div className="flex flex-wrap gap-1.5">
                         {dest.highlights.slice(0, 3).map((h) => (
-                          <span key={h} className="px-2.5 py-1 bg-secondary text-foreground text-[11px] rounded-full">
-                            {h}
-                          </span>
+                          <span key={h} className="px-2.5 py-1 bg-secondary text-foreground text-[11px] rounded-full">{h}</span>
                         ))}
                         {dest.highlights.length > 3 && (
-                          <span className="px-2.5 py-1 bg-secondary text-foreground text-[11px] rounded-full">
-                            +{dest.highlights.length - 3}
-                          </span>
+                          <span className="px-2.5 py-1 bg-secondary text-foreground text-[11px] rounded-full">+{dest.highlights.length - 3}</span>
                         )}
                       </div>
-
-                      {/* Meta Info */}
                       <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground pt-3 border-t border-border">
                         <div className="flex items-center gap-1.5">
                           <Train size={12} className="text-primary" />
@@ -250,20 +259,75 @@ const Destinos = () => {
                           <span>Mejor época: {dest.bestMonths}</span>
                         </div>
                       </div>
-
-                      {/* CTA */}
-                      <Button
-                        variant="cta"
-                        size="sm"
-                        className="w-full mt-2"
-                        asChild
-                      >
-                        <span>
-                          Explorar destino <ChevronRight size={14} className="ml-1" />
-                        </span>
+                      <Button variant="cta" size="sm" className="w-full mt-2" asChild>
+                        <span>Explorar destino <ChevronRight size={14} className="ml-1" /></span>
                       </Button>
                     </div>
                   </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            /* === LIST VIEW === */
+            <div className="space-y-2">
+              {filtered.map((dest, i) => {
+                const state = states.find((s) => s.slug === dest.state);
+                return (
+                  <motion.div
+                    key={dest.slug}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.02 }}
+                  >
+                    <Link
+                      to={`/destinos/${dest.slug}`}
+                      className="flex items-center gap-4 p-3 rounded-xl border border-border bg-card hover:shadow-md hover:border-primary/30 transition-all group"
+                    >
+                      {/* Thumbnail */}
+                      <div className="relative w-20 h-20 md:w-24 md:h-16 rounded-lg overflow-hidden bg-muted shrink-0">
+                        {destinationImageMap[dest.slug] && (
+                          <img
+                            src={destinationImageMap[dest.slug]}
+                            alt={dest.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-lg">{dest.emoji}</span>
+                          <h3 className="font-heading text-base font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                            {dest.name}
+                          </h3>
+                        </div>
+                        <p className="text-xs text-muted-foreground italic truncate">{dest.tagline}</p>
+                      </div>
+
+                      {/* Badges */}
+                      <div className="hidden sm:flex items-center gap-2 shrink-0">
+                        <span
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-secondary text-foreground"
+                        >
+                          <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: state?.color }} />
+                          {state?.name}
+                        </span>
+                        <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-secondary text-foreground">
+                          {destinationTypes[dest.type]}
+                        </span>
+                      </div>
+
+                      {/* Station + Arrow */}
+                      <div className="hidden md:flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
+                        <Train size={12} className="text-primary" />
+                        <span>{dest.nearestStation}</span>
+                      </div>
+
+                      <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                    </Link>
                   </motion.div>
                 );
               })}
