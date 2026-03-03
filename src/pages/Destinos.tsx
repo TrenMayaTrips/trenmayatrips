@@ -249,7 +249,7 @@ const Destinos = () => {
 
                       {/* CTA */}
                       <Button
-                        variant="outline"
+                        variant="cta"
                         size="sm"
                         className="w-full mt-2"
                         asChild
