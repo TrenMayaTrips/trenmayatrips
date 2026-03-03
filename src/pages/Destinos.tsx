@@ -69,12 +69,13 @@ const Destinos = () => {
                   <motion.div
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.95 }}
+                    animate={{ scale: selectedState === state.slug ? 1.1 : 1 }}
                     className={`w-14 h-14 md:w-16 md:h-16 rounded-full border-4 flex items-center justify-center text-2xl transition-all ${
                       selectedState === state.slug
-                        ? "border-primary bg-primary/20 shadow-lg shadow-primary/20"
+                        ? "border-primary bg-primary/15 shadow-xl shadow-primary/30 ring-4 ring-primary/10"
                         : "border-border bg-card group-hover:border-primary/50"
                     }`}
-                    style={selectedState === state.slug ? { borderColor: state.color } : {}}
+                    style={selectedState === state.slug ? { borderColor: state.color, backgroundColor: `${state.color}20` } : {}}
                   >
                     {state.emoji}
                   </motion.div>
