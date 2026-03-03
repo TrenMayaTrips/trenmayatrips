@@ -72,10 +72,14 @@ const Destinos = () => {
                     animate={{ scale: selectedState === state.slug ? 1.1 : 1 }}
                     className={`w-14 h-14 md:w-16 md:h-16 rounded-full border-4 flex items-center justify-center text-2xl transition-all ${
                       selectedState === state.slug
-                        ? "border-primary bg-primary/15 shadow-xl shadow-primary/30 ring-4 ring-primary/10"
-                        : "border-border bg-card group-hover:border-primary/50"
+                        ? "shadow-xl ring-4 ring-black/5"
+                        : "bg-card hover:shadow-md"
                     }`}
-                    style={selectedState === state.slug ? { borderColor: state.color, backgroundColor: `${state.color}20` } : {}}
+                    style={{
+                      borderColor: selectedState === state.slug ? state.color : `${state.color}50`,
+                      backgroundColor: selectedState === state.slug ? `${state.color}20` : `${state.color}08`,
+                      boxShadow: selectedState === state.slug ? `0 10px 25px -5px ${state.color}40` : undefined,
+                    }}
                   >
                     {state.emoji}
                   </motion.div>
