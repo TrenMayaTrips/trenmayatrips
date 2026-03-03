@@ -186,24 +186,27 @@ const Destinos = () => {
                           loading="lazy"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-card/80" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/70" />
                       
                       {/* Overlay Content */}
                       <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                        <span className="text-4xl mb-2">{dest.emoji}</span>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span
-                            className="w-2 h-2 rounded-full inline-block"
-                            style={{ backgroundColor: state?.color }}
-                          />
-                          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                            {state?.name} · {destinationTypes[dest.type]}
+                        <span className="text-4xl mb-2 drop-shadow-md">{dest.emoji}</span>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm text-[10px] font-medium text-white/90 uppercase tracking-wider">
+                            <span
+                              className="w-2 h-2 rounded-full inline-block"
+                              style={{ backgroundColor: state?.color }}
+                            />
+                            {state?.name}
+                          </span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm text-[10px] font-medium text-white/90 uppercase tracking-wider">
+                            {destinationTypes[dest.type]}
                           </span>
                         </div>
-                        <h3 className="font-heading text-xl font-bold text-primary-foreground leading-tight group-hover:text-gold transition-colors">
+                        <h3 className="font-heading text-xl font-bold text-white leading-tight drop-shadow-md group-hover:text-gold transition-colors">
                           {dest.name}
                         </h3>
-                        <p className="text-xs text-primary-foreground/70 italic mt-1">{dest.tagline}</p>
+                        <p className="text-xs text-white/80 italic mt-1 drop-shadow-sm">{dest.tagline}</p>
                       </div>
                     </div>
 
