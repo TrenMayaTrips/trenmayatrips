@@ -254,7 +254,7 @@ const Experiencias = () => {
                             <span className="font-medium">{exp.rating}</span>
                           </div>
                         </div>
-                        <p className="font-heading font-bold text-foreground">
+                        <p className="font-heading text-xl font-bold text-jade-dark">
                           ${exp.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
                         </p>
                       </div>
