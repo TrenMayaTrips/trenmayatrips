@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ArrowUpDown } from "lucide-react";
+import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
 import { categories } from "@/data/experience-categories";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
@@ -47,6 +48,8 @@ const Experiencias = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("relevancia");
+  const [currentPage, setCurrentPage] = useState(1);
+  const isMobile = useIsMobile();
 
   const filtered = useMemo(() => {
     const result = experiences.filter((exp) => {
@@ -64,6 +67,13 @@ const Experiencias = () => {
     if (sortBy === "rating") return [...result].sort((a, b) => b.rating - a.rating);
     return result;
   }, [searchQuery, selectedCategory, selectedState, sortBy]);
+
+  const perPage = isMobile ? 6 : 9;
+  const totalPages = Math.ceil(filtered.length / perPage);
+  const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+  // Reset page when filters/sort change
+  useEffect(() => { setCurrentPage(1); }, [searchQuery, selectedCategory, selectedState, sortBy]);
 
   const activeFilters = [selectedCategory, selectedState].filter(Boolean).length;
 
@@ -207,62 +217,97 @@ const Experiencias = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((exp, i) => (
-                <motion.div
-                  key={exp.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    to={`/experiencias/${exp.slug}`}
-                    className="group block bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all"
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginated.map((exp, i) => (
+                  <motion.div
+                    key={exp.slug}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
                   >
-                    <div className="h-48 md:h-52 relative overflow-hidden">
-                      {experienceGallery[exp.slug]?.[0] ? (
-                        <img
-                          src={experienceGallery[exp.slug][0]}
-                          alt={exp.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-jade-light/30" />
-                      )}
-                      <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
-                        {categoryLabels[exp.category]}
-                      </span>
-                    </div>
-                    <div className="p-4 md:p-5">
-                      <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                        {exp.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{exp.description}</p>
-                      <div className="flex items-center gap-1 mt-2 text-sm text-muted-foreground">
-                        <MapPin size={14} />
-                        <span>{exp.stateName}</span>
+                    <Link
+                      to={`/experiencias/${exp.slug}`}
+                      className="group block bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all"
+                    >
+                      <div className="h-48 md:h-52 relative overflow-hidden">
+                        {experienceGallery[exp.slug]?.[0] ? (
+                          <img
+                            src={experienceGallery[exp.slug][0]}
+                            alt={exp.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-jade-light/30" />
+                        )}
+                        <span className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-sm text-xs font-medium rounded-full text-foreground">
+                          {categoryLabels[exp.category]}
+                        </span>
                       </div>
-                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Clock size={14} />
-                            <span>{exp.duration}</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-gold">
-                            <Star size={14} fill="currentColor" />
-                            <span className="font-medium">{exp.rating}</span>
-                          </div>
+                      <div className="p-4 md:p-5">
+                        <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                          {exp.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{exp.description}</p>
+                        <div className="flex items-center gap-1 mt-2 text-sm text-muted-foreground">
+                          <MapPin size={14} />
+                          <span>{exp.stateName}</span>
                         </div>
-                        <p className="font-heading text-xl font-bold text-jade-dark">
-                          ${exp.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
-                        </p>
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+                          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Clock size={14} />
+                              <span>{exp.duration}</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-gold">
+                              <Star size={14} fill="currentColor" />
+                              <span className="font-medium">{exp.rating}</span>
+                            </div>
+                          </div>
+                          <p className="font-heading text-xl font-bold text-jade-dark">
+                            ${exp.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <nav className="flex items-center justify-center gap-2 mt-10">
+                  <button
+                    onClick={() => { setCurrentPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    disabled={currentPage === 1}
+                    className="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-border text-sm font-medium text-jade-dark hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <ChevronLeft size={14} /> Anterior
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => { setCurrentPage(page); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                      className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+                        page === currentPage
+                          ? "bg-jade-dark text-white"
+                          : "border border-border text-jade-dark hover:bg-secondary"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => { setCurrentPage(p => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    disabled={currentPage === totalPages}
+                    className="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-border text-sm font-medium text-jade-dark hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Siguiente <ChevronRight size={14} />
+                  </button>
+                </nav>
+              )}
+            </>
           )}
         </div>
       </section>
