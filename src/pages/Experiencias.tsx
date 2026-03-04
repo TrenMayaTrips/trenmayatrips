@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ChevronRight } from "lucide-react";
+import { MapPin, Clock, Star, Search, SlidersHorizontal, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
@@ -9,7 +9,21 @@ import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { experienceGallery } from "@/data/experience-gallery";
 import GrecaDivider from "@/components/maya/GrecaDivider";
-import MayaPattern from "@/components/maya/MayaPattern";
+
+const categoryIcons: Record<string, string> = {
+  cultural: "🏛️",
+  aventura: "🌿",
+  gastronomico: "🍽️",
+  bienestar: "🧘",
+};
+
+const stateIcons: Record<string, string> = {
+  "quintana-roo": "🌊",
+  yucatan: "🏛️",
+  campeche: "🏰",
+  tabasco: "🌴",
+  chiapas: "⛰️",
+};
 
 const Experiencias = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,44 +64,6 @@ const Experiencias = () => {
       </ParallaxHero>
 
       <GrecaDivider variant="jade" size="md" />
-
-      {/* Categories */}
-      <section className="py-10 md:py-14 bg-secondary relative">
-        <MayaPattern variant="pop" opacity={0.03} />
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <p className="section-label">Categorías</p>
-            <h2 className="font-heading text-2xl md:text-4xl font-bold text-foreground">
-              Explora por tipo de experiencia
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {categories.map((cat, i) => (
-              <motion.div
-                key={cat.slug}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link
-                  to={`/experiencias/${cat.slug}`}
-                  className="group block bg-card p-5 md:p-7 rounded-xl border border-border hover:border-primary/30 hover:shadow-md transition-all text-center"
-                >
-                  <span className="text-3xl md:text-4xl mb-3 block">{cat.icon}</span>
-                  <h3 className="font-heading text-base md:text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {cat.name}
-                  </h3>
-                  <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">{cat.description}</p>
-                  <span className="mt-3 inline-flex items-center gap-1 text-xs text-primary font-medium">
-                    Ver más <ChevronRight size={12} />
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Search & Filters */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
@@ -136,12 +112,13 @@ const Experiencias = () => {
                         <button
                           key={key}
                           onClick={() => setSelectedCategory(selectedCategory === key ? null : key)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
                             selectedCategory === key
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-secondary text-foreground hover:bg-muted"
+                              ? "bg-jade-dark text-white border-jade-dark"
+                              : "bg-transparent text-foreground border-border hover:bg-muted"
                           }`}
                         >
+                          <span>{categoryIcons[key]}</span>
                           {label}
                         </button>
                       ))}
@@ -154,12 +131,13 @@ const Experiencias = () => {
                         <button
                           key={key}
                           onClick={() => setSelectedState(selectedState === key ? null : key)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
                             selectedState === key
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-secondary text-foreground hover:bg-muted"
+                              ? "bg-jade-dark text-white border-jade-dark"
+                              : "bg-transparent text-foreground border-border hover:bg-muted"
                           }`}
                         >
+                          <span>{stateIcons[key]}</span>
                           {label}
                         </button>
                       ))}
