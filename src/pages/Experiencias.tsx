@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Star, Search, SlidersHorizontal, X } from "lucide-react";
+import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ArrowUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
@@ -25,14 +25,31 @@ const stateIcons: Record<string, string> = {
   chiapas: "⛰️",
 };
 
+type SortOption = "relevancia" | "precio-asc" | "precio-desc" | "duracion" | "rating";
+
+const sortLabels: Record<SortOption, string> = {
+  relevancia: "Relevancia",
+  "precio-asc": "Precio: menor a mayor",
+  "precio-desc": "Precio: mayor a menor",
+  duracion: "Duración: corta a larga",
+  rating: "Mejor valoradas",
+};
+
+const parseDurationHours = (d: string): number => {
+  const hMatch = d.match(/(\d+)\s*h/i);
+  const dMatch = d.match(/(\d+)\s*d/i);
+  return (dMatch ? parseInt(dMatch[1]) * 24 : 0) + (hMatch ? parseInt(hMatch[1]) : 0);
+};
+
 const Experiencias = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [sortBy, setSortBy] = useState<SortOption>("relevancia");
 
   const filtered = useMemo(() => {
-    return experiences.filter((exp) => {
+    const result = experiences.filter((exp) => {
       const matchesSearch = !searchQuery || 
         exp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         exp.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -40,7 +57,13 @@ const Experiencias = () => {
       const matchesState = !selectedState || exp.state === selectedState;
       return matchesSearch && matchesCategory && matchesState;
     });
-  }, [searchQuery, selectedCategory, selectedState]);
+
+    if (sortBy === "precio-asc") return [...result].sort((a, b) => a.price - b.price);
+    if (sortBy === "precio-desc") return [...result].sort((a, b) => b.price - a.price);
+    if (sortBy === "duracion") return [...result].sort((a, b) => parseDurationHours(a.duration) - parseDurationHours(b.duration));
+    if (sortBy === "rating") return [...result].sort((a, b) => b.rating - a.rating);
+    return result;
+  }, [searchQuery, selectedCategory, selectedState, sortBy]);
 
   const activeFilters = [selectedCategory, selectedState].filter(Boolean).length;
 
@@ -158,9 +181,23 @@ const Experiencias = () => {
       {/* Results */}
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
-          <p className="text-sm text-muted-foreground mb-6">
-            {filtered.length} experiencia{filtered.length !== 1 ? "s" : ""} encontrada{filtered.length !== 1 ? "s" : ""}
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+            <p className="text-sm text-muted-foreground">
+              {filtered.length} experiencia{filtered.length !== 1 ? "s" : ""} encontrada{filtered.length !== 1 ? "s" : ""}
+            </p>
+            <div className="relative w-full sm:w-auto">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="w-full sm:w-auto appearance-none pl-3 pr-9 py-2 rounded-lg border border-border bg-card text-foreground text-sm font-body min-h-[40px] focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+              >
+                {Object.entries(sortLabels).map(([key, label]) => (
+                  <option key={key} value={key}>{label}</option>
+                ))}
+              </select>
+              <ArrowUpDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            </div>
+          </div>
 
           {filtered.length === 0 ? (
             <div className="text-center py-16">
