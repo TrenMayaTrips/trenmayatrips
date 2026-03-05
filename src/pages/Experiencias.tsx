@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -49,7 +49,34 @@ const Experiencias = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("relevancia");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Search suggestions (max 5)
+  const suggestions = useMemo(() => {
+    if (!searchQuery || searchQuery.length < 2) return [];
+    const q = searchQuery.toLowerCase();
+    return experiences
+      .filter(
+        (exp) =>
+          exp.title.toLowerCase().includes(q) ||
+          exp.description.toLowerCase().includes(q) ||
+          exp.stateName.toLowerCase().includes(q)
+      )
+      .slice(0, 5);
+  }, [searchQuery]);
+
+  // Close suggestions on click outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const filtered = useMemo(() => {
     const result = experiences.filter((exp) => {
@@ -102,15 +129,56 @@ const Experiencias = () => {
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center gap-3">
-            <div className="flex-1 relative">
+            <div className="flex-1 relative" ref={searchRef}>
               <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
+                onFocus={() => setShowSuggestions(true)}
                 placeholder="Buscar experiencias..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm min-h-[44px]"
+                autoComplete="off"
               />
+              {/* Search suggestions dropdown */}
+              {showSuggestions && searchQuery.length >= 2 && (
+                <div className="absolute top-full left-0 right-0 mt-1.5 bg-card rounded-xl border border-border shadow-[0_4px_12px_rgba(0,0,0,0.1)] z-50 overflow-hidden">
+                  {suggestions.length > 0 ? (
+                    suggestions.map((exp) => (
+                      <Link
+                        key={exp.slug}
+                        to={`/experiencias/${exp.slug}`}
+                        onClick={() => setShowSuggestions(false)}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors"
+                      >
+                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-muted">
+                          {experienceGallery[exp.slug]?.[0] ? (
+                            <img
+                              src={experienceGallery[exp.slug][0]}
+                              alt={exp.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-foreground truncate">{exp.title}</p>
+                          <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            <MapPin size={11} /> {exp.stateName}
+                          </p>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="px-4 py-6 text-center">
+                      <p className="text-sm text-muted-foreground">
+                        No se encontraron experiencias para "<span className="font-medium text-foreground">{searchQuery}</span>"
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
