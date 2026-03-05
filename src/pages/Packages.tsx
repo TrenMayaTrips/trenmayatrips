@@ -205,7 +205,7 @@ const Packages = () => {
                         Destinos incluidos
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {pkg.highlights.slice(0, 4).map((highlight) => (
+                        {pkg.highlights.slice(0, expandedPackage === pkg.slug ? undefined : 3).map((highlight) => (
                           <span
                             key={highlight}
                             className="px-3 py-1 bg-secondary text-foreground text-xs rounded-full"
@@ -213,10 +213,13 @@ const Packages = () => {
                             {highlight}
                           </span>
                         ))}
-                        {pkg.highlights.length > 4 && (
-                          <span className="px-3 py-1 bg-secondary text-foreground text-xs rounded-full">
-                            +{pkg.highlights.length - 4}
-                          </span>
+                        {pkg.highlights.length > 3 && expandedPackage !== pkg.slug && (
+                          <button
+                            onClick={() => setExpandedPackage(pkg.slug)}
+                            className="px-3 py-1 text-primary text-xs hover:underline"
+                          >
+                            +{pkg.highlights.length - 3} más
+                          </button>
                         )}
                       </div>
                     </div>
@@ -242,18 +245,18 @@ const Packages = () => {
                         Incluye
                       </p>
                       <ul className="space-y-2">
-                        {pkg.includes.slice(0, 3).map((include) => (
+                        {pkg.includes.slice(0, 2).map((include) => (
                           <li key={include} className="flex items-start gap-2 text-sm text-foreground">
                             <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
                             <span>{include}</span>
                           </li>
                         ))}
-                        {pkg.includes.length > 3 && (
+                        {pkg.includes.length > 2 && expandedPackage !== pkg.slug && (
                           <button
-                            onClick={() => setExpandedPackage(expandedPackage === pkg.slug ? null : pkg.slug)}
+                            onClick={() => setExpandedPackage(pkg.slug)}
                             className="flex items-center gap-1 text-sm text-primary hover:underline mt-2"
                           >
-                            <ChevronDown size={14} /> Ver más
+                            <ChevronDown size={14} /> Ver todo lo incluido
                           </button>
                         )}
                       </ul>
@@ -273,7 +276,7 @@ const Packages = () => {
                                   Incluye completo
                                 </p>
                                 <ul className="space-y-1">
-                                  {pkg.includes.map((include) => (
+                                  {pkg.includes.slice(2).map((include) => (
                                     <li key={include} className="flex items-start gap-2 text-sm text-foreground">
                                       <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
                                       <span>{include}</span>
@@ -302,6 +305,13 @@ const Packages = () => {
                                 </p>
                                 <p className="text-sm text-foreground">{pkg.bestFor}</p>
                               </div>
+
+                              <button
+                                onClick={() => setExpandedPackage(null)}
+                                className="flex items-center gap-1 text-sm text-primary hover:underline"
+                              >
+                                <ChevronDown size={14} className="rotate-180" /> Ocultar detalles
+                              </button>
                             </div>
                           </motion.div>
                         )}
