@@ -257,7 +257,7 @@ const Experiencias = () => {
       </section>
 
       {/* Results */}
-      <section className="py-10 md:py-16 bg-background">
+      <section className="py-10 md:py-16 pb-40 md:pb-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <p className="text-sm text-muted-foreground">
