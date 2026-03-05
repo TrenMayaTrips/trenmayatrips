@@ -8,6 +8,7 @@ import { packageImageMap } from "@/data/package-images";
 import { Button } from "@/components/ui/button";
 import heroPaquetes from "@/assets/hero-paquetes.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
+import GrecaDivider from "@/components/maya/GrecaDivider";
 
 const Packages = () => {
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -50,6 +51,8 @@ const Packages = () => {
           Elige entre nuestros itinerarios cuidadosamente diseñados o personaliza tu aventura perfecta.
         </p>
       </ParallaxHero>
+
+      <GrecaDivider />
 
       {/* Filters & Compare Mode */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
