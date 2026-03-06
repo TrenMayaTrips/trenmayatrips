@@ -56,8 +56,53 @@ const Packages = () => {
 
       {/* Filters & Compare Mode */}
       <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
-        <div className="container mx-auto px-4 py-4 md:py-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+        <div className="container mx-auto px-4 py-3 md:py-6">
+          {/* Mobile: horizontal scroll chips in one line */}
+          <div className="md:hidden relative">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-4 px-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <button
+                onClick={() => setSelectedType(null)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
+                  selectedType === null
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-foreground hover:bg-muted"
+                }`}
+              >
+                Todos
+              </button>
+              {Object.entries(packageTypes).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedType(key)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
+                    selectedType === key
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+              <button
+                onClick={() => {
+                  setCompareMode(!compareMode);
+                  if (compareMode) setSelectedForCompare([]);
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 border-2 ${
+                  compareMode
+                    ? "border-gold bg-gold text-white"
+                    : "border-gold text-gold hover:bg-gold/10"
+                }`}
+              >
+                {compareMode ? "✕ Cancelar" : "Comparar"}
+              </button>
+            </div>
+            {/* Scroll fade indicator */}
+            <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+          </div>
+
+          {/* Desktop: wrapped chips + separate compare button */}
+          <div className="hidden md:flex flex-row items-center gap-3 mb-4">
             <div className="flex flex-wrap gap-2 flex-1">
               <button
                 onClick={() => setSelectedType(null)}
