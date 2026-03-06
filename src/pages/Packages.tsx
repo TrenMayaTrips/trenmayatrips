@@ -167,7 +167,10 @@ const Packages = () => {
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {filtered.map((pkg, i) => (
+            {filtered.map((pkg, i) => {
+              const isLastOdd = filtered.length % 2 === 1 && i === filtered.length - 1;
+
+              return (
               <motion.div
                 key={pkg.slug}
                 initial={{ opacity: 0, y: 20 }}
@@ -175,13 +178,19 @@ const Packages = () => {
                 transition={{ delay: i * 0.05 }}
                 onClick={() => compareMode && toggleCompare(pkg.slug)}
                 className={`rounded-xl overflow-hidden border ${
+                  isLastOdd ? "lg:col-span-2" : ""
+                } ${
                   compareMode && selectedForCompare.includes(pkg.slug)
                     ? "border-primary ring-2 ring-primary/30 bg-primary/5"
                     : "border-border bg-card"
-                } ${compareMode ? "cursor-pointer" : ""} hover:shadow-lg transition-all`}
+                } ${compareMode ? "cursor-pointer" : ""} hover:shadow-lg transition-all ${
+                  isLastOdd ? "lg:flex lg:flex-row" : ""
+                }`}
               >
                 {/* Package Header with Image */}
-                <div className="block relative overflow-hidden h-48 md:h-56">
+                <div className={`block relative overflow-hidden ${
+                  isLastOdd ? "h-48 md:h-56 lg:h-auto lg:w-2/5 lg:min-h-[280px]" : "h-48 md:h-56"
+                }`}>
                   <Link to={compareMode ? "#" : `/paquetes/${pkg.slug}`} onClick={e => compareMode && e.preventDefault()}>
                     {packageImageMap[pkg.slug] ? (
                       <img
@@ -214,6 +223,9 @@ const Packages = () => {
                     </button>
                   )}
                 </div>
+
+                {/* Content wrapper for horizontal layout */}
+                <div className={isLastOdd ? "lg:w-3/5 lg:flex lg:flex-col" : ""}>
 
                 {/* Package Details */}
                 <div className="p-6 border-b border-border relative z-10">
@@ -397,8 +409,10 @@ const Packages = () => {
                     </div>
                   </div>
                 )}
+                </div>{/* end content wrapper */}
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
