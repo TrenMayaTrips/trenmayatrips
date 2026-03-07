@@ -153,6 +153,9 @@ const Packages = () => {
             >
               {compareMode ? "Cancelar" : "Comparar"}
             </Button>
+            <span className="text-sm text-muted-foreground ml-2">
+              ${priceRange.min.toLocaleString()} – ${priceRange.max.toLocaleString()} MXN
+            </span>
           </div>
 
           {compareMode && selectedForCompare.length > 0 && (
