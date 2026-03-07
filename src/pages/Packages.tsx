@@ -29,6 +29,11 @@ const Packages = () => {
       : packages;
   }, [selectedType]);
 
+  const priceRange = useMemo(() => {
+    const prices = filtered.map((p) => p.price);
+    return { min: Math.min(...prices), max: Math.max(...prices) };
+  }, [filtered]);
+
   const toCompare = packages.filter((pkg) => selectedForCompare.includes(pkg.slug));
 
   const toggleCompare = (slug: string) => {
@@ -101,8 +106,11 @@ const Packages = () => {
                     : "border-gold text-gold hover:bg-gold/10"
                 }`}
               >
-                {compareMode ? "✕ Cancelar" : "Comparar"}
+              {compareMode ? "✕ Cancelar" : "Comparar"}
               </button>
+              <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 px-2 py-2">
+                ${priceRange.min.toLocaleString()} – ${priceRange.max.toLocaleString()} MXN
+              </span>
             </div>
             {/* Scroll fade indicator */}
             <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
@@ -145,6 +153,9 @@ const Packages = () => {
             >
               {compareMode ? "Cancelar" : "Comparar"}
             </Button>
+            <span className="text-sm text-muted-foreground ml-2">
+              ${priceRange.min.toLocaleString()} – ${priceRange.max.toLocaleString()} MXN
+            </span>
           </div>
 
           {compareMode && selectedForCompare.length > 0 && (
@@ -227,13 +238,22 @@ const Packages = () => {
                 {/* Content wrapper for horizontal layout */}
                 <div className={isLastOdd ? "lg:w-3/5 lg:flex lg:flex-col" : ""}>
 
+                {/* Price + Category bar */}
+                <div className="px-6 pt-4 pb-2 flex items-center justify-between gap-3">
+                  <p className="text-xs font-medium text-primary uppercase tracking-wider bg-primary/10 px-2 py-1 rounded-full w-fit">
+                    {packageTypes[pkg.type]}
+                  </p>
+                  <div className="text-right">
+                    <p className="text-[10px] text-muted-foreground leading-none mb-0.5">Desde</p>
+                    <p className="font-heading text-2xl font-bold" style={{ color: '#2D4A3E' }}>
+                      ${pkg.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
+                    </p>
+                  </div>
+                </div>
+
                 {/* Package Details */}
-                <div className="p-6 border-b border-border relative z-10">
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div className="flex-1">
-                      <p className="text-xs font-medium text-primary uppercase tracking-wider mb-2 bg-primary/10 px-2 py-1 rounded-full w-fit">
-                        {packageTypes[pkg.type]}
-                      </p>
+                <div className="px-6 pb-6 border-b border-border relative z-10">
+                  <div className="mb-4">
                       <Link to={`/paquetes/${pkg.slug}`} className="hover:text-primary transition-colors">
                         <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
                           {pkg.title}
@@ -241,7 +261,6 @@ const Packages = () => {
                       </Link>
                       <p className="text-sm text-muted-foreground mt-2">{pkg.description}</p>
                     </div>
-                  </div>
 
                   {/* Key Metrics */}
                   <div className="grid grid-cols-3 gap-3">
@@ -391,18 +410,11 @@ const Packages = () => {
                       </AnimatePresence>
                     </div>
 
-                    {/* Price & CTA */}
-                    <div className="flex flex-col sm:flex-row items-end justify-between gap-4 pt-6 border-t border-border">
-                      <div>
-                        <p className="text-xs text-muted-foreground mb-1">Desde</p>
-                        <p className="font-heading text-3xl font-bold text-foreground">
-                          ${pkg.price.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">por adulto / grupo</p>
-                      </div>
+                    {/* CTA */}
+                    <div className="pt-4 border-t border-border">
                       <Button
                         onClick={() => handleQuote(pkg.slug)}
-                        className="w-full sm:w-auto"
+                        className="w-full"
                       >
                         Solicitar cotización
                       </Button>
