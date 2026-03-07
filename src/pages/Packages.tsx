@@ -29,6 +29,11 @@ const Packages = () => {
       : packages;
   }, [selectedType]);
 
+  const priceRange = useMemo(() => {
+    const prices = filtered.map((p) => p.price);
+    return { min: Math.min(...prices), max: Math.max(...prices) };
+  }, [filtered]);
+
   const toCompare = packages.filter((pkg) => selectedForCompare.includes(pkg.slug));
 
   const toggleCompare = (slug: string) => {
