@@ -261,7 +261,6 @@ const Packages = () => {
                       </Link>
                       <p className="text-sm text-muted-foreground mt-2">{pkg.description}</p>
                     </div>
-                  </div>
 
                   {/* Key Metrics */}
                   <div className="grid grid-cols-3 gap-3">
