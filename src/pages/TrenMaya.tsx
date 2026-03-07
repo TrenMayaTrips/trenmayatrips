@@ -11,7 +11,7 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
 import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
-import { routes, allStationNames } from "@/data/routes";
+import { allStationNames } from "@/data/routes";
 import { stationDetails } from "@/data/station-details";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
