@@ -45,6 +45,10 @@ const TrenMaya = () => {
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [searchResult, setSearchResult] = useState<Route | null>(null);
+  const [searchNoResult, setSearchNoResult] = useState<{ transfer: string; estimated: string } | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const stationSlugMap: Record<string, string> = Object.fromEntries(
     stationDetails.map((sd) => [sd.name, sd.slug])
@@ -58,17 +62,47 @@ const TrenMaya = () => {
   const swapStations = () => {
     setOrigin(destination);
     setDestination(origin);
+    setSearchResult(null);
+    setSearchNoResult(null);
+  };
+
+  // Find a transfer station between two stations that don't have a direct route
+  const findTransfer = (o: string, d: string): { transfer: string; estimated: string } => {
+    const hubs = ["Cancún", "Mérida", "Tulum", "San Francisco de Campeche", "Escárcega"];
+    for (const hub of hubs) {
+      if (hub === o || hub === d) continue;
+      const leg1 = findRoute(o, hub);
+      const leg2 = findRoute(hub, d);
+      if (leg1 && leg2) {
+        const t1 = parseFloat(leg1.duration);
+        const t2 = parseFloat(leg2.duration);
+        return { transfer: hub, estimated: `${Math.ceil(t1 + t2 + 0.5)}h aprox.` };
+      }
+    }
+    return { transfer: "Mérida", estimated: "6-8h aprox." };
   };
 
   const handleSearch = () => {
-    const route = routes.find(
-      (r) =>
-        (r.origin === origin && r.destination === destination) ||
-        (r.origin === destination && r.destination === origin)
-    );
-    if (route) {
-      navigate(`/tren-maya/rutas/${route.slug}`);
-    }
+    if (origin === destination) return;
+    setIsSearching(true);
+    setSearchResult(null);
+    setSearchNoResult(null);
+
+    // Simulate brief loading for UX feedback
+    setTimeout(() => {
+      const route = findRoute(origin, destination);
+      if (route) {
+        setSearchResult(route);
+        setSearchNoResult(null);
+      } else {
+        const transfer = findTransfer(origin, destination);
+        setSearchNoResult(transfer);
+        setSearchResult(null);
+      }
+      setIsSearching(false);
+      // Scroll to result after render
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
+    }, 600);
   };
 
   return (
