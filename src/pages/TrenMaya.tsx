@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle } from "lucide-react";
+import { findRoute, routes as allRoutes, type Route } from "@/data/routes";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
@@ -10,7 +11,7 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
 import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
-import { routes, allStationNames } from "@/data/routes";
+import { allStationNames } from "@/data/routes";
 import { stationDetails } from "@/data/station-details";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
@@ -44,6 +45,10 @@ const TrenMaya = () => {
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [searchResult, setSearchResult] = useState<Route | null>(null);
+  const [searchNoResult, setSearchNoResult] = useState<{ transfer: string; estimated: string } | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const stationSlugMap: Record<string, string> = Object.fromEntries(
     stationDetails.map((sd) => [sd.name, sd.slug])
@@ -57,17 +62,47 @@ const TrenMaya = () => {
   const swapStations = () => {
     setOrigin(destination);
     setDestination(origin);
+    setSearchResult(null);
+    setSearchNoResult(null);
+  };
+
+  // Find a transfer station between two stations that don't have a direct route
+  const findTransfer = (o: string, d: string): { transfer: string; estimated: string } => {
+    const hubs = ["Cancún", "Mérida", "Tulum", "San Francisco de Campeche", "Escárcega"];
+    for (const hub of hubs) {
+      if (hub === o || hub === d) continue;
+      const leg1 = findRoute(o, hub);
+      const leg2 = findRoute(hub, d);
+      if (leg1 && leg2) {
+        const t1 = parseFloat(leg1.duration);
+        const t2 = parseFloat(leg2.duration);
+        return { transfer: hub, estimated: `${Math.ceil(t1 + t2 + 0.5)}h aprox.` };
+      }
+    }
+    return { transfer: "Mérida", estimated: "6-8h aprox." };
   };
 
   const handleSearch = () => {
-    const route = routes.find(
-      (r) =>
-        (r.origin === origin && r.destination === destination) ||
-        (r.origin === destination && r.destination === origin)
-    );
-    if (route) {
-      navigate(`/tren-maya/rutas/${route.slug}`);
-    }
+    if (origin === destination) return;
+    setIsSearching(true);
+    setSearchResult(null);
+    setSearchNoResult(null);
+
+    // Simulate brief loading for UX feedback
+    setTimeout(() => {
+      const route = findRoute(origin, destination);
+      if (route) {
+        setSearchResult(route);
+        setSearchNoResult(null);
+      } else {
+        const transfer = findTransfer(origin, destination);
+        setSearchNoResult(transfer);
+        setSearchResult(null);
+      }
+      setIsSearching(false);
+      // Scroll to result after render
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
+    }, 600);
   };
 
   return (
@@ -127,10 +162,99 @@ const TrenMaya = () => {
 
               <button
                 onClick={handleSearch}
-                className="w-full sm:w-auto shrink-0 mt-4 sm:mt-5 px-6 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors min-h-[44px] text-sm"
+                disabled={isSearching || origin === destination}
+                className="w-full sm:w-auto shrink-0 mt-4 sm:mt-5 px-6 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors min-h-[44px] text-sm disabled:opacity-50"
               >
-                Buscar
+                {isSearching ? <Loader2 size={18} className="animate-spin mx-auto" /> : "Buscar"}
               </button>
+            </div>
+
+            {/* Search Results */}
+            <div ref={resultRef}>
+              <AnimatePresence mode="wait">
+                {isSearching && (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-4 space-y-2"
+                  >
+                    <div className="h-4 w-3/4 bg-muted/50 rounded animate-pulse" />
+                    <div className="h-4 w-1/2 bg-muted/50 rounded animate-pulse" />
+                    <div className="h-4 w-2/3 bg-muted/50 rounded animate-pulse" />
+                  </motion.div>
+                )}
+
+                {searchResult && !isSearching && (
+                  <motion.div
+                    key="result"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="mt-4 p-4 rounded-lg bg-background/80 border border-border"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-heading text-lg font-bold text-foreground">{searchResult.origin}</span>
+                          <ArrowRight size={16} className="text-primary" />
+                          <span className="font-heading text-lg font-bold text-foreground">{searchResult.destination}</span>
+                          <span className="px-2 py-0.5 bg-secondary rounded-full text-xs font-medium text-foreground">
+                            {searchResult.badgeEmoji} {searchResult.badge}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1"><Clock size={14} /> {searchResult.duration}</span>
+                          <span className="flex items-center gap-1"><MapPin size={14} /> {searchResult.stops} paradas</span>
+                          <span className="flex items-center gap-1"><TrainFront size={14} /> {searchResult.dailyDepartures} trenes diarios</span>
+                        </div>
+                        <div>
+                          <span className="text-xs text-muted-foreground">Desde</span>
+                          <span className="ml-1 font-heading text-xl font-bold text-foreground">
+                            ${searchResult.prices.xiinbal.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
+                          </span>
+                        </div>
+                      </div>
+                      <Link
+                        to={`/tren-maya/rutas/${searchResult.slug}`}
+                        className="shrink-0 px-5 py-2.5 rounded-lg font-bold text-sm transition-colors text-center"
+                        style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}
+                      >
+                        Ver horarios y reservar
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+
+                {searchNoResult && !isSearching && (
+                  <motion.div
+                    key="no-result"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="mt-4 p-4 rounded-lg bg-background/80 border border-accent/30"
+                  >
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle size={20} className="text-accent shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium text-foreground">
+                          No hay ruta directa entre {origin} y {destination}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Esta ruta requiere transbordo en <strong className="text-foreground">{searchNoResult.transfer}</strong>. Duración estimada: {searchNoResult.estimated}
+                        </p>
+                        <Link
+                          to="/contacto"
+                          className="inline-block mt-2 text-sm text-primary font-medium hover:underline"
+                        >
+                          Contáctanos para armar tu itinerario →
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </motion.div>
@@ -282,7 +406,7 @@ const TrenMaya = () => {
           </div>
 
           <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-            {routes.slice(0, 3).map((route, i) => (
+            {allRoutes.slice(0, 3).map((route, i) => (
               <motion.div
                 key={route.slug}
                 initial={{ opacity: 0, y: 20 }}
