@@ -410,18 +410,11 @@ const Packages = () => {
                       </AnimatePresence>
                     </div>
 
-                    {/* Price & CTA */}
-                    <div className="flex flex-col sm:flex-row items-end justify-between gap-4 pt-6 border-t border-border">
-                      <div>
-                        <p className="text-xs text-muted-foreground mb-1">Desde</p>
-                        <p className="font-heading text-3xl font-bold text-foreground">
-                          ${pkg.price.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">por adulto / grupo</p>
-                      </div>
+                    {/* CTA */}
+                    <div className="pt-4 border-t border-border">
                       <Button
                         onClick={() => handleQuote(pkg.slug)}
-                        className="w-full sm:w-auto"
+                        className="w-full"
                       >
                         Solicitar cotización
                       </Button>
