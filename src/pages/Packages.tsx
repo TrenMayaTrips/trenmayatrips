@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Users, Star, Check, X, ChevronDown } from "lucide-react";
+import { MapPin, Clock, Users, Star, Check, X, ChevronDown, CalendarDays, Map, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { packages, packageTypes } from "@/data/packages";
@@ -599,9 +599,31 @@ const Packages = () => {
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
             ¿No encuentras lo que buscas?
           </h2>
-          <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
             Podemos diseñar un itinerario completamente personalizado según tus intereses, duración y presupuesto.
           </p>
+
+          {/* Value props */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
+            {[
+              { icon: CalendarDays, text: "Tú eliges las fechas" },
+              { icon: Map, text: "Tú eliges los destinos" },
+              { icon: Wallet, text: "Se ajusta a tu presupuesto" },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                  <Icon size={24} className="text-gold" />
+                </div>
+                <p className="text-primary-foreground text-sm font-medium">{text}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Social proof */}
+          <p className="text-primary-foreground/60 text-sm mb-8">
+            Más de 200 viajeros ya crearon su circuito personalizado
+          </p>
+
           <Button
             onClick={() => {
               const message =
@@ -609,8 +631,9 @@ const Packages = () => {
               const whatsappUrl = `https://wa.me/529982186754?text=${encodeURIComponent(message)}`;
               window.open(whatsappUrl, "_blank");
             }}
-            variant="secondary"
+            variant="cta"
             size="lg"
+            className="font-bold"
           >
             Crear paquete personalizado
           </Button>
