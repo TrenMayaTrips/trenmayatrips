@@ -254,8 +254,6 @@ const Packages = () => {
                 {/* Package Details */}
                 <div className="px-6 pb-6 border-b border-border relative z-10">
                   <div className="mb-4">
-                    <div className="flex-1">
-                      </p>
                       <Link to={`/paquetes/${pkg.slug}`} className="hover:text-primary transition-colors">
                         <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
                           {pkg.title}
