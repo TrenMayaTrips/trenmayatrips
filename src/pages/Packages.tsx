@@ -238,12 +238,23 @@ const Packages = () => {
                 {/* Content wrapper for horizontal layout */}
                 <div className={isLastOdd ? "lg:w-3/5 lg:flex lg:flex-col" : ""}>
 
+                {/* Price + Category bar */}
+                <div className="px-6 pt-4 pb-2 flex items-center justify-between gap-3">
+                  <p className="text-xs font-medium text-primary uppercase tracking-wider bg-primary/10 px-2 py-1 rounded-full w-fit">
+                    {packageTypes[pkg.type]}
+                  </p>
+                  <div className="text-right">
+                    <p className="text-[10px] text-muted-foreground leading-none mb-0.5">Desde</p>
+                    <p className="font-heading text-2xl font-bold" style={{ color: '#2D4A3E' }}>
+                      ${pkg.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
+                    </p>
+                  </div>
+                </div>
+
                 {/* Package Details */}
-                <div className="p-6 border-b border-border relative z-10">
-                  <div className="flex items-start justify-between gap-4 mb-4">
+                <div className="px-6 pb-6 border-b border-border relative z-10">
+                  <div className="mb-4">
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-primary uppercase tracking-wider mb-2 bg-primary/10 px-2 py-1 rounded-full w-fit">
-                        {packageTypes[pkg.type]}
                       </p>
                       <Link to={`/paquetes/${pkg.slug}`} className="hover:text-primary transition-colors">
                         <h3 className="font-heading text-2xl font-bold text-foreground leading-tight">
