@@ -106,8 +106,11 @@ const Packages = () => {
                     : "border-gold text-gold hover:bg-gold/10"
                 }`}
               >
-                {compareMode ? "✕ Cancelar" : "Comparar"}
+              {compareMode ? "✕ Cancelar" : "Comparar"}
               </button>
+              <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 px-2 py-2">
+                ${priceRange.min.toLocaleString()} – ${priceRange.max.toLocaleString()} MXN
+              </span>
             </div>
             {/* Scroll fade indicator */}
             <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
