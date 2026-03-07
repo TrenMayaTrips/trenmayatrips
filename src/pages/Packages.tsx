@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Users, Star, Check, X, ChevronDown } from "lucide-react";
+import { MapPin, Clock, Users, Star, Check, X, ChevronDown, CalendarDays, Map, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { packages, packageTypes } from "@/data/packages";
