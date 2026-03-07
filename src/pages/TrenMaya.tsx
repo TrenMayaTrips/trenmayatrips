@@ -317,7 +317,7 @@ const TrenMaya = () => {
           </div>
 
           <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-            {routes.slice(0, 3).map((route, i) => (
+            {allRoutes.slice(0, 3).map((route, i) => (
               <motion.div
                 key={route.slug}
                 initial={{ opacity: 0, y: 20 }}
