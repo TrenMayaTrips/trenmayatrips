@@ -307,7 +307,9 @@ const TrenMaya = () => {
               Toca cualquier estación para ver detalles
             </p>
           </div>
-          <TrenMayaRouteMap />
+          <div className="max-w-5xl mx-auto">
+            <TrenMayaRouteMap />
+          </div>
         </div>
       </section>
 
