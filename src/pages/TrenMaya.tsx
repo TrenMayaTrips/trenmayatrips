@@ -554,52 +554,91 @@ const TrenMaya = () => {
             })}
           </div>
 
-          {/* Station list */}
-          <div className="max-w-3xl mx-auto">
-            {filteredStations.map((station, i) => (
-              <motion.div
-                key={station.name}
-                initial={{ opacity: 0, x: -15 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.03 }}
-                className="flex gap-4 relative"
-              >
-                <div className="flex flex-col items-center">
-                  <div className={`w-4 h-4 rounded-full shrink-0 mt-1 border-2 border-card ${
-                    station.type === "principal" ? "bg-primary" : station.type === "estacion" ? "bg-muted-foreground/40" : "bg-border"
-                  }`} />
-                  {i < filteredStations.length - 1 && <div className="w-0.5 flex-1 bg-border" />}
-                </div>
-                <div className={`pb-5 ${station.type === "principal" ? "" : "opacity-70"}`}>
-                  <div className="flex items-center gap-2">
-                    {stationSlugMap[station.name] ? (
-                      <Link
-                        to={`/tren-maya/estaciones/${stationSlugMap[station.name]}`}
-                        className={`font-heading font-semibold text-foreground hover:text-primary transition-colors ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}
-                      >
-                        {station.name} →
-                      </Link>
-                    ) : (
-                      <h3 className={`font-heading font-semibold text-foreground ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}>
-                        {station.name}
-                      </h3>
-                    )}
-                    {station.type === "principal" && <Train size={14} className="text-primary" />}
-                    {station.type === "estacion" && <span className="text-[10px] text-muted-foreground font-medium">Estación</span>}
-                    {station.type === "paradero" && <span className="text-[10px] text-muted-foreground">Paradero</span>}
-                  </div>
-                  <p className="text-xs text-muted-foreground">{station.state} · km {station.km}</p>
-                  {station.highlights.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {station.highlights.map((h) => (
-                        <span key={h} className="text-[10px] px-2 py-0.5 bg-secondary rounded-full text-muted-foreground">{h}</span>
-                      ))}
+          {/* Station accordions by state */}
+          <div className="max-w-3xl mx-auto space-y-3">
+            {(selectedState ? [selectedState] : stateList).map((stateKey) => {
+              const stateStations = stationsByState[stateKey] || [];
+              const isOpen = expandedStates.has(stateKey);
+              const principalCount = stateStations.filter(s => s.type === "principal").length;
+
+              return (
+                <div
+                  key={stateKey}
+                  ref={(el) => { stateRefs.current[stateKey] = el; }}
+                  className="bg-card border border-border rounded-xl overflow-hidden shadow-sm"
+                >
+                  <button
+                    onClick={() => toggleState(stateKey)}
+                    className="w-full flex items-center justify-between p-4 md:p-5 text-left hover:bg-secondary/50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: stateColorMap[stateKey] || "hsl(160, 35%, 35%)" }} />
+                      <div>
+                        <span className="font-heading font-bold text-foreground text-sm md:text-base">
+                          {stateLabelsMap[stateKey] || stateKey}
+                        </span>
+                        <span className="text-xs text-muted-foreground ml-2">
+                          ({stateStations.length} estaciones{principalCount > 0 ? ` · ${principalCount} principales` : ""})
+                        </span>
+                      </div>
                     </div>
-                  )}
+                    {isOpen ? <ChevronUp size={18} className="text-muted-foreground shrink-0" /> : <ChevronDown size={18} className="text-muted-foreground shrink-0" />}
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-4 md:px-5 pb-4 md:pb-5 border-t border-border/50 pt-3">
+                          {stateStations.map((station, i) => (
+                            <div key={station.name} className="flex gap-4 relative">
+                              <div className="flex flex-col items-center">
+                                <div className={`w-4 h-4 rounded-full shrink-0 mt-1 border-2 border-card ${
+                                  station.type === "principal" ? "bg-primary" : station.type === "estacion" ? "bg-muted-foreground/40" : "bg-border"
+                                }`} />
+                                {i < stateStations.length - 1 && <div className="w-0.5 flex-1 bg-border" />}
+                              </div>
+                              <div className={`pb-4 ${station.type === "principal" ? "" : "opacity-70"}`}>
+                                <div className="flex items-center gap-2">
+                                  {stationSlugMap[station.name] ? (
+                                    <Link
+                                      to={`/tren-maya/estaciones/${stationSlugMap[station.name]}`}
+                                      className={`font-heading font-semibold text-foreground hover:text-primary transition-colors ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}
+                                    >
+                                      {station.name} →
+                                    </Link>
+                                  ) : (
+                                    <h3 className={`font-heading font-semibold text-foreground ${station.type === "principal" ? "text-base md:text-lg" : "text-sm"}`}>
+                                      {station.name}
+                                    </h3>
+                                  )}
+                                  {station.type === "principal" && <Train size={14} className="text-primary" />}
+                                  {station.type === "estacion" && <span className="text-[10px] text-muted-foreground font-medium">Estación</span>}
+                                  {station.type === "paradero" && <span className="text-[10px] text-muted-foreground">Paradero</span>}
+                                </div>
+                                <p className="text-xs text-muted-foreground">km {station.km}</p>
+                                {station.highlights.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {station.highlights.map((h) => (
+                                      <span key={h} className="text-[10px] px-2 py-0.5 bg-secondary rounded-full text-muted-foreground">{h}</span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
