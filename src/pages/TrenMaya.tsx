@@ -407,7 +407,8 @@ const TrenMaya = () => {
                               Reservar en clase {wagon.name} →
                             </a>
                           </div>
-                        )
+                        )}
+
                       </div>
                     </div>
                   </EstelaCard>
