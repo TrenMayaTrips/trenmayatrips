@@ -361,8 +361,9 @@ const TrenMaya = () => {
                         <h3 className="font-heading text-xl font-bold text-foreground mt-1">{wagon.name}</h3>
                         <p className="text-xs text-muted-foreground italic">"{wagon.meaning}"</p>
                         <p className="font-heading text-2xl font-bold text-foreground mt-3">
-                          ${prices[i].toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN/tramo</span>
+                          ${prices[i].toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
                         </p>
+                        <p className="text-xs text-muted-foreground -mt-1">por persona / tramo sencillo</p>
                         <ul className="mt-4 space-y-2">
                           {wagon.amenities.map((a) => (
                             <li key={a} className="flex items-center gap-2 text-sm text-foreground/80">
@@ -371,16 +372,42 @@ const TrenMaya = () => {
                             </li>
                           ))}
                         </ul>
-                        <Link
-                          to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
-                          className={`w-full mt-5 py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center ${
-                            isFeatured
-                              ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                              : "border border-border text-foreground hover:bg-secondary"
-                          }`}
-                        >
-                          Ver detalles
-                        </Link>
+                        {isFeatured ? (
+                          <div className="mt-5 space-y-2">
+                            <a
+                              href="https://wa.me/529811234567?text=Quiero%20reservar%20en%20clase%20Janal"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full py-2.5 rounded-lg font-bold text-sm transition-colors block text-center"
+                              style={{ backgroundColor: '#2D4A3E', color: 'white' }}
+                            >
+                              Reservar ahora
+                            </a>
+                            <Link
+                              to="/tren-maya/clases/janal"
+                              className="block text-center text-sm text-primary hover:underline font-medium"
+                            >
+                              Ver detalles de esta clase →
+                            </Link>
+                          </div>
+                        ) : (
+                          <div className="mt-5 space-y-2">
+                            <Link
+                              to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
+                              className="w-full py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center border border-border text-foreground hover:bg-secondary"
+                            >
+                              Ver detalles
+                            </Link>
+                            <a
+                              href={`https://wa.me/529811234567?text=Quiero%20reservar%20en%20clase%20${wagon.name}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-center text-sm text-primary hover:underline font-medium"
+                            >
+                              Reservar en clase {wagon.name} →
+                            </a>
+                          </div>
+                        )
                       </div>
                     </div>
                   </EstelaCard>
