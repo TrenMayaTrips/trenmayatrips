@@ -55,9 +55,40 @@ const TrenMaya = () => {
   );
 
   const stateList = [...new Set(stations.map((s) => s.stateKey))];
-  const filteredStations = selectedState
-    ? stations.filter((s) => s.stateKey === selectedState)
-    : stations;
+  const [expandedStates, setExpandedStates] = useState<Set<string>>(new Set([stateList[0]]));
+  const stateRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const stationsByState = useMemo(() => {
+    const map: Record<string, typeof stations> = {};
+    for (const s of stations) {
+      if (!map[s.stateKey]) map[s.stateKey] = [];
+      map[s.stateKey].push(s);
+    }
+    return map;
+  }, []);
+
+  const toggleState = useCallback((key: string) => {
+    setExpandedStates(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
+
+  const handleStateFilter = useCallback((key: string | null) => {
+    setSelectedState(key);
+    if (key) {
+      setExpandedStates(prev => {
+        const next = new Set(prev);
+        next.add(key);
+        return next;
+      });
+      setTimeout(() => {
+        stateRefs.current[key]?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, []);
 
   const swapStations = () => {
     setOrigin(destination);
