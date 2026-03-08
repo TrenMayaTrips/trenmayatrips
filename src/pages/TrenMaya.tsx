@@ -531,7 +531,7 @@ const TrenMaya = () => {
           {/* State tabs */}
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             <button
-              onClick={() => setSelectedState(null)}
+              onClick={() => handleStateFilter(null)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                 !selectedState ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-muted"
               }`}
@@ -539,11 +539,11 @@ const TrenMaya = () => {
               Todas
             </button>
             {stateList.map((key) => {
-              const count = stations.filter((s) => s.stateKey === key).length;
+              const count = stationsByState[key]?.length || 0;
               return (
                 <button
                   key={key}
-                  onClick={() => setSelectedState(selectedState === key ? null : key)}
+                  onClick={() => handleStateFilter(selectedState === key ? null : key)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                     selectedState === key ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-muted"
                   }`}
