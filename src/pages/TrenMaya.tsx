@@ -28,6 +28,14 @@ const stateLabelsMap: Record<string, string> = {
   yucatan: "Yucatán",
 };
 
+const stateColorMap: Record<string, string> = {
+  chiapas: "hsl(153, 43%, 30%)",
+  tabasco: "hsl(12, 60%, 50%)",
+  campeche: "hsl(36, 55%, 52%)",
+  "quintana-roo": "hsl(170, 40%, 36%)",
+  yucatan: "hsl(45, 70%, 50%)",
+};
+
 const faqItems = [
   { q: "¿Cómo compro boletos para el Tren Maya?", a: "Puedes solicitar tu cotización directamente con nosotros. En Tren Maya Trips nos encargamos de gestionar tus boletos junto con el circuito turístico completo, sin complicaciones." },
   { q: "¿Puedo llevar equipaje grande?", a: "Sí, cada pasajero puede llevar una maleta de mano y una pieza de equipaje documentado. Las clases Janal y P'atal permiten equipaje adicional. Hay bodega disponible en todos los vagones." },
