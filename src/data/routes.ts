@@ -25,6 +25,7 @@ export interface Route {
   origin: string;
   destination: string;
   duration: string;
+  durationMinutes: number;
   stops: number;
   dailyDepartures: number;
   badge: string;
@@ -49,6 +50,7 @@ export const routes: Route[] = [
     origin: "Cancún",
     destination: "Mérida",
     duration: "4h 30min",
+    durationMinutes: 270,
     stops: 6,
     dailyDepartures: 3,
     badge: "Más popular",
