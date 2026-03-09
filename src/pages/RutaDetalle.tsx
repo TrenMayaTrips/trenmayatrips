@@ -48,6 +48,7 @@ const routeFaqs: Record<string, { q: string; a: string }[]> = {
 const RutaDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [hoveredStation, setHoveredStation] = useState<string | null>(null);
 
   const route = routes.find((r) => r.slug === slug);
   if (!route) {
