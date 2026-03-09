@@ -32,10 +32,25 @@ const formatDate = (dateStr: string): string => {
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Calculate popular tags (top 10 most used)
+  const popularTags = useMemo(() => {
+    const tagCount: Record<string, number> = {};
+    blogPosts.forEach((post) => {
+      post.tags.forEach((tag) => {
+        tagCount[tag] = (tagCount[tag] || 0) + 1;
+      });
+    });
+    return Object.entries(tagCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([tag]) => tag);
+  }, []);
 
   const featuredPosts = blogPosts
     .filter((p) => p.featured)
