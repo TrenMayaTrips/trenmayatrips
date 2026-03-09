@@ -37,16 +37,32 @@ const stateColorMap: Record<string, string> = {
   yucatan: "hsl(45, 70%, 50%)",
 };
 
-const faqItems = [
-  { q: "¿Cómo compro boletos para el Tren Maya?", a: "Puedes solicitar tu cotización directamente con nosotros. En Tren Maya Trips nos encargamos de gestionar tus boletos junto con el circuito turístico completo, sin complicaciones." },
-  { q: "¿Puedo llevar equipaje grande?", a: "Sí, cada pasajero puede llevar una maleta de mano y una pieza de equipaje documentado. Las clases Janal y P'atal permiten equipaje adicional. Hay bodega disponible en todos los vagones." },
-  { q: "¿Hay descuento para residentes locales?", a: "Sí, residentes de los 5 estados de la ruta (Quintana Roo, Yucatán, Campeche, Chiapas y Tabasco) cuentan con tarifas preferenciales presentando identificación oficial con domicilio." },
-  { q: "¿Puedo viajar con mascotas?", a: "Mascotas pequeñas (hasta 10 kg) pueden viajar en transportadora bajo el asiento en clase Xiinbal y Janal. P'atal permite mascotas de hasta 15 kg. Se requiere certificado de salud vigente." },
-  { q: "¿Hay accesibilidad para personas con discapacidad?", a: "Todas las estaciones principales cuentan con rampas y elevadores. Los vagones tienen espacios reservados para sillas de ruedas y baños accesibles. Se recomienda solicitar asistencia al reservar." },
-  { q: "¿El tren tiene retrasos frecuentes?", a: "El Tren Maya mantiene un 92% de puntualidad. Se recomienda llegar 30 minutos antes de la salida. En caso de retrasos mayores a 1 hora, se ofrece compensación o cambio de horario sin costo." },
-  { q: "¿Se puede comer a bordo en todas las clases?", a: "En Xiinbal hay servicio de snacks y bebidas para compra. Janal incluye un snack box regional con tu boleto. P'atal ofrece menú gourmet completo con platillos regionales y bar premium." },
-  { q: "¿Hay WiFi en todo el recorrido?", a: "Las clases Janal y P'atal cuentan con Wi-Fi de alta velocidad. Xiinbal tiene servicio limitado. Nota: en tramos de selva densa la señal puede reducirse temporalmente." },
-];
+// FAQ categories organized by topic
+const faqCategories = {
+  boletos: {
+    title: "Boletos y reservas",
+    questions: [
+      { q: "¿Cómo compro boletos para el Tren Maya?", a: "Puedes solicitar tu cotización directamente con nosotros. En Tren Maya Trips nos encargamos de gestionar tus boletos junto con el circuito turístico completo, sin complicaciones." },
+      { q: "¿Hay descuento para residentes locales?", a: "Sí, residentes de los 5 estados de la ruta (Quintana Roo, Yucatán, Campeche, Chiapas y Tabasco) cuentan con tarifas preferenciales presentando identificación oficial con domicilio." }
+    ]
+  },
+  equipaje: {
+    title: "Equipaje y servicios",
+    questions: [
+      { q: "¿Puedo llevar equipaje grande?", a: "Sí, cada pasajero puede llevar una maleta de mano y una pieza de equipaje documentado. Las clases Janal y P'atal permiten equipaje adicional. Hay bodega disponible en todos los vagones." },
+      { q: "¿Puedo viajar con mascotas?", a: "Mascotas pequeñas (hasta 10 kg) pueden viajar en transportadora bajo el asiento en clase Xiinbal y Janal. P'atal permite mascotas de hasta 15 kg. Se requiere certificado de salud vigente." },
+      { q: "¿Hay accesibilidad para personas con discapacidad?", a: "Todas las estaciones principales cuentan con rampas y elevadores. Los vagones tienen espacios reservados para sillas de ruedas y baños accesibles. Se recomienda solicitar asistencia al reservar." },
+      { q: "¿Se puede comer a bordo en todas las clases?", a: "En Xiinbal hay servicio de snacks y bebidas para compra. Janal incluye un snack box regional con tu boleto. P'atal ofrece menú gourmet completo con platillos regionales y bar premium." },
+      { q: "¿Hay WiFi en todo el recorrido?", a: "Las clases Janal y P'atal cuentan con Wi-Fi de alta velocidad. Xiinbal tiene servicio limitado. Nota: en tramos de selva densa la señal puede reducirse temporalmente." }
+    ]
+  },
+  operacion: {
+    title: "Operación",
+    questions: [
+      { q: "¿El tren tiene retrasos frecuentes?", a: "El Tren Maya mantiene un 92% de puntualidad. Se recomienda llegar 30 minutos antes de la salida. En caso de retrasos mayores a 1 hora, se ofrece compensación o cambio de horario sin costo." }
+    ]
+  }
+};
 
 const TrenMaya = () => {
   const navigate = useNavigate();
