@@ -320,31 +320,11 @@ const TrenMaya = () => {
       {/* Greca divider after hero */}
       <GrecaDivider variant="jade" size="md" />
 
-      {/* Stats */}
+      {/* Stats with animated count-up */}
       <section className="bg-card border-b border-border relative overflow-hidden">
         <MayaPattern variant="pop" opacity={0.03} />
         <div className="container mx-auto px-4 py-8 md:py-10 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { value: `${trenMayaStats.totalKm.toLocaleString()}`, unit: "km", label: "De ruta" },
-              { value: String(trenMayaStats.stations), unit: "", label: "Estaciones" },
-              { value: String(trenMayaStats.states), unit: "", label: "Estados" },
-              { value: String(trenMayaStats.wagonTypes), unit: "", label: "Clases" },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <p className="font-heading text-3xl md:text-5xl font-bold text-primary">
-                  {stat.value}<span className="text-lg md:text-2xl ml-1 text-muted-foreground">{stat.unit}</span>
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
+          <StatsSection />
         </div>
       </section>
 
