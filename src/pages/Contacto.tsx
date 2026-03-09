@@ -180,7 +180,30 @@ const Contacto = () => {
                   💬 Escríbenos por WhatsApp
                 </a>
               </div>
-              <div className="pt-2 rounded-xl overflow-hidden border border-border" />
+              {/* Google Maps */}
+              <div className="pt-2">
+                <div className="rounded-xl overflow-hidden border border-border">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.5!2d-86.8515!3d21.1619!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f4c2b05aef653ef%3A0xc987fae251849a69!2sResidencial%20Mallorca%2C%20Benito%20Ju%C3%A1rez%2C%20Q.R.!5e0!3m2!1ses!2smx!4v1700000000000"
+                    width="100%"
+                    className="h-[250px] md:h-[300px]"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ubicación Tren Maya Trips"
+                  />
+                </div>
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=21.1619,-86.8515&destination_place_id=ChIJ72X2rgkrTI8RqZqEUeL6h8k"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full mt-3 py-2.5 px-4 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors"
+                >
+                  <Navigation size={16} />
+                  Cómo llegar
+                </a>
+              </div>
             </div>
 
             {/* Form / Success */}
