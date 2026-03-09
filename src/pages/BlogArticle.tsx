@@ -235,6 +235,12 @@ const BlogArticle = () => {
                           <AdPlaceholder />
                         </div>
                       )}
+                      {/* CTA: Route — after "Cómo Llegar" section */}
+                      {i === transportBlockIdx && <InlineRouteCTA ctx={articleCtx} />}
+                      {/* CTA: Experience — between 2nd and 3rd H2 */}
+                      {i === experienceCtaAfterBlock && i !== transportBlockIdx && (
+                        <InlineExperienceCTA ctx={articleCtx} />
+                      )}
                     </div>
                   );
                 })}
