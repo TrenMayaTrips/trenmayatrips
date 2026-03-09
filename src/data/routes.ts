@@ -81,6 +81,7 @@ export const routes: Route[] = [
     origin: "Cancún",
     destination: "Tulum",
     duration: "3h 15min",
+    durationMinutes: 195,
     stops: 4,
     dailyDepartures: 4,
     badge: "Costa",
