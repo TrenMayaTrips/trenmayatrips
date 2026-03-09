@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Clock, User, Calendar, Tag, Share2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
@@ -6,10 +7,39 @@ import { Button } from "@/components/ui/button";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import SEOHead from "@/components/seo/SEOHead";
+import ArticleTOC, { TOCItem } from "@/components/blog/ArticleTOC";
+
+/** Convert heading text to a URL-friendly id */
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find((p) => p.slug === slug);
+
+  // Extract TOC items from content blocks
+  const tocItems = useMemo<TOCItem[]>(() => {
+    if (!post) return [];
+    const items: TOCItem[] = [];
+    for (const block of post.content) {
+      for (const line of block.split("\n").filter(Boolean)) {
+        if (line.startsWith("## ")) {
+          const text = line.replace("## ", "");
+          items.push({ id: slugify(text), text, level: 2 });
+        } else if (line.startsWith("**") && line.endsWith("**")) {
+          const text = line.replace(/\*\*/g, "");
+          items.push({ id: slugify(text), text, level: 3 });
+        }
+      }
+    }
+    return items;
+  }, [post]);
 
   if (!post) return <Navigate to="/blog" replace />;
 
@@ -32,7 +62,6 @@ const BlogArticle = () => {
     }
   };
 
-  // JSON-LD Article structured data for SEO
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -40,7 +69,7 @@ const BlogArticle = () => {
     description: post.excerpt,
     image: typeof post.image === "string" ? post.image : undefined,
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt, // Using publishedAt as we don't have separate modifiedAt
+    dateModified: post.publishedAt,
     author: {
       "@type": "Person",
       name: post.author,
@@ -63,6 +92,62 @@ const BlogArticle = () => {
     wordCount: post.content.join(" ").split(/\s+/).length,
   };
 
+  /** Render a single line of content, adding id to headings */
+  const renderLine = (line: string, j: number) => {
+    if (line.startsWith("## ")) {
+      const text = line.replace("## ", "");
+      return (
+        <h2
+          key={j}
+          id={slugify(text)}
+          className="font-heading text-xl md:text-2xl font-bold text-foreground mt-8 mb-3 scroll-mt-24"
+        >
+          {text}
+        </h2>
+      );
+    }
+    if (line.startsWith("**") && line.endsWith("**")) {
+      const text = line.replace(/\*\*/g, "");
+      return (
+        <h3
+          key={j}
+          id={slugify(text)}
+          className="font-heading text-lg font-semibold text-foreground mt-4 scroll-mt-24"
+        >
+          {text}
+        </h3>
+      );
+    }
+    if (line.startsWith("**")) {
+      const parts = line.split("**");
+      return (
+        <p key={j} className="text-foreground leading-relaxed text-base">
+          <strong className="font-semibold">{parts[1]}</strong>
+          {parts[2]}
+        </p>
+      );
+    }
+    if (line.startsWith("- ")) {
+      return (
+        <li key={j} className="text-foreground leading-relaxed ml-4 list-disc">
+          {line.replace("- ", "")}
+        </li>
+      );
+    }
+    if (/^\d+\.\s/.test(line)) {
+      return (
+        <li key={j} className="text-foreground leading-relaxed ml-4 list-decimal">
+          {line.replace(/^\d+\.\s/, "")}
+        </li>
+      );
+    }
+    return (
+      <p key={j} className="text-foreground leading-relaxed text-base">
+        {line}
+      </p>
+    );
+  };
+
   return (
     <PageLayout>
       <SEOHead
@@ -71,11 +156,11 @@ const BlogArticle = () => {
         canonical={`/blog/${post.slug}`}
         type="article"
       />
-      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+
       {/* Hero */}
       <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
         <img
@@ -113,145 +198,95 @@ const BlogArticle = () => {
 
       <GrecaDivider variant="jade" size="md" />
 
-      {/* Article Content */}
+      {/* Article Content with TOC sidebar */}
       <section className="py-10 md:py-16 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl">
-          {/* Excerpt */}
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 border-l-4 border-accent pl-6 italic">
-            {post.excerpt}
-          </p>
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto md:grid md:grid-cols-[220px_1fr] md:gap-8 lg:grid-cols-[240px_1fr] lg:gap-12">
+            {/* TOC column */}
+            <div className="hidden md:block">
+              <ArticleTOC items={tocItems} />
+            </div>
 
-          {/* Content Blocks with inline images */}
-          <div className="prose-custom space-y-6">
-            {post.content.map((block, i) => {
-              const inlineImage = post.contentImages?.find((img) => img.afterBlock === i);
-              const lines = block.split("\n").filter(Boolean);
-              return (
-                <div key={i}>
-                  <div className="space-y-3">
-                    {lines.map((line, j) => {
-                      if (line.startsWith("## ")) {
-                        return (
-                          <h2
-                            key={j}
-                            className="font-heading text-xl md:text-2xl font-bold text-foreground mt-8 mb-3"
-                          >
-                            {line.replace("## ", "")}
-                          </h2>
-                        );
-                      }
-                      if (line.startsWith("**") && line.endsWith("**")) {
-                        return (
-                          <h3
-                            key={j}
-                            className="font-heading text-lg font-semibold text-foreground mt-4"
-                          >
-                            {line.replace(/\*\*/g, "")}
-                          </h3>
-                        );
-                      }
-                      if (line.startsWith("**")) {
-                        const parts = line.split("**");
-                        return (
-                          <p
-                            key={j}
-                            className="text-foreground leading-relaxed text-base"
-                          >
-                            <strong className="font-semibold">{parts[1]}</strong>
-                            {parts[2]}
-                          </p>
-                        );
-                      }
-                      if (line.startsWith("- ")) {
-                        return (
-                          <li
-                            key={j}
-                            className="text-foreground leading-relaxed ml-4 list-disc"
-                          >
-                            {line.replace("- ", "")}
-                          </li>
-                        );
-                      }
-                      if (/^\d+\.\s/.test(line)) {
-                        return (
-                          <li
-                            key={j}
-                            className="text-foreground leading-relaxed ml-4 list-decimal"
-                          >
-                            {line.replace(/^\d+\.\s/, "")}
-                          </li>
-                        );
-                      }
-                      return (
-                        <p
-                          key={j}
-                          className="text-foreground leading-relaxed text-base"
-                        >
-                          {line}
-                        </p>
-                      );
-                    })}
-                  </div>
+            {/* Main content */}
+            <div className="max-w-3xl">
+              {/* Excerpt */}
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 border-l-4 border-accent pl-6 italic">
+                {post.excerpt}
+              </p>
 
-                  {/* Inline image after this block */}
-                  {inlineImage && (
-                    <figure className="my-8 -mx-4 md:mx-0">
-                      <div className="overflow-hidden rounded-lg md:rounded-xl border border-border shadow-sm">
-                        <img
-                          src={inlineImage.src}
-                          alt={inlineImage.alt}
-                          className="w-full h-auto object-cover max-h-[400px]"
-                          loading="lazy"
-                        />
+              {/* Content Blocks */}
+              <div className="prose-custom space-y-6">
+                {post.content.map((block, i) => {
+                  const inlineImage = post.contentImages?.find(
+                    (img) => img.afterBlock === i
+                  );
+                  const lines = block.split("\n").filter(Boolean);
+                  return (
+                    <div key={i}>
+                      <div className="space-y-3">
+                        {lines.map((line, j) => renderLine(line, j))}
                       </div>
-                      {inlineImage.caption && (
-                        <figcaption className="mt-3 text-sm text-muted-foreground text-center italic px-4">
-                          {inlineImage.caption}
-                        </figcaption>
+                      {inlineImage && (
+                        <figure className="my-8 -mx-4 md:mx-0">
+                          <div className="overflow-hidden rounded-lg md:rounded-xl border border-border shadow-sm">
+                            <img
+                              src={inlineImage.src}
+                              alt={inlineImage.alt}
+                              className="w-full h-auto object-cover max-h-[400px]"
+                              loading="lazy"
+                            />
+                          </div>
+                          {inlineImage.caption && (
+                            <figcaption className="mt-3 text-sm text-muted-foreground text-center italic px-4">
+                              {inlineImage.caption}
+                            </figcaption>
+                          )}
+                        </figure>
                       )}
-                    </figure>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Tags & Share */}
-          <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <Tag size={14} className="text-muted-foreground" />
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-secondary text-foreground text-xs rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <Button variant="outline" size="sm" onClick={handleShare}>
-              <Share2 size={14} className="mr-2" /> Compartir
-            </Button>
-          </div>
-
-          {/* Author Card */}
-          <EstelaCard variant="jade" className="mt-8">
-            <div className="p-6 rounded-xl bg-secondary/50">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <User size={20} className="text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">{post.author}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {post.authorRole}
-                  </p>
-                </div>
+                    </div>
+                  );
+                })}
               </div>
+
+              {/* Tags & Share */}
+              <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Tag size={14} className="text-muted-foreground" />
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-secondary text-foreground text-xs rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <Button variant="outline" size="sm" onClick={handleShare}>
+                  <Share2 size={14} className="mr-2" /> Compartir
+                </Button>
+              </div>
+
+              {/* Author Card */}
+              <EstelaCard variant="jade" className="mt-8">
+                <div className="p-6 rounded-xl bg-secondary/50">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                      <User size={20} className="text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">{post.author}</p>
+                      <p className="text-sm text-muted-foreground">{post.authorRole}</p>
+                    </div>
+                  </div>
+                </div>
+              </EstelaCard>
             </div>
-          </EstelaCard>
+          </div>
         </div>
       </section>
+
+      {/* Mobile TOC (rendered outside main grid) */}
+      <ArticleTOC items={tocItems} />
 
       {/* Related Posts */}
       {related.length > 0 && (
