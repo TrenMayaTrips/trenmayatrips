@@ -253,6 +253,138 @@ const WagonGallery = ({ images, wagonName }: WagonGalleryProps) => {
   );
 };
 
+// ── Seat Layout Component ────────────────────────────────────────────────────
+type SeatPos = "A" | "B" | "C" | "D";
+
+const SEAT_META: Record<SeatPos, { type: "window" | "aisle"; label: string }> = {
+  A: { type: "window", label: "Ventana" },
+  B: { type: "aisle",  label: "Pasillo" },
+  C: { type: "aisle",  label: "Pasillo" },
+  D: { type: "window", label: "Ventana" },
+};
+
+function buildOccupied(seats: number): Set<string> {
+  const rows = Math.min(6, Math.ceil(seats / 4));
+  const occ = new Set<string>();
+  let s = seats * 37 + 7;
+  for (let r = 0; r < rows; r++) {
+    for (const pos of ["A", "B", "C", "D"] as SeatPos[]) {
+      s = (s * 1664525 + 1013904223) & 0xffffffff;
+      if ((s >>> 28) < 4) occ.add(`${r}-${pos}`);
+    }
+  }
+  return occ;
+}
+
+interface SeatLayoutProps { seats: number; config: string; seatWidth: string; }
+
+const SeatLayout = ({ seats, config, seatWidth }: SeatLayoutProps) => {
+  const rows = Math.min(6, Math.ceil(seats / 4));
+  const occupied = useMemo(() => buildOccupied(seats), [seats]);
+  const [tooltip, setTooltip] = useState<{ row: number; pos: SeatPos } | null>(null);
+
+  const styleOf = (row: number, pos: SeatPos): "window" | "aisle" | "occupied" =>
+    occupied.has(`${row}-${pos}`) ? "occupied" : SEAT_META[pos].type;
+
+  const cellCls = (style: "window" | "aisle" | "occupied") => {
+    if (style === "window")
+      return "bg-primary/15 border-primary/40 hover:bg-primary/25 cursor-pointer";
+    if (style === "aisle")
+      return "bg-muted border-border hover:bg-muted/70 cursor-pointer";
+    return "bg-muted-foreground/25 border-muted-foreground/20 cursor-not-allowed opacity-60";
+  };
+
+  const SeatCell = ({ row, pos }: { row: number; pos: SeatPos }) => {
+    const style = styleOf(row, pos);
+    const active = tooltip?.row === row && tooltip?.pos === pos;
+    const toggle = () => {
+      if (style === "occupied") return;
+      setTooltip(active ? null : { row, pos });
+    };
+    return (
+      <div className="relative">
+        <div
+          className={`w-9 h-7 rounded border text-[9px] font-semibold flex items-center justify-center transition-colors select-none ${cellCls(style)} ${active ? "ring-2 ring-accent ring-offset-1 ring-offset-card" : ""}`}
+          onMouseEnter={() => style !== "occupied" && setTooltip({ row, pos })}
+          onMouseLeave={() => setTooltip(null)}
+          onTouchEnd={(e) => { e.preventDefault(); toggle(); }}
+          aria-label={`Fila ${row + 1}, Asiento ${pos} — ${SEAT_META[pos].label}`}
+        >
+          {style === "occupied" ? "×" : pos}
+        </div>
+
+        {active && (
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20 pointer-events-none">
+            <div className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-foreground text-background text-[10px] font-medium shadow-xl">
+              Fila {row + 1} · {pos} · {SEAT_META[pos].label}
+            </div>
+            <div className="w-0 h-0 mx-auto border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-foreground" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="max-w-sm mx-auto bg-card rounded-xl border border-border overflow-hidden shadow-sm">
+      {/* Front / Door */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-secondary/70 border-b border-border text-xs text-muted-foreground">
+        <span className="flex items-center gap-1.5">🚪 Entrada / Salida</span>
+        <span className="font-medium">← Frente del tren</span>
+      </div>
+
+      {/* Rows */}
+      <div className="px-5 py-4 space-y-2">
+        {Array.from({ length: rows }).map((_, row) => (
+          <div key={row} className="flex items-center justify-center gap-5">
+            <div className="flex gap-1.5">
+              <SeatCell row={row} pos="A" />
+              <SeatCell row={row} pos="B" />
+            </div>
+            <span className="text-[10px] text-muted-foreground/40 font-mono w-4 text-center">{row + 1}</span>
+            <div className="flex gap-1.5">
+              <SeatCell row={row} pos="C" />
+              <SeatCell row={row} pos="D" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Rear / Bathrooms */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-secondary/70 border-t border-border text-xs text-muted-foreground">
+        <span className="flex items-center gap-1.5">🚻 Sanitarios</span>
+        <span className="font-medium">Parte trasera →</span>
+      </div>
+
+      {/* Legend */}
+      <div className="flex flex-wrap items-center justify-center gap-4 px-4 py-3 border-t border-border bg-background text-xs text-muted-foreground">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-3 rounded bg-primary/15 border border-primary/40" />
+          Ventana
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-3 rounded bg-muted border border-border" />
+          Pasillo
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-3 rounded bg-muted-foreground/25 border border-muted-foreground/20 opacity-60" />
+          Ocupado
+        </div>
+      </div>
+
+      {/* Specs + disclaimer */}
+      <div className="px-5 py-3 border-t border-border bg-background text-center space-y-1">
+        <p className="text-xs text-muted-foreground">
+          {seats} asientos · Configuración {config} · Ancho {seatWidth}
+        </p>
+        <p className="text-[11px] text-muted-foreground/60 italic">
+          La selección de asiento estará disponible al momento de la reserva.
+        </p>
+      </div>
+    </div>
+  );
+};
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 const VagonDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
