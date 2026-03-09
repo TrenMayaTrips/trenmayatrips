@@ -574,29 +574,48 @@ const Itinerarios = () => {
                         </div>
                         <CardContent className="p-4">
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            {lodgingOptions.map((opt) => (
-                              <button
-                                key={opt.id}
-                                onClick={() => setLodging(dest.slug, opt.id)}
-                                className={`rounded-xl border-2 p-4 text-center transition-all hover:shadow-md ${
-                                  currentLodging === opt.id
-                                    ? "border-primary bg-primary/5 shadow-sm"
-                                    : "border-border hover:border-primary/30"
-                                }`}
-                              >
-                                <span className="text-2xl block mb-2">{opt.emoji}</span>
-                                <span className="font-heading text-sm font-semibold text-foreground block">
-                                  {opt.label}
-                                </span>
-                                <span className="text-xs text-muted-foreground leading-tight block mt-1">
-                                  {opt.description}
-                                </span>
-                                <span className="text-sm font-heading font-bold text-primary block mt-3">
-                                  ${opt.pricePerNight}/noche
-                                </span>
-                              </button>
-                            ))}
+                            {lodgingOptions.map((opt) => {
+                              const price = getLodgingPrice(dest.slug, opt.id);
+                              const isAvailable = price !== null;
+                              const isSelected = currentLodging === opt.id;
+                              
+                              return (
+                                <button
+                                  key={opt.id}
+                                  onClick={() => isAvailable && setLodging(dest.slug, opt.id)}
+                                  disabled={!isAvailable}
+                                  title={!isAvailable ? "No disponible en este destino" : undefined}
+                                  className={`rounded-xl border-2 p-4 text-center transition-all ${
+                                    !isAvailable
+                                      ? "border-border/50 opacity-40 cursor-not-allowed"
+                                      : isSelected
+                                      ? "border-primary bg-primary/5 shadow-sm"
+                                      : "border-border hover:border-primary/30 hover:shadow-md"
+                                  }`}
+                                >
+                                  <span className="text-2xl block mb-2">{opt.emoji}</span>
+                                  <span className="font-heading text-sm font-semibold text-foreground block">
+                                    {opt.label}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground leading-tight block mt-1">
+                                    {opt.description}
+                                  </span>
+                                  {isAvailable ? (
+                                    <span className="text-sm font-heading font-bold text-primary block mt-3">
+                                      Desde ${price}/noche
+                                    </span>
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground block mt-3 italic">
+                                      No disponible
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
                           </div>
+                          <p className="text-[10px] text-muted-foreground text-center mt-3">
+                            Precios aproximados. El precio final dependerá de la fecha y disponibilidad.
+                          </p>
                         </CardContent>
                       </Card>
                     );
