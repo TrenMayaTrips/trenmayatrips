@@ -12,7 +12,7 @@ import { useState } from "react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import RutaDestinos from "@/components/routes/RutaDestinos";
-import RutaMiniMap from "@/components/routes/RutaMiniMap";
+import RutaInteractiveMap from "@/components/routes/RutaInteractiveMap";
 import RutaTips from "@/components/routes/RutaTips";
 
 const routeFaqs: Record<string, { q: string; a: string }[]> = {
@@ -48,6 +48,7 @@ const routeFaqs: Record<string, { q: string; a: string }[]> = {
 const RutaDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [hoveredStation, setHoveredStation] = useState<string | null>(null);
 
   const route = routes.find((r) => r.slug === slug);
   if (!route) {
@@ -206,18 +207,22 @@ const RutaDetalle = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className="flex gap-4 relative"
+                  className={`flex gap-4 relative cursor-pointer transition-all ${
+                    hoveredStation === stop.name ? "scale-[1.02]" : ""
+                  }`}
+                  onMouseEnter={() => setHoveredStation(stop.name)}
+                  onMouseLeave={() => setHoveredStation(null)}
                 >
                   <div className="flex flex-col items-center">
-                    <div className={`w-5 h-5 rounded-full shrink-0 mt-1 border-2 border-card ${
+                    <div className={`w-5 h-5 rounded-full shrink-0 mt-1 border-2 border-card transition-all ${
                       stop.isOrigin || stop.isDestination ? "bg-primary ring-4 ring-primary/20" : "bg-muted-foreground/30"
-                    }`} />
+                    } ${hoveredStation === stop.name ? "ring-4 ring-accent/30 scale-110" : ""}`} />
                     {i < route.timeline.length - 1 && (
                       <div className="w-0.5 flex-1 bg-border min-h-[40px]" />
                     )}
                   </div>
                   <div className="pb-8">
-                    <div className="flex items-baseline gap-3">
+                    <div className="flex items-baseline gap-3 flex-wrap">
                       <span className="text-xs font-mono text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded">
                         {stop.time}
                       </span>
@@ -247,10 +252,12 @@ const RutaDetalle = () => {
               ))}
             </div>
 
-            {/* Mini map (desktop) */}
-            <div className="hidden lg:block sticky top-28">
-              <RutaMiniMap stopNames={route.timeline.map((s) => s.name)} />
-            </div>
+            {/* Interactive map */}
+            <RutaInteractiveMap
+              timeline={route.timeline}
+              hoveredStation={hoveredStation}
+              onStationHover={setHoveredStation}
+            />
           </div>
         </div>
       </section>
