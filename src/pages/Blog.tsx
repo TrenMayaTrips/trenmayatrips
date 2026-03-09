@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Clock, User, ArrowRight, Search } from "lucide-react";
@@ -9,13 +9,25 @@ import heroBlog from "@/assets/hero-blog.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const allArticlesRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+
+  const featuredPosts = blogPosts.filter((p) => p.featured);
+  const nonFeaturedPosts = blogPosts.filter((p) => !p.featured);
 
   const filtered = useMemo(() => {
-    let results = blogPosts;
+    // Start with non-featured posts to avoid duplication
+    let results = nonFeaturedPosts;
     if (selectedCategory) {
       results = results.filter((p) => p.category === selectedCategory);
     }
@@ -29,9 +41,11 @@ const Blog = () => {
       );
     }
     return results;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, nonFeaturedPosts]);
 
-  const featuredPosts = blogPosts.filter((p) => p.featured);
+  const scrollToAllArticles = () => {
+    allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <PageLayout>
@@ -99,71 +113,151 @@ const Blog = () => {
       {!selectedCategory && !searchQuery && (
         <section className="py-10 md:py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-8">
-              Artículos destacados
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {featuredPosts.slice(0, 2).map((post, i) => {
-                const category = blogCategories.find(
-                  (c) => c.slug === post.category
-                );
-                return (
-                  <motion.div
-                    key={post.slug}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                  >
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all"
-                    >
-                      <div className="relative min-h-[180px] overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                        <div className="relative z-10 p-8 flex flex-col justify-end min-h-[180px]">
-                          <span className="text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full w-fit mb-3">
-                            {category?.emoji} {category?.label}
-                          </span>
-                          <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-gold transition-colors">
-                            {post.title}
-                          </h3>
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <User size={12} /> {post.author}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock size={12} /> {post.readTime} min
-                            </span>
-                          </div>
-                          <ArrowRight
-                            size={16}
-                            className="text-primary group-hover:translate-x-1 transition-transform"
-                          />
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+                Artículos destacados
+              </h2>
+              <button
+                onClick={scrollToAllArticles}
+                className="hidden md:flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+              >
+                Ver todos <ArrowRight size={16} />
+              </button>
             </div>
+
+            {/* Mobile Carousel */}
+            {isMobile ? (
+              <Carousel
+                opts={{ align: "start", loop: true }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-4">
+                  {featuredPosts.slice(0, 2).map((post) => {
+                    const category = blogCategories.find(
+                      (c) => c.slug === post.category
+                    );
+                    return (
+                      <CarouselItem key={post.slug} className="pl-4 basis-[90%]">
+                        <Link
+                          to={`/blog/${post.slug}`}
+                          className="block group rounded-xl overflow-hidden border-2 border-gold/30 bg-card hover:shadow-lg transition-all"
+                        >
+                          <div className="relative min-h-[200px] overflow-hidden">
+                            <img
+                              src={post.image}
+                              alt={post.title}
+                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                            <div className="relative z-10 p-6 flex flex-col justify-end min-h-[200px]">
+                              <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
+                                ⭐ {category?.label}
+                              </span>
+                              <h3 className="font-heading text-lg font-bold text-white leading-tight">
+                                {post.title}
+                              </h3>
+                            </div>
+                          </div>
+                          <div className="p-4">
+                            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                              {post.excerpt}
+                            </p>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              <span>{post.author}</span>
+                              <span>·</span>
+                              <span>{post.readTime} min lectura</span>
+                            </div>
+                          </div>
+                        </Link>
+                      </CarouselItem>
+                    );
+                  })}
+                </CarouselContent>
+                {/* Dots indicator */}
+                <div className="flex justify-center gap-2 mt-4">
+                  {featuredPosts.slice(0, 2).map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="w-2 h-2 rounded-full bg-primary/30"
+                    />
+                  ))}
+                </div>
+              </Carousel>
+            ) : (
+              /* Desktop Grid */
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {featuredPosts.slice(0, 2).map((post, i) => {
+                  const category = blogCategories.find(
+                    (c) => c.slug === post.category
+                  );
+                  return (
+                    <motion.div
+                      key={post.slug}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <Link
+                        to={`/blog/${post.slug}`}
+                        className="block group rounded-xl overflow-hidden border-2 border-gold/30 bg-card hover:shadow-lg transition-all"
+                      >
+                        <div className="relative min-h-[180px] overflow-hidden">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          <div className="relative z-10 p-8 flex flex-col justify-end min-h-[180px]">
+                            <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
+                              ⭐ Destacado · {category?.label}
+                            </span>
+                            <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-gold transition-colors">
+                              {post.title}
+                            </h3>
+                          </div>
+                        </div>
+                        <div className="p-6">
+                          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                            {post.excerpt}
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <User size={12} /> {post.author}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock size={12} /> {post.readTime} min
+                              </span>
+                            </div>
+                            <ArrowRight
+                              size={16}
+                              className="text-primary group-hover:translate-x-1 transition-transform"
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Mobile "Ver todos" link */}
+            {isMobile && (
+              <button
+                onClick={scrollToAllArticles}
+                className="flex items-center gap-1 text-sm font-medium text-primary mx-auto mt-6"
+              >
+                Ver todos los artículos <ArrowRight size={16} />
+              </button>
+            )}
           </div>
         </section>
       )}
 
       {/* All Posts Grid */}
-      <section className="py-10 md:py-16 bg-secondary/30">
+      <section ref={allArticlesRef} className="py-10 md:py-16 bg-secondary/30 scroll-mt-24">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
