@@ -272,21 +272,7 @@ const BlogArticle = () => {
               <PostArticleCTA ctx={articleCtx} />
 
               {/* Author Card */}
-              <EstelaCard variant="jade" className="mt-8">
-                <div className="p-6 rounded-xl bg-secondary/50">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                      <User size={20} className="text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground">{post.author}</p>
-                      <p className="text-sm text-muted-foreground">{post.authorRole}</p>
-                    </div>
-                  </div>
-                </div>
-              </EstelaCard>
-
-              {/* Mobile: Newsletter after article */}
+              <AuthorBox author={getAuthor(post.author)} />
               <div className="mt-8 lg:hidden">
                 <SidebarNewsletter />
               </div>
