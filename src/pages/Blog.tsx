@@ -601,7 +601,7 @@ const Blog = () => {
                             <span className="text-xs font-medium text-white/80 mb-2">
                               {category?.emoji} {category?.label}
                             </span>
-                            <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors line-clamp-2">
+                            <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors duration-200 line-clamp-2">
                               {post.title}
                             </h3>
                           </div>
