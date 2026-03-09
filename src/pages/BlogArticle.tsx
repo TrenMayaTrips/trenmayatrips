@@ -286,7 +286,9 @@ const BlogArticle = () => {
       </section>
 
       {/* Mobile TOC (rendered outside main grid) */}
-      <ArticleTOC items={tocItems} />
+      <div className="md:hidden">
+        <ArticleTOC items={tocItems} />
+      </div>
 
       {/* Related Posts */}
       {related.length > 0 && (
