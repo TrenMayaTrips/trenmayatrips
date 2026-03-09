@@ -596,7 +596,7 @@ const Itinerarios = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock size={18} />
-                        <span className="font-medium">{selectedDuration} días</span>
+                        <span className="font-medium">{selectedDuration} días · {totalNights} noches</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin size={18} />
@@ -604,12 +604,7 @@ const Itinerarios = () => {
                       </div>
                       <div className="flex items-center gap-2 ml-auto">
                         <span className="font-medium">
-                          💰 Alojamiento estimado: $
-                          {selectedDests.reduce((total, dest) => {
-                            const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
-                            return total + (lodging?.pricePerNight || 0) * (selectedDuration || 1);
-                          }, 0)}
-                          /total
+                          💰 Hospedaje total: ${totalCost.toLocaleString()} USD
                         </span>
                       </div>
                     </div>
@@ -620,6 +615,8 @@ const Itinerarios = () => {
                       {selectedDests.map((dest, i) => {
                         const state = states.find((s) => s.slug === dest.state);
                         const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
+                        const nights = nightsByDest[dest.slug] || 0;
+                        const subtotal = (lodging?.pricePerNight || 0) * nights;
                         return (
                           <div key={dest.slug} className="flex gap-4">
                             {/* Timeline */}
@@ -647,24 +644,40 @@ const Itinerarios = () => {
                                 <Badge variant="outline" className="text-xs">
                                   🚂 {dest.travelTime}
                                 </Badge>
-                                 {lodging && (
-                                   <Badge variant="secondary" className="text-xs bg-accent/10 text-accent-foreground">
-                                     {lodging.emoji} {lodging.label}
-                                   </Badge>
-                                 )}
-                                 {lodging && (
-                                   <Badge variant="outline" className="text-xs">
-                                     💰 ${lodging.pricePerNight} x {selectedDuration} = ${lodging.pricePerNight * (selectedDuration || 1)}
-                                   </Badge>
-                                 )}
-                               </div>
-                             </div>
-                           </div>
-                         );
-                       })}
-                     </div>
-                   </CardContent>
-                 </Card>
+                              </div>
+                              {lodging && (
+                                <div className="mt-2 bg-secondary/50 rounded-lg p-3">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm text-foreground font-medium">
+                                      {lodging.emoji} {lodging.label}
+                                    </span>
+                                    <span className="text-sm font-heading font-bold text-primary">
+                                      ${subtotal.toLocaleString()}
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {nights} {nights === 1 ? "noche" : "noches"} × ${lodging.pricePerNight}/noche
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Total breakdown */}
+                    <div className="border-t border-border pt-4 mt-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-heading font-semibold text-foreground">Hospedaje total estimado</span>
+                        <span className="font-heading text-xl font-bold text-primary">${totalCost.toLocaleString()} USD</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {totalNights} noches repartidas en {selectedDestinations.length} destinos. No incluye transporte ni actividades.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
 
                 {/* CTA */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
