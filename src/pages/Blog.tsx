@@ -440,7 +440,7 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="block group rounded-xl overflow-hidden border-2 border-gold/30 bg-card hover:shadow-lg transition-all"
+                        className="blog-card border-2 border-gold/30"
                       >
                         <div className="relative min-h-[180px] overflow-hidden">
                           <img
