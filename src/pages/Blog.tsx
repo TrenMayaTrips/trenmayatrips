@@ -257,7 +257,7 @@ const Blog = () => {
       )}
 
       {/* All Posts Grid */}
-      <section className="py-10 md:py-16 bg-secondary/30">
+      <section ref={allArticlesRef} className="py-10 md:py-16 bg-secondary/30 scroll-mt-24">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
