@@ -193,17 +193,15 @@ const Itinerarios = () => {
   const saveItinerary = async () => {
     setSaving(true);
     try {
-      const { data, error } = await supabase
-        .from("saved_itineraries")
-        .insert({
+      const { data, error } = await supabase.functions.invoke("save-itinerary", {
+        body: {
           trip_type: selectedType!,
           duration: selectedDuration!,
           destinations: selectedDestinations,
           lodging: lodgingByDest,
           total_cost: totalCost,
-        })
-        .select("short_code")
-        .single();
+        },
+      });
 
       if (error) throw error;
 
