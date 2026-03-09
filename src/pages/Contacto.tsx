@@ -321,7 +321,7 @@ const Contacto = () => {
         title="Contacto — Tren Maya Trips"
         description="Contáctanos para planificar tu viaje en el Tren Maya. Teléfono, email, WhatsApp y ubicación en Cancún, Quintana Roo."
         canonical="https://trenmayatrips.com/contacto"
-        structuredData={{
+        jsonLd={{
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           "name": "Tren Maya Trips",
