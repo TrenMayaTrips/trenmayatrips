@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, CheckCircle2, Navigation } from "lucide-react";
+import { MapPin, CheckCircle2, Navigation, Info } from "lucide-react";
 import { destinations, destinationTypes } from "@/data/destinations";
 import { destinationImageMap } from "@/data/destination-images";
 import EstelaCard from "@/components/maya/EstelaCard";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Map destination slugs to station names they match
 const destToStations: Record<string, string[]> = {
