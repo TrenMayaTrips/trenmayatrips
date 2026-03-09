@@ -86,13 +86,27 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
     .map((stop) => ({ ...stationCoords[stop.name], stop }))
     .filter((c) => c.x !== undefined);
 
-  if (coords.length < 2) return null;
-
   // Create dashed path between stations
   const routeSegments: string[] = [];
   for (let i = 0; i < coords.length - 1; i++) {
     routeSegments.push(`M ${coords[i].x},${coords[i].y} L ${coords[i + 1].x},${coords[i + 1].y}`);
   }
+
+  // Sync with external hover
+  useEffect(() => {
+    if (hoveredStation) {
+      const stop = timeline.find((s) => s.name === hoveredStation);
+      const coord = stationCoords[hoveredStation];
+      if (stop && coord) {
+        setTooltipStation(stop);
+        setTooltipPos({ x: coord.x, y: coord.y });
+      }
+    } else {
+      setTooltipStation(null);
+    }
+  }, [hoveredStation, timeline]);
+
+  if (coords.length < 2) return null;
 
   const handleMarkerHover = (stop: RouteStop, x: number, y: number) => {
     setTooltipStation(stop);
