@@ -674,7 +674,8 @@ const Itinerarios = () => {
                         const state = states.find((s) => s.slug === dest.state);
                         const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
                         const nights = nightsByDest[dest.slug] || 0;
-                        const subtotal = (lodging?.pricePerNight || 0) * nights;
+                        const pricePerNight = getLodgingPrice(dest.slug, lodgingByDest[dest.slug]) || 0;
+                        const subtotal = pricePerNight * nights;
                         return (
                           <div key={dest.slug} className="flex gap-4">
                             {/* Timeline */}
@@ -714,7 +715,7 @@ const Itinerarios = () => {
                                     </span>
                                   </div>
                                   <p className="text-xs text-muted-foreground mt-1">
-                                    {nights} {nights === 1 ? "noche" : "noches"} × ${lodging.pricePerNight}/noche
+                                    {nights} {nights === 1 ? "noche" : "noches"} × ${pricePerNight}/noche
                                   </p>
                                 </div>
                               )}
