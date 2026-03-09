@@ -126,10 +126,10 @@
   
   /* Blog card interactive states */
   .blog-card {
-    @apply block group rounded-xl overflow-hidden bg-card cursor-pointer
+    @apply block rounded-xl overflow-hidden bg-card cursor-pointer
            transition-all duration-300 ease-out
            focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
-           active:scale-[0.98] active:transition-[transform] active:duration-100;
+           active:scale-[0.98] active:duration-100;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
   .blog-card:hover {

@@ -376,7 +376,7 @@ const Blog = () => {
                       <CarouselItem key={post.slug} className="pl-4 basis-[90%]">
                         <Link
                           to={`/blog/${post.slug}`}
-                          className="blog-card border-2 border-gold/30"
+                          className="blog-card group border-2 border-gold/30"
                         >
                           <div className="relative min-h-[200px] overflow-hidden">
                             <img
@@ -440,7 +440,7 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="blog-card border-2 border-gold/30"
+                        className="blog-card group border-2 border-gold/30"
                       >
                         <div className="relative min-h-[180px] overflow-hidden">
                           <img
@@ -587,7 +587,7 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="blog-card border border-border h-full"
+                        className="blog-card group border border-border h-full"
                       >
                         <div className="relative min-h-[160px] overflow-hidden">
                           <img
