@@ -447,6 +447,34 @@ const VagonDetalle = () => {
         </motion.div>
       </ParallaxHero>
 
+      {/* Class Navigation Tabs */}
+      <nav className="bg-card border-b border-border sticky top-16 z-30">
+        <div className="container mx-auto px-4">
+          <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:justify-center">
+            {wagonClassesDetailed.map((w) => {
+              const isCurrent = w.slug === wagon.slug;
+              return (
+                <Link
+                  key={w.slug}
+                  to={`/tren-maya/clases/${w.slug}`}
+                  className={`flex-shrink-0 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                    isCurrent
+                      ? "text-white shadow-md"
+                      : "border border-border text-foreground hover:border-accent hover:text-accent"
+                  }`}
+                  style={isCurrent ? { backgroundColor: "#D4A853", color: "#fff" } : {}}
+                >
+                  {w.name}
+                  <span className={`ml-1.5 ${isCurrent ? "text-white/80" : "text-muted-foreground"}`}>
+                    ${w.priceBase.toLocaleString()}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+
       {/* Stats row */}
       <section className="bg-card border-b border-border">
         <div className="container mx-auto px-4 py-6">
