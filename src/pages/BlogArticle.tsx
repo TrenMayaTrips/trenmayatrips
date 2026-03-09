@@ -13,6 +13,12 @@ import AdPlaceholder from "@/components/blog/AdPlaceholder";
 import SidebarNewsletter from "@/components/blog/SidebarNewsletter";
 import SidebarPopularPosts from "@/components/blog/SidebarPopularPosts";
 import MobileStickyBooking from "@/components/blog/MobileStickyBooking";
+import {
+  getArticleContext,
+  InlineRouteCTA,
+  InlineExperienceCTA,
+  PostArticleCTA,
+} from "@/components/blog/InlineArticleCTAs";
 
 /** Convert heading text to a URL-friendly id */
 function slugify(text: string): string {
@@ -131,12 +137,23 @@ const BlogArticle = () => {
     return <p key={j} className="text-foreground leading-relaxed text-base">{line}</p>;
   };
 
-  // Find mid-point H2 index for mobile inline ad
+  // Contextual CTA data
+  const articleCtx = getArticleContext(post.slug);
+
+  // Find block indices for CTA insertion
   const h2Indices: number[] = [];
+  let transportBlockIdx = -1;
   post.content.forEach((block, i) => {
-    if (block.split("\n").some((l) => l.startsWith("## "))) h2Indices.push(i);
+    const lines = block.split("\n").filter(Boolean);
+    if (lines.some((l) => l.startsWith("## "))) h2Indices.push(i);
+    // Detect "Cómo Llegar" or transport-related H2
+    if (lines.some((l) => /^## .*(llegar|tren maya|conectar|transporte)/i.test(l))) {
+      transportBlockIdx = i;
+    }
   });
   const midAdAfterBlock = h2Indices.length >= 3 ? h2Indices[Math.floor(h2Indices.length / 2)] : -1;
+  // Experience CTA: between 2nd and 3rd H2 (but not same as transport or ad block)
+  const experienceCtaAfterBlock = h2Indices.length >= 3 ? h2Indices[1] : -1;
 
   return (
     <PageLayout>
@@ -218,6 +235,12 @@ const BlogArticle = () => {
                           <AdPlaceholder />
                         </div>
                       )}
+                      {/* CTA: Route — after "Cómo Llegar" section */}
+                      {i === transportBlockIdx && <InlineRouteCTA ctx={articleCtx} />}
+                      {/* CTA: Experience — between 2nd and 3rd H2 */}
+                      {i === experienceCtaAfterBlock && i !== transportBlockIdx && (
+                        <InlineExperienceCTA ctx={articleCtx} />
+                      )}
                     </div>
                   );
                 })}
@@ -235,6 +258,8 @@ const BlogArticle = () => {
                   <Share2 size={14} className="mr-2" /> Compartir
                 </Button>
               </div>
+              {/* CTA: Post-article itinerary banner */}
+              <PostArticleCTA ctx={articleCtx} />
 
               {/* Author Card */}
               <EstelaCard variant="jade" className="mt-8">
