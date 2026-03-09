@@ -28,11 +28,49 @@ const durations = [
 ];
 
 const lodgingOptions = [
-  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada", pricePerNight: 120 },
-  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza", pricePerNight: 85 },
-  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones", pricePerNight: 150 },
-  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social", pricePerNight: 35 },
+  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada", basePrice: 120 },
+  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza", basePrice: 85 },
+  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones", basePrice: 150 },
+  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social", basePrice: 35 },
 ];
+
+// Destination-specific lodging prices (null = not available)
+type LodgingPrices = { boutique: number | null; ecolodge: number | null; allinclusive: number | null; hostal: number | null };
+const lodgingByDestination: Record<string, LodgingPrices> = {
+  // Quintana Roo - Tourist prices
+  "cancun": { boutique: 180, ecolodge: 120, allinclusive: 250, hostal: 45 },
+  "playa-del-carmen": { boutique: 160, ecolodge: 110, allinclusive: 220, hostal: 40 },
+  "tulum": { boutique: 200, ecolodge: 150, allinclusive: null, hostal: 50 },
+  "bacalar": { boutique: 120, ecolodge: 90, allinclusive: null, hostal: 30 },
+  "riviera-maya": { boutique: 170, ecolodge: 130, allinclusive: 280, hostal: 45 },
+  // Yucatán - Mid prices
+  "merida": { boutique: 100, ecolodge: 70, allinclusive: 140, hostal: 28 },
+  "valladolid": { boutique: 85, ecolodge: 60, allinclusive: null, hostal: 22 },
+  "izamal": { boutique: 75, ecolodge: 55, allinclusive: null, hostal: 20 },
+  "chichen-itza": { boutique: 130, ecolodge: 90, allinclusive: 180, hostal: 35 },
+  // Campeche - Lower prices
+  "campeche-ciudad": { boutique: 80, ecolodge: 55, allinclusive: null, hostal: 22 },
+  "calakmul": { boutique: 95, ecolodge: 70, allinclusive: null, hostal: 25 },
+  "edzna": { boutique: 70, ecolodge: 50, allinclusive: null, hostal: 18 },
+  // Chiapas
+  "palenque": { boutique: 90, ecolodge: 65, allinclusive: null, hostal: 25 },
+  "san-cristobal": { boutique: 85, ecolodge: 60, allinclusive: null, hostal: 22 },
+  "cascadas-agua-azul": { boutique: null, ecolodge: 55, allinclusive: null, hostal: 20 },
+  // Tabasco
+  "villahermosa": { boutique: 95, ecolodge: 65, allinclusive: 120, hostal: 28 },
+  "comalcalco": { boutique: 70, ecolodge: 50, allinclusive: null, hostal: 18 },
+};
+
+// Get price for a specific destination and lodging type
+const getLodgingPrice = (destSlug: string, lodgingId: string): number | null => {
+  const destPrices = lodgingByDestination[destSlug];
+  if (destPrices) {
+    return destPrices[lodgingId as keyof LodgingPrices];
+  }
+  // Fallback to base price for unlisted destinations
+  const option = lodgingOptions.find(o => o.id === lodgingId);
+  return option?.basePrice || null;
+};
 
 const steps = [
   { id: 1, label: "Tipo de viaje", icon: Compass },
@@ -145,9 +183,10 @@ const Itinerarios = () => {
 
   const totalCost = useMemo(() => {
     return selectedDests.reduce((total, dest) => {
-      const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
+      const lodgingId = lodgingByDest[dest.slug];
+      const price = getLodgingPrice(dest.slug, lodgingId) || 0;
       const nights = nightsByDest[dest.slug] || 0;
-      return total + (lodging?.pricePerNight || 0) * nights;
+      return total + price * nights;
     }, 0);
   }, [selectedDests, lodgingByDest, nightsByDest]);
 
@@ -535,29 +574,48 @@ const Itinerarios = () => {
                         </div>
                         <CardContent className="p-4">
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            {lodgingOptions.map((opt) => (
-                              <button
-                                key={opt.id}
-                                onClick={() => setLodging(dest.slug, opt.id)}
-                                className={`rounded-xl border-2 p-4 text-center transition-all hover:shadow-md ${
-                                  currentLodging === opt.id
-                                    ? "border-primary bg-primary/5 shadow-sm"
-                                    : "border-border hover:border-primary/30"
-                                }`}
-                              >
-                                <span className="text-2xl block mb-2">{opt.emoji}</span>
-                                <span className="font-heading text-sm font-semibold text-foreground block">
-                                  {opt.label}
-                                </span>
-                                <span className="text-xs text-muted-foreground leading-tight block mt-1">
-                                  {opt.description}
-                                </span>
-                                <span className="text-sm font-heading font-bold text-primary block mt-3">
-                                  ${opt.pricePerNight}/noche
-                                </span>
-                              </button>
-                            ))}
+                            {lodgingOptions.map((opt) => {
+                              const price = getLodgingPrice(dest.slug, opt.id);
+                              const isAvailable = price !== null;
+                              const isSelected = currentLodging === opt.id;
+                              
+                              return (
+                                <button
+                                  key={opt.id}
+                                  onClick={() => isAvailable && setLodging(dest.slug, opt.id)}
+                                  disabled={!isAvailable}
+                                  title={!isAvailable ? "No disponible en este destino" : undefined}
+                                  className={`rounded-xl border-2 p-4 text-center transition-all ${
+                                    !isAvailable
+                                      ? "border-border/50 opacity-40 cursor-not-allowed"
+                                      : isSelected
+                                      ? "border-primary bg-primary/5 shadow-sm"
+                                      : "border-border hover:border-primary/30 hover:shadow-md"
+                                  }`}
+                                >
+                                  <span className="text-2xl block mb-2">{opt.emoji}</span>
+                                  <span className="font-heading text-sm font-semibold text-foreground block">
+                                    {opt.label}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground leading-tight block mt-1">
+                                    {opt.description}
+                                  </span>
+                                  {isAvailable ? (
+                                    <span className="text-sm font-heading font-bold text-primary block mt-3">
+                                      Desde ${price}/noche
+                                    </span>
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground block mt-3 italic">
+                                      No disponible
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
                           </div>
+                          <p className="text-[10px] text-muted-foreground text-center mt-3">
+                            Precios aproximados. El precio final dependerá de la fecha y disponibilidad.
+                          </p>
                         </CardContent>
                       </Card>
                     );
@@ -616,7 +674,8 @@ const Itinerarios = () => {
                         const state = states.find((s) => s.slug === dest.state);
                         const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
                         const nights = nightsByDest[dest.slug] || 0;
-                        const subtotal = (lodging?.pricePerNight || 0) * nights;
+                        const pricePerNight = getLodgingPrice(dest.slug, lodgingByDest[dest.slug]) || 0;
+                        const subtotal = pricePerNight * nights;
                         return (
                           <div key={dest.slug} className="flex gap-4">
                             {/* Timeline */}
@@ -656,7 +715,7 @@ const Itinerarios = () => {
                                     </span>
                                   </div>
                                   <p className="text-xs text-muted-foreground mt-1">
-                                    {nights} {nights === 1 ? "noche" : "noches"} × ${lodging.pricePerNight}/noche
+                                    {nights} {nights === 1 ? "noche" : "noches"} × ${pricePerNight}/noche
                                   </p>
                                 </div>
                               )}
