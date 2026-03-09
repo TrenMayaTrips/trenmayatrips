@@ -320,7 +320,7 @@ const Contacto = () => {
       <SEOHead
         title="Contacto — Tren Maya Trips"
         description="Contáctanos para planificar tu viaje en el Tren Maya. Teléfono, email, WhatsApp y ubicación en Cancún, Quintana Roo."
-        canonicalUrl="https://trenmayatrips.com/contacto"
+        canonical="https://trenmayatrips.com/contacto"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
