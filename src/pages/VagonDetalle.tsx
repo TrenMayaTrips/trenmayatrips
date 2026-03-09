@@ -10,11 +10,252 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import VideoEmbed from "@/components/ui/VideoEmbed";
 
+// ── Wagon Gallery Component ──────────────────────────────────────────────────
+interface WagonGalleryProps {
+  images: string[];
+  wagonName: string;
+}
+
+const WagonGallery = ({ images, wagonName }: WagonGalleryProps) => {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const total = images.length;
+
+  const prev = useCallback(() => setActiveIdx((i) => (i - 1 + total) % total), [total]);
+  const next = useCallback(() => setActiveIdx((i) => (i + 1) % total), [total]);
+
+  // Keyboard navigation in lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+      if (e.key === "Escape") setLightboxOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxOpen, prev, next]);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    document.body.style.overflow = lightboxOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [lightboxOpen]);
+
+  // Touch / swipe handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = null;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
+  return (
+    <>
+      {/* ── Main image with arrows & counter ── */}
+      <div className="rounded-xl overflow-hidden border border-border mb-3 relative group">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeIdx}
+            src={images[activeIdx]}
+            alt={`${wagonName} – Foto ${activeIdx + 1}`}
+            className="w-full h-56 md:h-96 object-cover cursor-zoom-in"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setLightboxOpen(true)}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          />
+        </AnimatePresence>
+
+        {/* Expand hint */}
+        <button
+          onClick={() => setLightboxOpen(true)}
+          className="absolute top-3 right-3 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{ background: "rgba(0,0,0,0.45)" }}
+          aria-label="Ver en pantalla completa"
+        >
+          <Expand size={16} className="text-white" />
+        </button>
+
+        {/* Counter badge */}
+        {total > 1 && (
+          <div
+            className="absolute bottom-3 left-3 text-white text-xs font-medium px-2.5 py-1 rounded-full"
+            style={{ background: "rgba(0,0,0,0.5)" }}
+          >
+            {activeIdx + 1} / {total}
+          </div>
+        )}
+
+        {/* Navigation arrows */}
+        {total > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: "rgba(0,0,0,0.35)" }}
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft size={20} className="text-white" />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: "rgba(0,0,0,0.35)" }}
+              aria-label="Foto siguiente"
+            >
+              <ArrowRight size={20} className="text-white" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* ── Dots (mobile) + Thumbnails (desktop) ── */}
+      {total > 1 && (
+        <>
+          {/* Mobile dots */}
+          <div className="flex md:hidden justify-center gap-2 mb-3">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIdx(i)}
+                className="w-2 h-2 rounded-full transition-all"
+                style={{ background: i === activeIdx ? "hsl(var(--primary))" : "hsl(var(--border))", transform: i === activeIdx ? "scale(1.4)" : "scale(1)" }}
+                aria-label={`Foto ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Desktop thumbnails */}
+          <div className="hidden md:flex gap-2">
+            {images.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIdx(i)}
+                className={`relative h-16 md:h-20 flex-1 rounded-lg overflow-hidden transition-all ${
+                  i === activeIdx
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
+                    : "opacity-60 hover:opacity-100"
+                }`}
+              >
+                <img src={img} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            className="fixed inset-0 z-[200] flex items-center justify-center"
+            style={{ background: "rgba(0,0,0,0.93)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-4 right-4 z-10 flex items-center justify-center w-10 h-10 rounded-full"
+              style={{ background: "rgba(255,255,255,0.15)" }}
+              aria-label="Cerrar"
+            >
+              <X size={20} className="text-white" />
+            </button>
+
+            {/* Counter */}
+            <div className="absolute top-4 left-4 text-white/70 text-sm font-medium">
+              {activeIdx + 1} / {total}
+            </div>
+
+            {/* Image */}
+            <div
+              className="relative w-full max-w-5xl px-4"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeIdx}
+                  src={images[activeIdx]}
+                  alt={`${wagonName} – Foto ${activeIdx + 1}`}
+                  className="w-full max-h-[80vh] object-contain rounded-lg"
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </AnimatePresence>
+            </div>
+
+            {/* Prev / Next arrows */}
+            {total > 1 && (
+              <>
+                <button
+                  onClick={prev}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full"
+                  style={{ background: "rgba(255,255,255,0.15)" }}
+                  aria-label="Foto anterior"
+                >
+                  <ChevronLeft size={24} className="text-white" />
+                </button>
+                <button
+                  onClick={next}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full"
+                  style={{ background: "rgba(255,255,255,0.15)" }}
+                  aria-label="Foto siguiente"
+                >
+                  <ArrowRight size={24} className="text-white" />
+                </button>
+              </>
+            )}
+
+            {/* Bottom dot strip */}
+            {total > 1 && (
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveIdx(i)}
+                    className="w-2 h-2 rounded-full transition-all"
+                    style={{
+                      background: i === activeIdx ? "#fff" : "rgba(255,255,255,0.35)",
+                      transform: i === activeIdx ? "scale(1.5)" : "scale(1)",
+                    }}
+                    aria-label={`Foto ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 const VagonDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
   const wagon = findWagonBySlug(slug || "");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const [activeGalleryIdx, setActiveGalleryIdx] = useState(0);
 
   if (!wagon) return <Navigate to="/tren-maya" replace />;
 
