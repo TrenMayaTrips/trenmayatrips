@@ -74,6 +74,13 @@ const Blog = () => {
       );
     }
     
+    // Filter by tag
+    if (selectedTag) {
+      results = results.filter((p) => 
+        p.tags.some((t) => t.toLowerCase() === selectedTag.toLowerCase())
+      );
+    }
+    
     // Sort results
     switch (sortBy) {
       case "recent":
@@ -89,10 +96,23 @@ const Blog = () => {
     }
     
     return results;
-  }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy]);
+  }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy, selectedTag]);
 
   const scrollToAllArticles = () => {
     allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleTagClick = (tag: string, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    setSelectedTag(tag);
+    scrollToAllArticles();
+  };
+
+  const clearAllFilters = () => {
+    setSelectedCategory(null);
+    setSelectedTag(null);
+    setSearchQuery("");
   };
   
   const sortLabels: Record<SortOption, string> = {
