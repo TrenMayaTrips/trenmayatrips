@@ -313,7 +313,10 @@ const RutaDetalle = () => {
       <GrecaDivider variant="jade" size="sm" />
 
       {/* Destinos en la ruta */}
-      <RutaDestinos statesTraversed={route.statesTraversed} />
+      <RutaDestinos 
+        statesTraversed={route.statesTraversed} 
+        timelineStops={route.timeline.map(s => s.name)}
+      />
 
       <GrecaDivider variant="gold" size="sm" />
 
