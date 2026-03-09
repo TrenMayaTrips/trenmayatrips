@@ -223,7 +223,7 @@ const VagonDetalle = () => {
       </section>
 
       {/* Comparison */}
-      <section className="py-10 md:py-16 bg-secondary/50">
+      <section id="comparativa-section" className="py-10 md:py-16 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <p className="section-label">Comparativa</p>
