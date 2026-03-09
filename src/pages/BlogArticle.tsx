@@ -174,6 +174,8 @@ const BlogArticle = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
+      <ReadingProgressBar />
+
       {/* Hero */}
       <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
         <img src={post.image} alt={post.title} className="absolute inset-0 w-full h-full object-cover" />
