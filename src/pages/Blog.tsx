@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Clock, User, ArrowRight, Search } from "lucide-react";
@@ -9,13 +9,25 @@ import heroBlog from "@/assets/hero-blog.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const allArticlesRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+
+  const featuredPosts = blogPosts.filter((p) => p.featured);
+  const nonFeaturedPosts = blogPosts.filter((p) => !p.featured);
 
   const filtered = useMemo(() => {
-    let results = blogPosts;
+    // Start with non-featured posts to avoid duplication
+    let results = nonFeaturedPosts;
     if (selectedCategory) {
       results = results.filter((p) => p.category === selectedCategory);
     }
@@ -29,9 +41,11 @@ const Blog = () => {
       );
     }
     return results;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, nonFeaturedPosts]);
 
-  const featuredPosts = blogPosts.filter((p) => p.featured);
+  const scrollToAllArticles = () => {
+    allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <PageLayout>
