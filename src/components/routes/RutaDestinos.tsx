@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, CheckCircle2, Navigation } from "lucide-react";
+import { MapPin, CheckCircle2, Navigation, Info } from "lucide-react";
 import { destinations, destinationTypes } from "@/data/destinations";
 import { destinationImageMap } from "@/data/destination-images";
 import EstelaCard from "@/components/maya/EstelaCard";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Map destination slugs to station names they match
 const destToStations: Record<string, string[]> = {
@@ -186,10 +187,23 @@ const RutaDestinos = ({ statesTraversed, timelineStops = [] }: RutaDestinosProps
         {/* Nearby destinations */}
         {nearbyDestinations.length > 0 && timelineStops.length > 0 && (
           <div>
-            <p className="text-sm text-muted-foreground text-center mb-4">
-              <span className="font-medium text-foreground">Destinos cercanos</span>
-              <span className="ml-2 text-xs">(accesibles desde estaciones de esta ruta)</span>
-            </p>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="font-medium text-foreground text-sm">Destinos cercanos</span>
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="text-muted-foreground hover:text-primary transition-colors">
+                      <Info size={14} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-[280px] text-center">
+                    <p className="text-xs leading-relaxed">
+                      Estos destinos no tienen estación de tren directa en esta ruta, pero son fácilmente accesibles en taxi, colectivo o tour desde las estaciones indicadas.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
               {nearbyDestinations.map((dest, i) => renderDestinationCard(dest, i, false))}
             </div>
