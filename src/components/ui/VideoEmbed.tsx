@@ -8,6 +8,7 @@ interface VideoEmbedProps {
   aspectRatio?: string;
   badge?: string;
   className?: string;
+  autoplay?: boolean;
   onClose?: () => void;
 }
 
@@ -29,17 +30,18 @@ const VideoEmbed = ({
   aspectRatio = "16/9",
   badge,
   className,
+  autoplay = true,
   onClose,
 }: VideoEmbedProps) => {
   const [playing, setPlaying] = useState(false);
 
   const embedSrc = useMemo(() => {
     const ytId = extractYouTubeId(url);
-    if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+    if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=${autoplay ? 1 : 0}&rel=0`;
     const vimeoId = extractVimeoId(url);
-    if (vimeoId) return `https://player.vimeo.com/video/${vimeoId}?autoplay=1`;
+    if (vimeoId) return `https://player.vimeo.com/video/${vimeoId}?autoplay=${autoplay ? 1 : 0}`;
     return null; // MP4 or unsupported
-  }, [url]);
+  }, [url, autoplay]);
 
   const isMp4 = !embedSrc;
 
@@ -85,7 +87,7 @@ const VideoEmbed = ({
             <video
               src={url}
               className="absolute inset-0 w-full h-full object-cover"
-              autoPlay
+              autoPlay={autoplay}
               playsInline
               controls
             />

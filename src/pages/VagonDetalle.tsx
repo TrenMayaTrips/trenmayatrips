@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, Check, ArrowRight, ChevronLeft, X, Expand } from "lucide-react";
+import { ChevronDown, ChevronUp, Check, ArrowRight, ChevronLeft, X, Expand, Play } from "lucide-react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
@@ -41,7 +41,9 @@ const WagonGallery = ({ images, wagonName }: WagonGalleryProps) => {
   // Lock body scroll when lightbox is open
   useEffect(() => {
     document.body.style.overflow = lightboxOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [lightboxOpen]);
 
   // Touch / swipe handlers
@@ -352,19 +354,38 @@ const VagonDetalle = () => {
             {/* Enhanced photo gallery */}
             <WagonGallery images={wagon.galleryImages} wagonName={wagon.name} />
 
-            {/* Video */}
-            {wagon.videoUrl && (
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-2">📹 Recorrido en video</p>
-                <div className="rounded-xl overflow-hidden border border-border">
+            {/* Video / Interior view */}
+            <div>
+              <p className="text-sm font-medium text-muted-foreground mb-2">
+                {wagon.videoUrl ? "📹 Recorrido en video" : "🖼️ Vista interior"}
+              </p>
+
+              <div className="rounded-xl overflow-hidden border border-border relative">
+                {wagon.videoUrl ? (
                   <VideoEmbed
                     url={wagon.videoUrl}
                     poster={wagon.heroImage}
                     badge="Recorrido virtual"
+                    autoplay={false}
                   />
-                </div>
+                ) : (
+                  <div className="relative" style={{ aspectRatio: "16/9" }}>
+                    <img
+                      src={wagon.heroImage}
+                      alt={`Vista interior de ${wagon.name}`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/90 text-foreground text-sm font-semibold">
+                        <Play size={16} className="text-primary" />
+                        Próximamente
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </section>
