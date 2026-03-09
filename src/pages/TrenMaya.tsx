@@ -69,6 +69,7 @@ const TrenMaya = () => {
   const [origin, setOrigin] = useState("Cancún");
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [faqSearchQuery, setFaqSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [searchResult, setSearchResult] = useState<Route | null>(null);
   const [searchNoResult, setSearchNoResult] = useState<{ transfer: string; estimated: string } | null>(null);
