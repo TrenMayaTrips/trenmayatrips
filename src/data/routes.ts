@@ -173,6 +173,7 @@ export const routes: Route[] = [
     origin: "Tulum",
     destination: "Bacalar",
     duration: "2h 45min",
+    durationMinutes: 165,
     stops: 3,
     dailyDepartures: 2,
     badge: "Naturaleza",
