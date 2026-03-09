@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel, Save, Copy, Check, Loader2 } from "lucide-react";
+import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel, Save, Copy, Check, Loader2, Minus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import PageLayout from "@/components/layout/PageLayout";
@@ -49,6 +49,7 @@ const Itinerarios = () => {
   const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
   const [stateFilter, setStateFilter] = useState<string | null>(null);
   const [lodgingByDest, setLodgingByDest] = useState<Record<string, string>>({});
+  const [nightsByDest, setNightsByDest] = useState<Record<string, number>>({});
   const [saving, setSaving] = useState(false);
   const [savedCode, setSavedCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -56,6 +57,19 @@ const Itinerarios = () => {
   const { toast } = useToast();
 
   const maxDestinations = selectedDuration ? Math.min(Math.floor(selectedDuration / 1.5), 8) : 4;
+  const totalNights = (selectedDuration || 1) - 1;
+
+  // Distribute nights proportionally when destinations or duration change
+  const distributeNights = (destSlugs: string[], nights: number) => {
+    if (destSlugs.length === 0) return {};
+    const base = Math.floor(nights / destSlugs.length);
+    const remainder = nights % destSlugs.length;
+    const result: Record<string, number> = {};
+    destSlugs.forEach((slug, i) => {
+      result[slug] = base + (i < remainder ? 1 : 0);
+    });
+    return result;
+  };
 
   const filteredDestinations = useMemo(() => {
     let filtered = destinations;
@@ -71,13 +85,48 @@ const Itinerarios = () => {
   );
 
   const toggleDestination = (slug: string) => {
-    setSelectedDestinations((prev) =>
-      prev.includes(slug)
+    setSelectedDestinations((prev) => {
+      const next = prev.includes(slug)
         ? prev.filter((s) => s !== slug)
         : prev.length < maxDestinations
         ? [...prev, slug]
-        : prev
-    );
+        : prev;
+      // Redistribute nights when destinations change
+      setNightsByDest(distributeNights(next, totalNights));
+      return next;
+    });
+  };
+
+  // Redistribute when duration changes
+  useMemo(() => {
+    if (selectedDestinations.length > 0) {
+      setNightsByDest(distributeNights(selectedDestinations, totalNights));
+    }
+  }, [selectedDuration]);
+
+  const adjustNights = (destSlug: string, delta: number) => {
+    setNightsByDest((prev) => {
+      const current = prev[destSlug] || 0;
+      const newVal = current + delta;
+      if (newVal < 0) return prev;
+
+      // Find another destination to take/give the night
+      const otherSlugs = selectedDestinations.filter((s) => s !== destSlug);
+      const otherWithCapacity = delta > 0
+        ? otherSlugs.find((s) => (prev[s] || 0) > 0)
+        : otherSlugs[0];
+
+      if (!otherWithCapacity) return prev;
+
+      const otherCurrent = prev[otherWithCapacity] || 0;
+      if (delta > 0 && otherCurrent <= 0) return prev;
+
+      return {
+        ...prev,
+        [destSlug]: newVal,
+        [otherWithCapacity]: otherCurrent - delta,
+      };
+    });
   };
 
   const setLodging = (destSlug: string, lodgingId: string) => {
@@ -97,9 +146,10 @@ const Itinerarios = () => {
   const totalCost = useMemo(() => {
     return selectedDests.reduce((total, dest) => {
       const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
-      return total + (lodging?.pricePerNight || 0) * (selectedDuration || 1);
+      const nights = nightsByDest[dest.slug] || 0;
+      return total + (lodging?.pricePerNight || 0) * nights;
     }, 0);
-  }, [selectedDests, lodgingByDest, selectedDuration]);
+  }, [selectedDests, lodgingByDest, nightsByDest]);
 
   const saveItinerary = async () => {
     setSaving(true);
@@ -446,7 +496,10 @@ const Itinerarios = () => {
                     ¿Dónde prefieres hospedarte?
                   </h2>
                   <p className="text-muted-foreground">
-                    Elige el tipo de alojamiento para cada destino
+                    Elige el tipo de alojamiento y ajusta las noches en cada destino
+                  </p>
+                  <p className="text-sm text-accent font-medium mt-2">
+                    {totalNights} noches en total ({selectedDuration} días − 1)
                   </p>
                 </div>
 
@@ -455,9 +508,30 @@ const Itinerarios = () => {
                     const currentLodging = lodgingByDest[dest.slug];
                     return (
                       <Card key={dest.slug} className="overflow-hidden">
-                        <div className="bg-muted/50 px-5 py-3 border-b border-border flex items-center gap-2">
-                          <span className="text-xl">{dest.emoji}</span>
-                          <h3 className="font-heading font-semibold text-foreground">{dest.name}</h3>
+                        <div className="bg-muted/50 px-5 py-3 border-b border-border flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{dest.emoji}</span>
+                            <h3 className="font-heading font-semibold text-foreground">{dest.name}</h3>
+                          </div>
+                          {/* Nights adjuster */}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => adjustNights(dest.slug, -1)}
+                              disabled={(nightsByDest[dest.slug] || 0) <= 0}
+                              className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-secondary disabled:opacity-30 transition-colors"
+                            >
+                              <Minus size={14} />
+                            </button>
+                            <span className="font-heading font-bold text-foreground min-w-[60px] text-center text-sm">
+                              {nightsByDest[dest.slug] || 0} {(nightsByDest[dest.slug] || 0) === 1 ? "noche" : "noches"}
+                            </span>
+                            <button
+                              onClick={() => adjustNights(dest.slug, 1)}
+                              className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-secondary disabled:opacity-30 transition-colors"
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
                         </div>
                         <CardContent className="p-4">
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -522,7 +596,7 @@ const Itinerarios = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock size={18} />
-                        <span className="font-medium">{selectedDuration} días</span>
+                        <span className="font-medium">{selectedDuration} días · {totalNights} noches</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin size={18} />
@@ -530,12 +604,7 @@ const Itinerarios = () => {
                       </div>
                       <div className="flex items-center gap-2 ml-auto">
                         <span className="font-medium">
-                          💰 Alojamiento estimado: $
-                          {selectedDests.reduce((total, dest) => {
-                            const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
-                            return total + (lodging?.pricePerNight || 0) * (selectedDuration || 1);
-                          }, 0)}
-                          /total
+                          💰 Hospedaje total: ${totalCost.toLocaleString()} USD
                         </span>
                       </div>
                     </div>
@@ -546,6 +615,8 @@ const Itinerarios = () => {
                       {selectedDests.map((dest, i) => {
                         const state = states.find((s) => s.slug === dest.state);
                         const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
+                        const nights = nightsByDest[dest.slug] || 0;
+                        const subtotal = (lodging?.pricePerNight || 0) * nights;
                         return (
                           <div key={dest.slug} className="flex gap-4">
                             {/* Timeline */}
@@ -573,24 +644,40 @@ const Itinerarios = () => {
                                 <Badge variant="outline" className="text-xs">
                                   🚂 {dest.travelTime}
                                 </Badge>
-                                 {lodging && (
-                                   <Badge variant="secondary" className="text-xs bg-accent/10 text-accent-foreground">
-                                     {lodging.emoji} {lodging.label}
-                                   </Badge>
-                                 )}
-                                 {lodging && (
-                                   <Badge variant="outline" className="text-xs">
-                                     💰 ${lodging.pricePerNight} x {selectedDuration} = ${lodging.pricePerNight * (selectedDuration || 1)}
-                                   </Badge>
-                                 )}
-                               </div>
-                             </div>
-                           </div>
-                         );
-                       })}
-                     </div>
-                   </CardContent>
-                 </Card>
+                              </div>
+                              {lodging && (
+                                <div className="mt-2 bg-secondary/50 rounded-lg p-3">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm text-foreground font-medium">
+                                      {lodging.emoji} {lodging.label}
+                                    </span>
+                                    <span className="text-sm font-heading font-bold text-primary">
+                                      ${subtotal.toLocaleString()}
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {nights} {nights === 1 ? "noche" : "noches"} × ${lodging.pricePerNight}/noche
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Total breakdown */}
+                    <div className="border-t border-border pt-4 mt-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-heading font-semibold text-foreground">Hospedaje total estimado</span>
+                        <span className="font-heading text-xl font-bold text-primary">${totalCost.toLocaleString()} USD</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {totalNights} noches repartidas en {selectedDestinations.length} destinos. No incluye transporte ni actividades.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
 
                 {/* CTA */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
