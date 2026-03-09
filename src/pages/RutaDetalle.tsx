@@ -120,6 +120,29 @@ const RutaDetalle = () => {
               </div>
             ))}
           </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
+            <Link
+              to={`/contacto?ruta=${encodeURIComponent(`${route.origin} → ${route.destination}`)}`}
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg font-semibold text-sm transition-all hover:brightness-110 shadow-lg"
+              style={{ backgroundColor: "#D4A853", color: "#fff" }}
+            >
+              Reservar esta ruta
+            </Link>
+            <button
+              onClick={() => {
+                const section = document.getElementById("horarios-section");
+                if (section) {
+                  const top = section.getBoundingClientRect().top + window.scrollY - 80;
+                  window.scrollTo({ top, behavior: "smooth" });
+                }
+              }}
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg font-semibold text-sm border border-white text-white bg-transparent hover:bg-white/10 transition-colors"
+            >
+              Ver horarios ↓
+            </button>
+          </div>
         </motion.div>
       </ParallaxHero>
 
