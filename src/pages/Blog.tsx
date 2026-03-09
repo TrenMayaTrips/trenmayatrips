@@ -587,7 +587,7 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all h-full"
+                        className="blog-card border border-border h-full"
                       >
                         <div className="relative min-h-[160px] overflow-hidden">
                           <img
