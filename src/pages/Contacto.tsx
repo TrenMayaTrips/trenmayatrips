@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation } from "lucide-react";
+import SEOHead from "@/components/seo/SEOHead";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import heroTrenMaya from "@/assets/hero-tren-maya.jpg";
