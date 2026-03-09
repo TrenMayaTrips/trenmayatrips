@@ -258,6 +258,8 @@ const BlogArticle = () => {
                   <Share2 size={14} className="mr-2" /> Compartir
                 </Button>
               </div>
+              {/* CTA: Post-article itinerary banner */}
+              <PostArticleCTA ctx={articleCtx} />
 
               {/* Author Card */}
               <EstelaCard variant="jade" className="mt-8">
