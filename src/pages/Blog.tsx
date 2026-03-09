@@ -183,85 +183,164 @@ const Blog = () => {
       <GrecaDivider variant="jade" size="md" />
 
       {/* Search & Categories */}
-      <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border">
-        <div className="container mx-auto px-4 py-4 md:py-6">
-          {/* Search */}
-          <div className="relative mb-4">
-            <Search
-              size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            />
-            <input
-              type="text"
-              placeholder="Buscar artículos..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-            />
-          </div>
-
-          {/* Category Filters */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === null
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-foreground hover:bg-muted"
-              }`}
-            >
-              Todos
-            </button>
-            {blogCategories.map((cat) => (
+      <section className="bg-background sticky top-16 md:top-20 z-30 border-b border-border transition-all duration-300">
+        <div className="container mx-auto px-4 py-2 md:py-6">
+          
+          {/* Mobile Collapsed View */}
+          {isMobile && isCollapsed ? (
+            <div className="flex items-center justify-between gap-2 py-1">
+              {/* Active category chip */}
+              <div className="flex items-center gap-2 overflow-hidden">
+                <span className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-medium whitespace-nowrap">
+                  {selectedCategory 
+                    ? blogCategories.find(c => c.slug === selectedCategory)?.label 
+                    : "Todos"}
+                </span>
+                {selectedTag && (
+                  <button
+                    onClick={() => setSelectedTag(null)}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-accent text-accent-foreground text-xs font-medium"
+                  >
+                    {selectedTag}
+                    <X size={10} />
+                  </button>
+                )}
+              </div>
               <button
-                key={cat.slug}
-                onClick={() => setSelectedCategory(cat.slug)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === cat.slug
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-foreground hover:bg-muted"
-                }`}
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 rounded-full bg-secondary hover:bg-muted transition-colors"
+                aria-label="Buscar"
               >
-                {cat.emoji} {cat.label}
+                <Search size={18} className="text-foreground" />
               </button>
-            ))}
-          </div>
-
-          {/* Popular Tags */}
-          <div className="mt-4 pt-4 border-t border-border">
-            <div className="flex items-center gap-2 mb-2">
-              <Tag size={14} className="text-muted-foreground" />
-              <span className="text-xs font-medium text-muted-foreground">Tags populares:</span>
             </div>
-            <div className="flex flex-wrap gap-1.5">
-              {popularTags.map((tag) => (
+          ) : (
+            <>
+              {/* Search - Desktop always visible, Mobile toggle */}
+              {isMobile ? (
+                <AnimatePresence>
+                  {isSearchOpen ? (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="relative mb-3 overflow-hidden"
+                    >
+                      <Search
+                        size={16}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Buscar artículos..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        autoFocus
+                        className="w-full pl-9 pr-10 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      />
+                      <button
+                        onClick={() => {
+                          setIsSearchOpen(false);
+                          setSearchQuery("");
+                        }}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      >
+                        <X size={16} />
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-medium text-muted-foreground">Filtrar artículos</span>
+                      <button
+                        onClick={() => setIsSearchOpen(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-xs font-medium text-foreground hover:bg-muted transition-colors"
+                      >
+                        <Search size={14} />
+                        Buscar
+                      </button>
+                    </div>
+                  )}
+                </AnimatePresence>
+              ) : (
+                <div className="relative mb-4">
+                  <Search
+                    size={18}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Buscar artículos..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
+                </div>
+              )}
+
+              {/* Category Filters - Horizontal scroll on mobile */}
+              <div className={`${isMobile ? 'flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 scrollbar-hide snap-x snap-mandatory' : 'flex flex-wrap gap-2'}`}>
                 <button
-                  key={tag}
-                  onClick={() => handleTagClick(tag)}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all duration-200 cursor-pointer ${
-                    selectedTag === tag
+                  onClick={() => setSelectedCategory(null)}
+                  className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 snap-start ${
+                    selectedCategory === null
                       ? "bg-primary text-primary-foreground"
-                      : "bg-secondary/70 text-foreground hover:bg-primary hover:text-primary-foreground"
+                      : "bg-secondary text-foreground hover:bg-muted"
                   }`}
                 >
-                  {tag}
+                  Todos
                 </button>
-              ))}
-            </div>
-          </div>
+                {blogCategories.map((cat) => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => setSelectedCategory(cat.slug)}
+                    className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 snap-start ${
+                      selectedCategory === cat.slug
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {cat.emoji} {cat.label}
+                  </button>
+                ))}
+              </div>
 
-          {/* Active Tag Filter Chip */}
-          {selectedTag && (
-            <div className="mt-3 flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">Filtrando por:</span>
-              <button
-                onClick={() => setSelectedTag(null)}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors"
-              >
-                {selectedTag}
-                <X size={12} />
-              </button>
-            </div>
+              {/* Popular Tags - Horizontal scroll on mobile */}
+              <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-border">
+                <div className="flex items-center gap-2 mb-2">
+                  <Tag size={14} className="text-muted-foreground" />
+                  <span className="text-[10px] md:text-xs font-medium text-muted-foreground">Tags populares:</span>
+                </div>
+                <div className={`${isMobile ? 'flex overflow-x-auto gap-1.5 pb-1 -mx-4 px-4 scrollbar-hide snap-x' : 'flex flex-wrap gap-1.5'}`}>
+                  {popularTags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => handleTagClick(tag)}
+                      className={`px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-[11px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap flex-shrink-0 snap-start ${
+                        selectedTag === tag
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary/70 text-foreground hover:bg-primary hover:text-primary-foreground"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Active Tag Filter Chip */}
+              {selectedTag && (
+                <div className="mt-2 md:mt-3 flex items-center gap-2">
+                  <span className="text-[10px] md:text-xs text-muted-foreground">Filtrando por:</span>
+                  <button
+                    onClick={() => setSelectedTag(null)}
+                    className="inline-flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-0.5 md:py-1 rounded-full bg-primary text-primary-foreground text-[10px] md:text-xs font-medium hover:bg-primary/90 transition-colors"
+                  >
+                    {selectedTag}
+                    <X size={10} />
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
