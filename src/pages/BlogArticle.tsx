@@ -54,17 +54,20 @@ const BlogArticle = () => {
   if (!post) return <Navigate to="/blog" replace />;
 
   const category = blogCategories.find((c) => c.slug === post.category);
-  const related = blogPosts
-    .filter((p) => p.category === post.category && p.slug !== post.slug)
-    .slice(0, 3);
-  // For mobile: merge popular posts into related
-  const popularForMobile = blogPosts
-    .filter((p) => p.slug !== post.slug && p.featured)
-    .slice(0, 3);
-  const mergedRelated = [
-    ...related,
-    ...popularForMobile.filter((p) => !related.some((r) => r.slug === p.slug)),
-  ].slice(0, 6);
+  const related = useMemo(() => {
+    const others = blogPosts.filter((p) => p.slug !== post.slug);
+    // Score: shared tags → same category → same author → recent
+    const scored = others.map((p) => {
+      let score = 0;
+      score += p.tags.filter((t) => post.tags.includes(t)).length * 10;
+      if (p.category === post.category) score += 5;
+      if (p.author === post.author) score += 2;
+      score += (new Date(p.publishedAt).getTime() / 1e12); // slight recency boost
+      return { post: p, score };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 6).map((s) => s.post);
+  }, [post]);
 
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("es-MX", {
     year: "numeric",
