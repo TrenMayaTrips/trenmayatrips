@@ -569,20 +569,34 @@ const VagonDetalle = () => {
           </div>
 
           <div className="max-w-3xl mx-auto overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm border-separate border-spacing-0">
               <thead>
-                <tr className="bg-primary text-primary-foreground">
-                  <th className="text-left px-4 py-3 rounded-tl-lg font-medium">Característica</th>
-                  {wagonClassesDetailed.map((w) => (
-                    <th
-                      key={w.slug}
-                      className={`px-4 py-3 font-medium text-center ${w.slug === wagon.slug ? "bg-primary" : "bg-primary/80"} ${
-                        w.slug === wagonClassesDetailed[wagonClassesDetailed.length - 1].slug ? "rounded-tr-lg" : ""
-                      }`}
-                    >
-                      {w.name} {w.slug === wagon.slug && "★"}
-                    </th>
-                  ))}
+                <tr>
+                  <th className="text-left px-4 py-3 rounded-tl-lg font-medium bg-primary text-primary-foreground">
+                    Característica
+                  </th>
+                  {wagonClassesDetailed.map((w, idx) => {
+                    const isCurrent = w.slug === wagon.slug;
+                    const isLast = idx === wagonClassesDetailed.length - 1;
+                    return (
+                      <th
+                        key={w.slug}
+                        className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""}`}
+                        style={{
+                          backgroundColor: isCurrent ? "#D4A853" : "hsl(var(--primary) / 0.85)",
+                          color: isCurrent ? "#2D4A3E" : "hsl(var(--primary-foreground))",
+                          borderTop: isCurrent ? "3px solid #D4A853" : "none",
+                        }}
+                      >
+                        <Link
+                          to={`/tren-maya/clases/${w.slug}`}
+                          className="hover:underline underline-offset-2"
+                        >
+                          {w.name} {isCurrent && "★"}
+                        </Link>
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
@@ -594,18 +608,71 @@ const VagonDetalle = () => {
                   { label: "Lounge VIP", key: "lounge" as const },
                   { label: "Atención VIP", key: "atencionVIP" as const },
                 ].map((row, i) => (
-                  <tr key={row.label} className={i % 2 === 0 ? "bg-card" : "bg-secondary/30"}>
-                    <td className="px-4 py-3 font-medium text-foreground">{row.label}</td>
-                    {wagonClassesDetailed.map((w) => (
-                      <td
-                        key={w.slug}
-                        className={`px-4 py-3 text-center ${w.slug === wagon.slug ? "font-semibold text-foreground" : "text-muted-foreground"}`}
-                      >
-                        {row.key === "price" ? `$${w.priceBase.toLocaleString()}` : w.comparison[row.key]}
-                      </td>
-                    ))}
+                  <tr key={row.label}>
+                    <td className={`px-4 py-3 font-medium text-foreground ${i % 2 === 0 ? "bg-card" : "bg-secondary/30"}`}>
+                      {row.label}
+                    </td>
+                    {wagonClassesDetailed.map((w) => {
+                      const isCurrent = w.slug === wagon.slug;
+                      return (
+                        <td
+                          key={w.slug}
+                          className={`px-4 py-3 text-center ${isCurrent ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                          style={{
+                            backgroundColor: isCurrent
+                              ? "#FFF8E1"
+                              : i % 2 === 0 ? "hsl(var(--card))" : "hsl(var(--secondary) / 0.3)",
+                          }}
+                        >
+                          {row.key === "price" ? `$${w.priceBase.toLocaleString()}` : w.comparison[row.key]}
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
+
+                {/* CTA Row */}
+                <tr>
+                  <td className="px-4 py-4 bg-card rounded-bl-lg" />
+                  {wagonClassesDetailed.map((w, idx) => {
+                    const isCurrent = w.slug === wagon.slug;
+                    const isLast = idx === wagonClassesDetailed.length - 1;
+                    const isUpgrade = w.priceBase > wagon.priceBase;
+                    return (
+                      <td
+                        key={w.slug}
+                        className={`px-3 py-4 text-center ${isLast ? "rounded-br-lg" : ""}`}
+                        style={{ backgroundColor: isCurrent ? "#FFF8E1" : "hsl(var(--card))" }}
+                      >
+                        {isCurrent ? (
+                          <span className="inline-block px-4 py-2 rounded-lg text-xs font-medium bg-muted text-muted-foreground cursor-default">
+                            Clase actual
+                          </span>
+                        ) : (
+                          <Link
+                            to={`/tren-maya/clases/${w.slug}`}
+                            className="inline-block px-4 py-2 rounded-lg text-xs font-bold border-2 transition-colors"
+                            style={{
+                              borderColor: "#D4A853",
+                              color: "#D4A853",
+                              backgroundColor: "transparent",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = "#D4A853";
+                              e.currentTarget.style.color = "#2D4A3E";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = "transparent";
+                              e.currentTarget.style.color = "#D4A853";
+                            }}
+                          >
+                            {isUpgrade ? `Subir a ${w.name} →` : `Ver ${w.name} →`}
+                          </Link>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
               </tbody>
             </table>
           </div>
