@@ -306,33 +306,40 @@ const BlogArticle = () => {
       {/* Mobile sticky booking bar */}
       <MobileStickyBooking postSlug={post.slug} />
 
-      {/* Related Posts (mobile: merged with popular) */}
-      {(related.length > 0 || mergedRelated.length > 0) && (
+      {/* AdSense #2 — In-feed before related */}
+      <section className="py-6 bg-background border-t border-border">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <AdPlaceholder variant="horizontal" />
+        </div>
+      </section>
+
+      {/* Related Posts */}
+      {related.length > 0 && (
         <section className="py-10 md:py-16 bg-secondary/30 border-t border-border">
-          <div className="container mx-auto px-4 max-w-4xl">
+          <div className="container mx-auto px-4 max-w-5xl">
             <h2 className="font-heading text-2xl font-bold text-foreground mb-8">
-              Artículos relacionados
+              También te puede interesar
             </h2>
-            {/* Desktop: show related only */}
-            <div className="hidden lg:grid grid-cols-3 gap-4">
-              {related.map((r) => (
-                <Link key={r.slug} to={`/blog/${r.slug}`} className="group block rounded-lg border border-border bg-card p-5 hover:shadow-md transition-all">
-                  <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2">{r.title}</h3>
-                  <p className="text-xs text-muted-foreground">{r.readTime} min · {r.author}</p>
-                </Link>
+            {/* Desktop: grid */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              {related.slice(0, 3).map((r) => (
+                <RelatedCard key={r.slug} post={r} />
               ))}
             </div>
-            {/* Mobile: merged related + popular */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
-              {mergedRelated.map((r) => (
-                <Link key={r.slug} to={`/blog/${r.slug}`} className="group flex gap-3 items-start rounded-lg border border-border bg-card p-4 hover:shadow-md transition-all">
-                  <img src={r.image} alt={r.title} className="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-border" loading="lazy" />
-                  <div className="min-w-0">
-                    <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-1">{r.title}</h3>
-                    <p className="text-xs text-muted-foreground">{r.readTime} min · {r.author}</p>
-                  </div>
-                </Link>
+            {/* Mobile: horizontal scroll */}
+            <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:hidden -mx-4 px-4">
+              {related.map((r) => (
+                <div key={r.slug} className="min-w-[280px] snap-start">
+                  <RelatedCard post={r} />
+                </div>
               ))}
+            </div>
+            <div className="mt-8 text-center">
+              <Link to="/blog">
+                <Button variant="outline" size="lg">
+                  Explorar todo el blog →
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
