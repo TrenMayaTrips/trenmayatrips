@@ -8,7 +8,7 @@ import { blogPosts, blogCategories } from "@/data/blog";
 import heroBlog from "@/assets/hero-blog.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import GrecaDivider from "@/components/maya/GrecaDivider";
-import MayaPattern from "@/components/maya/MayaPattern";
+import BlogNewsletterSection from "@/components/blog/BlogNewsletterSection";
 import {
   Carousel,
   CarouselContent,
