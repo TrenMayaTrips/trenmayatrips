@@ -131,19 +131,6 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
     return dest ? { ...dest, image } : null;
   };
 
-  // Sync with external hover
-  useEffect(() => {
-    if (hoveredStation) {
-      const stop = timeline.find((s) => s.name === hoveredStation);
-      const coord = stationCoords[hoveredStation];
-      if (stop && coord) {
-        setTooltipStation(stop);
-        setTooltipPos({ x: coord.x, y: coord.y });
-      }
-    } else {
-      setTooltipStation(null);
-    }
-  }, [hoveredStation, timeline]);
 
   const mapContent = (
     <div className="relative">
