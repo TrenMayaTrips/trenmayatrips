@@ -594,7 +594,7 @@ const Blog = () => {
                             src={post.image}
                             alt={post.title}
                             loading="lazy"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                           <div className="relative z-10 p-6 flex flex-col justify-end min-h-[160px]">
