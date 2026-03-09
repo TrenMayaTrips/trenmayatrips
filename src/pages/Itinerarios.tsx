@@ -28,11 +28,49 @@ const durations = [
 ];
 
 const lodgingOptions = [
-  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada", pricePerNight: 120 },
-  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza", pricePerNight: 85 },
-  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones", pricePerNight: 150 },
-  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social", pricePerNight: 35 },
+  { id: "boutique", label: "Hotel Boutique", emoji: "🏨", description: "Diseño, confort y atención personalizada", basePrice: 120 },
+  { id: "ecolodge", label: "Eco-Lodge", emoji: "🌿", description: "En armonía con la naturaleza", basePrice: 85 },
+  { id: "allinclusive", label: "All-Inclusive", emoji: "🏖️", description: "Todo incluido, sin preocupaciones", basePrice: 150 },
+  { id: "hostal", label: "Hostal", emoji: "🎒", description: "Económico y social", basePrice: 35 },
 ];
+
+// Destination-specific lodging prices (null = not available)
+type LodgingPrices = { boutique: number | null; ecolodge: number | null; allinclusive: number | null; hostal: number | null };
+const lodgingByDestination: Record<string, LodgingPrices> = {
+  // Quintana Roo - Tourist prices
+  "cancun": { boutique: 180, ecolodge: 120, allinclusive: 250, hostal: 45 },
+  "playa-del-carmen": { boutique: 160, ecolodge: 110, allinclusive: 220, hostal: 40 },
+  "tulum": { boutique: 200, ecolodge: 150, allinclusive: null, hostal: 50 },
+  "bacalar": { boutique: 120, ecolodge: 90, allinclusive: null, hostal: 30 },
+  "riviera-maya": { boutique: 170, ecolodge: 130, allinclusive: 280, hostal: 45 },
+  // Yucatán - Mid prices
+  "merida": { boutique: 100, ecolodge: 70, allinclusive: 140, hostal: 28 },
+  "valladolid": { boutique: 85, ecolodge: 60, allinclusive: null, hostal: 22 },
+  "izamal": { boutique: 75, ecolodge: 55, allinclusive: null, hostal: 20 },
+  "chichen-itza": { boutique: 130, ecolodge: 90, allinclusive: 180, hostal: 35 },
+  // Campeche - Lower prices
+  "campeche-ciudad": { boutique: 80, ecolodge: 55, allinclusive: null, hostal: 22 },
+  "calakmul": { boutique: 95, ecolodge: 70, allinclusive: null, hostal: 25 },
+  "edzna": { boutique: 70, ecolodge: 50, allinclusive: null, hostal: 18 },
+  // Chiapas
+  "palenque": { boutique: 90, ecolodge: 65, allinclusive: null, hostal: 25 },
+  "san-cristobal": { boutique: 85, ecolodge: 60, allinclusive: null, hostal: 22 },
+  "cascadas-agua-azul": { boutique: null, ecolodge: 55, allinclusive: null, hostal: 20 },
+  // Tabasco
+  "villahermosa": { boutique: 95, ecolodge: 65, allinclusive: 120, hostal: 28 },
+  "comalcalco": { boutique: 70, ecolodge: 50, allinclusive: null, hostal: 18 },
+};
+
+// Get price for a specific destination and lodging type
+const getLodgingPrice = (destSlug: string, lodgingId: string): number | null => {
+  const destPrices = lodgingByDestination[destSlug];
+  if (destPrices) {
+    return destPrices[lodgingId as keyof LodgingPrices];
+  }
+  // Fallback to base price for unlisted destinations
+  const option = lodgingOptions.find(o => o.id === lodgingId);
+  return option?.basePrice || null;
+};
 
 const steps = [
   { id: 1, label: "Tipo de viaje", icon: Compass },
