@@ -25,6 +25,7 @@ export interface Route {
   origin: string;
   destination: string;
   duration: string;
+  durationMinutes: number;
   stops: number;
   dailyDepartures: number;
   badge: string;
@@ -49,6 +50,7 @@ export const routes: Route[] = [
     origin: "Cancún",
     destination: "Mérida",
     duration: "4h 30min",
+    durationMinutes: 270,
     stops: 6,
     dailyDepartures: 3,
     badge: "Más popular",
@@ -79,6 +81,7 @@ export const routes: Route[] = [
     origin: "Cancún",
     destination: "Tulum",
     duration: "3h 15min",
+    durationMinutes: 195,
     stops: 4,
     dailyDepartures: 4,
     badge: "Costa",
@@ -107,6 +110,7 @@ export const routes: Route[] = [
     origin: "Mérida",
     destination: "Palenque",
     duration: "8h",
+    durationMinutes: 480,
     stops: 9,
     dailyDepartures: 2,
     badge: "Arqueológica",
@@ -140,6 +144,7 @@ export const routes: Route[] = [
     origin: "Mérida",
     destination: "Campeche",
     duration: "2h 30min",
+    durationMinutes: 150,
     stops: 3,
     dailyDepartures: 3,
     badge: "Colonial",
@@ -168,6 +173,7 @@ export const routes: Route[] = [
     origin: "Tulum",
     destination: "Bacalar",
     duration: "2h 45min",
+    durationMinutes: 165,
     stops: 3,
     dailyDepartures: 2,
     badge: "Naturaleza",
