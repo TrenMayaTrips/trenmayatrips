@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Clock, User, ArrowRight, Search } from "lucide-react";
+import { Clock, User, ArrowRight, Search, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { blogPosts, blogCategories } from "@/data/blog";
@@ -15,19 +15,37 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+type SortOption = "recent" | "oldest" | "popular";
+
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+};
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("recent");
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  const featuredPosts = blogPosts.filter((p) => p.featured);
+  const featuredPosts = blogPosts
+    .filter((p) => p.featured)
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  
   const nonFeaturedPosts = blogPosts.filter((p) => !p.featured);
 
   const filtered = useMemo(() => {
-    // Start with non-featured posts to avoid duplication
-    let results = nonFeaturedPosts;
+    let results = [...nonFeaturedPosts];
+    
     if (selectedCategory) {
       results = results.filter((p) => p.category === selectedCategory);
     }
@@ -40,11 +58,32 @@ const Blog = () => {
           p.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
+    
+    // Sort results
+    switch (sortBy) {
+      case "recent":
+        results.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+        break;
+      case "oldest":
+        results.sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime());
+        break;
+      case "popular":
+        // Using readTime as proxy for popularity (longer articles = more engaged readers)
+        results.sort((a, b) => b.readTime - a.readTime);
+        break;
+    }
+    
     return results;
-  }, [selectedCategory, searchQuery, nonFeaturedPosts]);
+  }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy]);
 
   const scrollToAllArticles = () => {
     allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  
+  const sortLabels: Record<SortOption, string> = {
+    recent: "Más recientes",
+    oldest: "Más antiguos",
+    popular: "Más leídos",
   };
 
   return (
@@ -150,6 +189,9 @@ const Blog = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                             <div className="relative z-10 p-6 flex flex-col justify-end min-h-[200px]">
+                              <p className="text-sm text-white/90 font-medium mb-2">
+                                {formatDate(post.publishedAt)}
+                              </p>
                               <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
                                 ⭐ {category?.label}
                               </span>
@@ -162,8 +204,10 @@ const Blog = () => {
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                               {post.excerpt}
                             </p>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
                               <span>{post.author}</span>
+                              <span>·</span>
+                              <span>{formatDate(post.publishedAt)}</span>
                               <span>·</span>
                               <span>{post.readTime} min lectura</span>
                             </div>
@@ -209,6 +253,9 @@ const Blog = () => {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                           <div className="relative z-10 p-8 flex flex-col justify-end min-h-[180px]">
+                            <p className="text-sm text-white/90 font-medium mb-2">
+                              {formatDate(post.publishedAt)}
+                            </p>
                             <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
                               ⭐ Destacado · {category?.label}
                             </span>
@@ -222,10 +269,13 @@ const Blog = () => {
                             {post.excerpt}
                           </p>
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <User size={12} /> {post.author}
                               </span>
+                              <span>·</span>
+                              <span>{formatDate(post.publishedAt)}</span>
+                              <span>·</span>
                               <span className="flex items-center gap-1">
                                 <Clock size={12} /> {post.readTime} min
                               </span>
@@ -259,7 +309,7 @@ const Blog = () => {
       {/* All Posts Grid */}
       <section ref={allArticlesRef} className="py-10 md:py-16 bg-secondary/30 scroll-mt-24">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
               {selectedCategory
                 ? blogCategories.find((c) => c.slug === selectedCategory)
@@ -268,9 +318,30 @@ const Blog = () => {
                   ? "Resultados"
                   : "Todos los artículos"}
             </h2>
-            <p className="text-sm text-muted-foreground">
-              {filtered.length} artículo{filtered.length !== 1 ? "s" : ""}
-            </p>
+            <div className="flex items-center gap-3">
+              <p className="text-[13px] text-muted-foreground">
+                {filtered.length} artículo{filtered.length !== 1 ? "s" : ""}
+              </p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-[13px] font-medium text-foreground hover:bg-muted transition-colors">
+                    {sortLabels[sortBy]}
+                    <ChevronDown size={14} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setSortBy("recent")}>
+                    Más recientes
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSortBy("popular")}>
+                    Más leídos
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSortBy("oldest")}>
+                    Más antiguos
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
 
           {filtered.length === 0 ? (
@@ -326,8 +397,10 @@ const Blog = () => {
                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                           {post.excerpt}
                         </p>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
                           <span>{post.author}</span>
+                          <span>·</span>
+                          <span>{formatDate(post.publishedAt)}</span>
                           <span>·</span>
                           <span>{post.readTime} min lectura</span>
                         </div>

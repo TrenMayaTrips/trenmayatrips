@@ -5,6 +5,7 @@ import { blogPosts, blogCategories } from "@/data/blog";
 import { Button } from "@/components/ui/button";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
+import SEOHead from "@/components/seo/SEOHead";
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,8 +32,50 @@ const BlogArticle = () => {
     }
   };
 
+  // JSON-LD Article structured data for SEO
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: typeof post.image === "string" ? post.image : undefined,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt, // Using publishedAt as we don't have separate modifiedAt
+    author: {
+      "@type": "Person",
+      name: post.author,
+      jobTitle: post.authorRole,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tren Maya Trips",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://trenmayatrips.lovable.app/logo-tmt.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://trenmayatrips.lovable.app/blog/${post.slug}`,
+    },
+    articleSection: category?.label,
+    keywords: post.tags.join(", "),
+    wordCount: post.content.join(" ").split(/\s+/).length,
+  };
+
   return (
     <PageLayout>
+      <SEOHead
+        title={`${post.title} | Blog Tren Maya Trips`}
+        description={post.excerpt}
+        canonical={`/blog/${post.slug}`}
+        type="article"
+      />
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Hero */}
       <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
         <img
