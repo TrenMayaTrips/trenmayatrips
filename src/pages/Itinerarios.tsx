@@ -183,9 +183,10 @@ const Itinerarios = () => {
 
   const totalCost = useMemo(() => {
     return selectedDests.reduce((total, dest) => {
-      const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
+      const lodgingId = lodgingByDest[dest.slug];
+      const price = getLodgingPrice(dest.slug, lodgingId) || 0;
       const nights = nightsByDest[dest.slug] || 0;
-      return total + (lodging?.pricePerNight || 0) * nights;
+      return total + price * nights;
     }, 0);
   }, [selectedDests, lodgingByDest, nightsByDest]);
 
