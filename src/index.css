@@ -123,4 +123,39 @@
     @apply text-xs font-medium tracking-widest uppercase mb-2;
     color: hsl(var(--gold-dark));
   }
+  
+  /* Blog card interactive states */
+  .blog-card {
+    @apply block group rounded-xl overflow-hidden bg-card cursor-pointer
+           transition-all duration-300 ease-out
+           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
+           active:scale-[0.98] active:transition-[transform] active:duration-100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .blog-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  .blog-card:active {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  /* Mobile ripple effect */
+  @media (hover: none) {
+    .blog-card {
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .blog-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: hsl(var(--accent) / 0);
+      transition: background 300ms ease;
+      pointer-events: none;
+      z-index: 5;
+      border-radius: inherit;
+    }
+    .blog-card:active::after {
+      background: hsl(var(--accent) / 0.1);
+    }
+  }
 }

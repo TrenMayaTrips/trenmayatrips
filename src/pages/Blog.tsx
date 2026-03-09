@@ -376,13 +376,13 @@ const Blog = () => {
                       <CarouselItem key={post.slug} className="pl-4 basis-[90%]">
                         <Link
                           to={`/blog/${post.slug}`}
-                          className="block group rounded-xl overflow-hidden border-2 border-gold/30 bg-card hover:shadow-lg transition-all"
+                          className="blog-card border-2 border-gold/30"
                         >
                           <div className="relative min-h-[200px] overflow-hidden">
                             <img
                               src={post.image}
                               alt={post.title}
-                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                             <div className="relative z-10 p-6 flex flex-col justify-end min-h-[200px]">
@@ -440,13 +440,13 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="block group rounded-xl overflow-hidden border-2 border-gold/30 bg-card hover:shadow-lg transition-all"
+                        className="blog-card border-2 border-gold/30"
                       >
                         <div className="relative min-h-[180px] overflow-hidden">
                           <img
                             src={post.image}
                             alt={post.title}
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                           <div className="relative z-10 p-8 flex flex-col justify-end min-h-[180px]">
@@ -456,7 +456,7 @@ const Blog = () => {
                             <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
                               ⭐ Destacado · {category?.label}
                             </span>
-                            <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-gold transition-colors">
+                            <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-gold transition-colors duration-200">
                               {post.title}
                             </h3>
                           </div>
@@ -479,7 +479,7 @@ const Blog = () => {
                             </div>
                             <ArrowRight
                               size={16}
-                              className="text-primary group-hover:translate-x-1 transition-transform"
+                              className="text-primary group-hover:translate-x-1 transition-transform duration-300"
                             />
                           </div>
                         </div>
@@ -587,21 +587,21 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all h-full"
+                        className="blog-card border border-border h-full"
                       >
                         <div className="relative min-h-[160px] overflow-hidden">
                           <img
                             src={post.image}
                             alt={post.title}
                             loading="lazy"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                           <div className="relative z-10 p-6 flex flex-col justify-end min-h-[160px]">
                             <span className="text-xs font-medium text-white/80 mb-2">
                               {category?.emoji} {category?.label}
                             </span>
-                            <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors line-clamp-2">
+                            <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors duration-200 line-clamp-2">
                               {post.title}
                             </h3>
                           </div>
