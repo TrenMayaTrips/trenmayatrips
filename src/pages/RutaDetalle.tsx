@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, ArrowLeft, Star } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, ArrowLeft, Star, ChevronRight } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { routes } from "@/data/routes";
