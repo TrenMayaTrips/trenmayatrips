@@ -204,8 +204,10 @@ const Blog = () => {
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                               {post.excerpt}
                             </p>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
                               <span>{post.author}</span>
+                              <span>·</span>
+                              <span>{formatDate(post.publishedAt)}</span>
                               <span>·</span>
                               <span>{post.readTime} min lectura</span>
                             </div>
