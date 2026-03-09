@@ -269,10 +269,13 @@ const Blog = () => {
                             {post.excerpt}
                           </p>
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <User size={12} /> {post.author}
                               </span>
+                              <span>·</span>
+                              <span>{formatDate(post.publishedAt)}</span>
+                              <span>·</span>
                               <span className="flex items-center gap-1">
                                 <Clock size={12} /> {post.readTime} min
                               </span>
