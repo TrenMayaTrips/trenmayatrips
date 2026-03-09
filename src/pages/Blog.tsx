@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, User, ArrowRight, Search, ChevronDown, X, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -8,7 +7,7 @@ import { blogPosts, blogCategories } from "@/data/blog";
 import heroBlog from "@/assets/hero-blog.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import GrecaDivider from "@/components/maya/GrecaDivider";
-import MayaPattern from "@/components/maya/MayaPattern";
+import BlogNewsletterSection from "@/components/blog/BlogNewsletterSection";
 import {
   Carousel,
   CarouselContent,
@@ -662,26 +661,7 @@ const Blog = () => {
       <GrecaDivider variant="gold" size="sm" />
 
       {/* Newsletter CTA */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-jade-light relative">
-        <MayaPattern variant="greca" opacity={0.05} />
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-            No te pierdas ninguna historia
-          </h2>
-          <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
-            Suscríbete a nuestro newsletter y recibe las mejores guías, tips y
-            relatos del Mundo Maya directamente en tu correo.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="tu@email.com"
-              className="flex-1 px-4 py-3 rounded-lg text-foreground bg-card border border-border text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-            />
-            <Button variant="cta">Suscribirse</Button>
-          </div>
-        </div>
-      </section>
+      <BlogNewsletterSection />
     </PageLayout>
   );
 };
