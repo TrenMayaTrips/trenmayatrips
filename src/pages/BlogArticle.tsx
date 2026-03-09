@@ -68,7 +68,7 @@ const BlogArticle = () => {
       <SEOHead
         title={`${post.title} | Blog Tren Maya Trips`}
         description={post.excerpt}
-        canonicalPath={`/blog/${post.slug}`}
+        canonical={`/blog/${post.slug}`}
         type="article"
       />
       {/* JSON-LD Structured Data */}
