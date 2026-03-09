@@ -10,6 +10,7 @@ import SEOHead from "@/components/seo/SEOHead";
 import ArticleTOC, { TOCItem } from "@/components/blog/ArticleTOC";
 import ArticleSidebarCTA from "@/components/blog/ArticleSidebarCTA";
 import AdPlaceholder from "@/components/blog/AdPlaceholder";
+import RelatedCard from "@/components/blog/RelatedCard";
 import SidebarNewsletter from "@/components/blog/SidebarNewsletter";
 import SidebarPopularPosts from "@/components/blog/SidebarPopularPosts";
 import MobileStickyBooking from "@/components/blog/MobileStickyBooking";
