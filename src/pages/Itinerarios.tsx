@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel, Save, Copy, Check, Loader2 } from "lucide-react";
+import { MapPin, Clock, Compass, Plus, X, ChevronRight, Send, Sparkles, Hotel, Save, Copy, Check, Loader2, Minus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import PageLayout from "@/components/layout/PageLayout";
