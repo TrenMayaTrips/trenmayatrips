@@ -8,6 +8,11 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import SEOHead from "@/components/seo/SEOHead";
 import ArticleTOC, { TOCItem } from "@/components/blog/ArticleTOC";
+import ArticleSidebarCTA from "@/components/blog/ArticleSidebarCTA";
+import AdPlaceholder from "@/components/blog/AdPlaceholder";
+import SidebarNewsletter from "@/components/blog/SidebarNewsletter";
+import SidebarPopularPosts from "@/components/blog/SidebarPopularPosts";
+import MobileStickyBooking from "@/components/blog/MobileStickyBooking";
 
 /** Convert heading text to a URL-friendly id */
 function slugify(text: string): string {
@@ -23,7 +28,6 @@ const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find((p) => p.slug === slug);
 
-  // Extract TOC items from content blocks
   const tocItems = useMemo<TOCItem[]>(() => {
     if (!post) return [];
     const items: TOCItem[] = [];
@@ -47,6 +51,14 @@ const BlogArticle = () => {
   const related = blogPosts
     .filter((p) => p.category === post.category && p.slug !== post.slug)
     .slice(0, 3);
+  // For mobile: merge popular posts into related
+  const popularForMobile = blogPosts
+    .filter((p) => p.slug !== post.slug && p.featured)
+    .slice(0, 3);
+  const mergedRelated = [
+    ...related,
+    ...popularForMobile.filter((p) => !related.some((r) => r.slug === p.slug)),
+  ].slice(0, 6);
 
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("es-MX", {
     year: "numeric",
@@ -70,18 +82,11 @@ const BlogArticle = () => {
     image: typeof post.image === "string" ? post.image : undefined,
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
-    author: {
-      "@type": "Person",
-      name: post.author,
-      jobTitle: post.authorRole,
-    },
+    author: { "@type": "Person", name: post.author, jobTitle: post.authorRole },
     publisher: {
       "@type": "Organization",
       name: "Tren Maya Trips",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://trenmayatrips.lovable.app/logo-tmt.png",
-      },
+      logo: { "@type": "ImageObject", url: "https://trenmayatrips.lovable.app/logo-tmt.png" },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -92,16 +97,11 @@ const BlogArticle = () => {
     wordCount: post.content.join(" ").split(/\s+/).length,
   };
 
-  /** Render a single line of content, adding id to headings */
   const renderLine = (line: string, j: number) => {
     if (line.startsWith("## ")) {
       const text = line.replace("## ", "");
       return (
-        <h2
-          key={j}
-          id={slugify(text)}
-          className="font-heading text-xl md:text-2xl font-bold text-foreground mt-8 mb-3 scroll-mt-24"
-        >
+        <h2 key={j} id={slugify(text)} className="font-heading text-xl md:text-2xl font-bold text-foreground mt-8 mb-3 scroll-mt-24">
           {text}
         </h2>
       );
@@ -109,11 +109,7 @@ const BlogArticle = () => {
     if (line.startsWith("**") && line.endsWith("**")) {
       const text = line.replace(/\*\*/g, "");
       return (
-        <h3
-          key={j}
-          id={slugify(text)}
-          className="font-heading text-lg font-semibold text-foreground mt-4 scroll-mt-24"
-        >
+        <h3 key={j} id={slugify(text)} className="font-heading text-lg font-semibold text-foreground mt-4 scroll-mt-24">
           {text}
         </h3>
       );
@@ -122,31 +118,25 @@ const BlogArticle = () => {
       const parts = line.split("**");
       return (
         <p key={j} className="text-foreground leading-relaxed text-base">
-          <strong className="font-semibold">{parts[1]}</strong>
-          {parts[2]}
+          <strong className="font-semibold">{parts[1]}</strong>{parts[2]}
         </p>
       );
     }
     if (line.startsWith("- ")) {
-      return (
-        <li key={j} className="text-foreground leading-relaxed ml-4 list-disc">
-          {line.replace("- ", "")}
-        </li>
-      );
+      return <li key={j} className="text-foreground leading-relaxed ml-4 list-disc">{line.replace("- ", "")}</li>;
     }
     if (/^\d+\.\s/.test(line)) {
-      return (
-        <li key={j} className="text-foreground leading-relaxed ml-4 list-decimal">
-          {line.replace(/^\d+\.\s/, "")}
-        </li>
-      );
+      return <li key={j} className="text-foreground leading-relaxed ml-4 list-decimal">{line.replace(/^\d+\.\s/, "")}</li>;
     }
-    return (
-      <p key={j} className="text-foreground leading-relaxed text-base">
-        {line}
-      </p>
-    );
+    return <p key={j} className="text-foreground leading-relaxed text-base">{line}</p>;
   };
+
+  // Find mid-point H2 index for mobile inline ad
+  const h2Indices: number[] = [];
+  post.content.forEach((block, i) => {
+    if (block.split("\n").some((l) => l.startsWith("## "))) h2Indices.push(i);
+  });
+  const midAdAfterBlock = h2Indices.length >= 3 ? h2Indices[Math.floor(h2Indices.length / 2)] : -1;
 
   return (
     <PageLayout>
@@ -163,17 +153,10 @@ const BlogArticle = () => {
 
       {/* Hero */}
       <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={post.image} alt={post.title} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
-        <div className="container mx-auto px-4 max-w-3xl relative z-10">
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm mb-6 transition-colors"
-          >
+        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm mb-6 transition-colors">
             <ArrowLeft size={16} /> Volver al Blog
           </Link>
           <span className="inline-block text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full mb-4">
@@ -183,32 +166,27 @@ const BlogArticle = () => {
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
-            <span className="flex items-center gap-1.5">
-              <User size={14} /> {post.author}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Calendar size={14} /> {formattedDate}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock size={14} /> {post.readTime} min lectura
-            </span>
+            <span className="flex items-center gap-1.5"><User size={14} /> {post.author}</span>
+            <span className="flex items-center gap-1.5"><Calendar size={14} /> {formattedDate}</span>
+            <span className="flex items-center gap-1.5"><Clock size={14} /> {post.readTime} min lectura</span>
           </div>
         </div>
       </section>
 
       <GrecaDivider variant="jade" size="md" />
 
-      {/* Article Content with TOC sidebar */}
+      {/* 3-column article layout: TOC | Content | Sidebar */}
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto md:grid md:grid-cols-[220px_1fr] md:gap-8 lg:grid-cols-[240px_1fr] lg:gap-12">
-            {/* TOC column */}
-            <div className="hidden md:block">
+          <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-[200px_1fr_280px] lg:gap-8 xl:grid-cols-[220px_1fr_300px] xl:gap-10">
+
+            {/* LEFT — TOC (desktop only) */}
+            <div className="hidden lg:block">
               <ArticleTOC items={tocItems} />
             </div>
 
-            {/* Main content */}
-            <div className="max-w-3xl">
+            {/* CENTER — Article content */}
+            <div className="min-w-0">
               {/* Excerpt */}
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 border-l-4 border-accent pl-6 italic">
                 {post.excerpt}
@@ -217,9 +195,7 @@ const BlogArticle = () => {
               {/* Content Blocks */}
               <div className="prose-custom space-y-6">
                 {post.content.map((block, i) => {
-                  const inlineImage = post.contentImages?.find(
-                    (img) => img.afterBlock === i
-                  );
+                  const inlineImage = post.contentImages?.find((img) => img.afterBlock === i);
                   const lines = block.split("\n").filter(Boolean);
                   return (
                     <div key={i}>
@@ -229,19 +205,18 @@ const BlogArticle = () => {
                       {inlineImage && (
                         <figure className="my-8 -mx-4 md:mx-0">
                           <div className="overflow-hidden rounded-lg md:rounded-xl border border-border shadow-sm">
-                            <img
-                              src={inlineImage.src}
-                              alt={inlineImage.alt}
-                              className="w-full h-auto object-cover max-h-[400px]"
-                              loading="lazy"
-                            />
+                            <img src={inlineImage.src} alt={inlineImage.alt} className="w-full h-auto object-cover max-h-[400px]" loading="lazy" />
                           </div>
                           {inlineImage.caption && (
-                            <figcaption className="mt-3 text-sm text-muted-foreground text-center italic px-4">
-                              {inlineImage.caption}
-                            </figcaption>
+                            <figcaption className="mt-3 text-sm text-muted-foreground text-center italic px-4">{inlineImage.caption}</figcaption>
                           )}
                         </figure>
+                      )}
+                      {/* Mobile inline ad after mid-article H2 */}
+                      {i === midAdAfterBlock && (
+                        <div className="my-8 lg:hidden">
+                          <AdPlaceholder />
+                        </div>
                       )}
                     </div>
                   );
@@ -253,12 +228,7 @@ const BlogArticle = () => {
                 <div className="flex flex-wrap items-center gap-2">
                   <Tag size={14} className="text-muted-foreground" />
                   {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-secondary text-foreground text-xs rounded-full"
-                    >
-                      {tag}
-                    </span>
+                    <span key={tag} className="px-3 py-1 bg-secondary text-foreground text-xs rounded-full">{tag}</span>
                   ))}
                 </div>
                 <Button variant="outline" size="sm" onClick={handleShare}>
@@ -280,36 +250,59 @@ const BlogArticle = () => {
                   </div>
                 </div>
               </EstelaCard>
+
+              {/* Mobile: Newsletter after article */}
+              <div className="mt-8 lg:hidden">
+                <SidebarNewsletter />
+              </div>
+            </div>
+
+            {/* RIGHT — Sidebar (desktop only) */}
+            <div className="hidden lg:block">
+              <div className="sticky top-[100px] space-y-5 max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin pb-4">
+                <ArticleSidebarCTA postSlug={post.slug} />
+                <AdPlaceholder />
+                <SidebarNewsletter />
+                <SidebarPopularPosts currentSlug={post.slug} />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mobile TOC (rendered outside main grid) */}
-      <div className="md:hidden">
+      {/* Mobile TOC FAB */}
+      <div className="lg:hidden">
         <ArticleTOC items={tocItems} />
       </div>
 
-      {/* Related Posts */}
-      {related.length > 0 && (
+      {/* Mobile sticky booking bar */}
+      <MobileStickyBooking postSlug={post.slug} />
+
+      {/* Related Posts (mobile: merged with popular) */}
+      {(related.length > 0 || mergedRelated.length > 0) && (
         <section className="py-10 md:py-16 bg-secondary/30 border-t border-border">
-          <div className="container mx-auto px-4 max-w-3xl">
+          <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="font-heading text-2xl font-bold text-foreground mb-8">
               Artículos relacionados
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Desktop: show related only */}
+            <div className="hidden lg:grid grid-cols-3 gap-4">
               {related.map((r) => (
-                <Link
-                  key={r.slug}
-                  to={`/blog/${r.slug}`}
-                  className="group block rounded-lg border border-border bg-card p-5 hover:shadow-md transition-all"
-                >
-                  <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2">
-                    {r.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    {r.readTime} min · {r.author}
-                  </p>
+                <Link key={r.slug} to={`/blog/${r.slug}`} className="group block rounded-lg border border-border bg-card p-5 hover:shadow-md transition-all">
+                  <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2">{r.title}</h3>
+                  <p className="text-xs text-muted-foreground">{r.readTime} min · {r.author}</p>
+                </Link>
+              ))}
+            </div>
+            {/* Mobile: merged related + popular */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
+              {mergedRelated.map((r) => (
+                <Link key={r.slug} to={`/blog/${r.slug}`} className="group flex gap-3 items-start rounded-lg border border-border bg-card p-4 hover:shadow-md transition-all">
+                  <img src={r.image} alt={r.title} className="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-border" loading="lazy" />
+                  <div className="min-w-0">
+                    <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-1">{r.title}</h3>
+                    <p className="text-xs text-muted-foreground">{r.readTime} min · {r.author}</p>
+                  </div>
                 </Link>
               ))}
             </div>
