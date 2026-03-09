@@ -418,17 +418,25 @@ const Blog = () => {
 
           {filtered.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-lg text-muted-foreground mb-2">
-                No se encontraron artículos.
-              </p>
+              {selectedTag ? (
+                <>
+                  <p className="text-lg text-muted-foreground mb-2">
+                    No hay artículos con el tag "{selectedTag}".
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Prueba con otra búsqueda.
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg text-muted-foreground mb-4">
+                  No se encontraron artículos.
+                </p>
+              )}
               <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSearchQuery("");
-                }}
-                className="text-primary font-medium underline underline-offset-4"
+                onClick={clearAllFilters}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
               >
-                Ver todos los artículos
+                Limpiar filtros
               </button>
             </div>
           ) : (
