@@ -309,7 +309,7 @@ const Blog = () => {
       {/* All Posts Grid */}
       <section ref={allArticlesRef} className="py-10 md:py-16 bg-secondary/30 scroll-mt-24">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
               {selectedCategory
                 ? blogCategories.find((c) => c.slug === selectedCategory)
@@ -318,9 +318,30 @@ const Blog = () => {
                   ? "Resultados"
                   : "Todos los artículos"}
             </h2>
-            <p className="text-sm text-muted-foreground">
-              {filtered.length} artículo{filtered.length !== 1 ? "s" : ""}
-            </p>
+            <div className="flex items-center gap-3">
+              <p className="text-[13px] text-muted-foreground">
+                {filtered.length} artículo{filtered.length !== 1 ? "s" : ""}
+              </p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-[13px] font-medium text-foreground hover:bg-muted transition-colors">
+                    {sortLabels[sortBy]}
+                    <ChevronDown size={14} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setSortBy("recent")}>
+                    Más recientes
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSortBy("popular")}>
+                    Más leídos
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSortBy("oldest")}>
+                    Más antiguos
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
 
           {filtered.length === 0 ? (
