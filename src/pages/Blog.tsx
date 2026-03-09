@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Clock, User, ArrowRight, Search, ChevronDown } from "lucide-react";
+import { Clock, User, ArrowRight, Search, ChevronDown, X, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { blogPosts, blogCategories } from "@/data/blog";
@@ -32,10 +32,25 @@ const formatDate = (dateStr: string): string => {
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Calculate popular tags (top 10 most used)
+  const popularTags = useMemo(() => {
+    const tagCount: Record<string, number> = {};
+    blogPosts.forEach((post) => {
+      post.tags.forEach((tag) => {
+        tagCount[tag] = (tagCount[tag] || 0) + 1;
+      });
+    });
+    return Object.entries(tagCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([tag]) => tag);
+  }, []);
 
   const featuredPosts = blogPosts
     .filter((p) => p.featured)
@@ -59,6 +74,13 @@ const Blog = () => {
       );
     }
     
+    // Filter by tag
+    if (selectedTag) {
+      results = results.filter((p) => 
+        p.tags.some((t) => t.toLowerCase() === selectedTag.toLowerCase())
+      );
+    }
+    
     // Sort results
     switch (sortBy) {
       case "recent":
@@ -74,10 +96,23 @@ const Blog = () => {
     }
     
     return results;
-  }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy]);
+  }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy, selectedTag]);
 
   const scrollToAllArticles = () => {
     allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleTagClick = (tag: string, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    setSelectedTag(tag);
+    scrollToAllArticles();
+  };
+
+  const clearAllFilters = () => {
+    setSelectedCategory(null);
+    setSelectedTag(null);
+    setSearchQuery("");
   };
   
   const sortLabels: Record<SortOption, string> = {
@@ -145,11 +180,48 @@ const Blog = () => {
               </button>
             ))}
           </div>
+
+          {/* Popular Tags */}
+          <div className="mt-4 pt-4 border-t border-border">
+            <div className="flex items-center gap-2 mb-2">
+              <Tag size={14} className="text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">Tags populares:</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {popularTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all duration-200 cursor-pointer ${
+                    selectedTag === tag
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary/70 text-foreground hover:bg-primary hover:text-primary-foreground"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Active Tag Filter Chip */}
+          {selectedTag && (
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Filtrando por:</span>
+              <button
+                onClick={() => setSelectedTag(null)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors"
+              >
+                {selectedTag}
+                <X size={12} />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Featured Posts (only when no filter active) */}
-      {!selectedCategory && !searchQuery && (
+      {!selectedCategory && !searchQuery && !selectedTag && (
         <section className="py-10 md:py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
@@ -346,17 +418,25 @@ const Blog = () => {
 
           {filtered.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-lg text-muted-foreground mb-2">
-                No se encontraron artículos.
-              </p>
+              {selectedTag ? (
+                <>
+                  <p className="text-lg text-muted-foreground mb-2">
+                    No hay artículos con el tag "{selectedTag}".
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Prueba con otra búsqueda.
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg text-muted-foreground mb-4">
+                  No se encontraron artículos.
+                </p>
+              )}
               <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSearchQuery("");
-                }}
-                className="text-primary font-medium underline underline-offset-4"
+                onClick={clearAllFilters}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
               >
-                Ver todos los artículos
+                Limpiar filtros
               </button>
             </div>
           ) : (
@@ -406,12 +486,17 @@ const Blog = () => {
                         </div>
                         <div className="flex flex-wrap gap-1.5 mt-3">
                           {post.tags.slice(0, 3).map((tag) => (
-                            <span
+                            <button
                               key={tag}
-                              className="px-2 py-0.5 bg-secondary text-foreground text-[10px] rounded-full"
+                              onClick={(e) => handleTagClick(tag, e)}
+                              className={`px-2 py-0.5 text-[10px] rounded-full transition-all duration-200 cursor-pointer ${
+                                selectedTag === tag
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
+                              }`}
                             >
                               {tag}
-                            </span>
+                            </button>
                           ))}
                         </div>
                       </div>
