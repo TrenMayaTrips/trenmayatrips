@@ -2,7 +2,358 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Check, ArrowRight, ChevronLeft, X, Expand, Play } from "lucide-react";
-...
+import { useState, useRef, useEffect, useCallback } from "react";
+import PageLayout from "@/components/layout/PageLayout";
+import ParallaxHero from "@/components/layout/ParallaxHero";
+import { findWagonBySlug, wagonClassesDetailed } from "@/data/wagon-classes";
+import GrecaDivider from "@/components/maya/GrecaDivider";
+import MayaPattern from "@/components/maya/MayaPattern";
+import VideoEmbed from "@/components/ui/VideoEmbed";
+
+// ── Wagon Gallery Component ──────────────────────────────────────────────────
+interface WagonGalleryProps {
+  images: string[];
+  wagonName: string;
+}
+
+const WagonGallery = ({ images, wagonName }: WagonGalleryProps) => {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const total = images.length;
+
+  const prev = useCallback(() => setActiveIdx((i) => (i - 1 + total) % total), [total]);
+  const next = useCallback(() => setActiveIdx((i) => (i + 1) % total), [total]);
+
+  // Keyboard navigation in lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+      if (e.key === "Escape") setLightboxOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxOpen, prev, next]);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    document.body.style.overflow = lightboxOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightboxOpen]);
+
+  // Touch / swipe handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = null;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
+  return (
+    <>
+      {/* ── Main image with arrows & counter ── */}
+      <div className="rounded-xl overflow-hidden border border-border mb-3 relative group">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeIdx}
+            src={images[activeIdx]}
+            alt={`${wagonName} – Foto ${activeIdx + 1}`}
+            className="w-full h-56 md:h-96 object-cover cursor-zoom-in"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setLightboxOpen(true)}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          />
+        </AnimatePresence>
+
+        {/* Expand hint */}
+        <button
+          onClick={() => setLightboxOpen(true)}
+          className="absolute top-3 right-3 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{ background: "rgba(0,0,0,0.45)" }}
+          aria-label="Ver en pantalla completa"
+        >
+          <Expand size={16} className="text-white" />
+        </button>
+
+        {/* Counter badge */}
+        {total > 1 && (
+          <div
+            className="absolute bottom-3 left-3 text-white text-xs font-medium px-2.5 py-1 rounded-full"
+            style={{ background: "rgba(0,0,0,0.5)" }}
+          >
+            {activeIdx + 1} / {total}
+          </div>
+        )}
+
+        {/* Navigation arrows */}
+        {total > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: "rgba(0,0,0,0.35)" }}
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft size={20} className="text-white" />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: "rgba(0,0,0,0.35)" }}
+              aria-label="Foto siguiente"
+            >
+              <ArrowRight size={20} className="text-white" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* ── Dots (mobile) + Thumbnails (desktop) ── */}
+      {total > 1 && (
+        <>
+          {/* Mobile dots */}
+          <div className="flex md:hidden justify-center gap-2 mb-3">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIdx(i)}
+                className="w-2 h-2 rounded-full transition-all"
+                style={{ background: i === activeIdx ? "hsl(var(--primary))" : "hsl(var(--border))", transform: i === activeIdx ? "scale(1.4)" : "scale(1)" }}
+                aria-label={`Foto ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Desktop thumbnails */}
+          <div className="hidden md:flex gap-2">
+            {images.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIdx(i)}
+                className={`relative h-16 md:h-20 flex-1 rounded-lg overflow-hidden transition-all ${
+                  i === activeIdx
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
+                    : "opacity-60 hover:opacity-100"
+                }`}
+              >
+                <img src={img} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            className="fixed inset-0 z-[200] flex items-center justify-center"
+            style={{ background: "rgba(0,0,0,0.93)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-4 right-4 z-10 flex items-center justify-center w-10 h-10 rounded-full"
+              style={{ background: "rgba(255,255,255,0.15)" }}
+              aria-label="Cerrar"
+            >
+              <X size={20} className="text-white" />
+            </button>
+
+            {/* Counter */}
+            <div className="absolute top-4 left-4 text-white/70 text-sm font-medium">
+              {activeIdx + 1} / {total}
+            </div>
+
+            {/* Image */}
+            <div
+              className="relative w-full max-w-5xl px-4"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeIdx}
+                  src={images[activeIdx]}
+                  alt={`${wagonName} – Foto ${activeIdx + 1}`}
+                  className="w-full max-h-[80vh] object-contain rounded-lg"
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </AnimatePresence>
+            </div>
+
+            {/* Prev / Next arrows */}
+            {total > 1 && (
+              <>
+                <button
+                  onClick={prev}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full"
+                  style={{ background: "rgba(255,255,255,0.15)" }}
+                  aria-label="Foto anterior"
+                >
+                  <ChevronLeft size={24} className="text-white" />
+                </button>
+                <button
+                  onClick={next}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full"
+                  style={{ background: "rgba(255,255,255,0.15)" }}
+                  aria-label="Foto siguiente"
+                >
+                  <ArrowRight size={24} className="text-white" />
+                </button>
+              </>
+            )}
+
+            {/* Bottom dot strip */}
+            {total > 1 && (
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveIdx(i)}
+                    className="w-2 h-2 rounded-full transition-all"
+                    style={{
+                      background: i === activeIdx ? "#fff" : "rgba(255,255,255,0.35)",
+                      transform: i === activeIdx ? "scale(1.5)" : "scale(1)",
+                    }}
+                    aria-label={`Foto ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+// ── Page ─────────────────────────────────────────────────────────────────────
+const VagonDetalle = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const wagon = findWagonBySlug(slug || "");
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  if (!wagon) return <Navigate to="/tren-maya" replace />;
+
+  const otherClasses = wagonClassesDetailed.filter((w) => w.slug !== wagon.slug);
+
+  return (
+    <PageLayout>
+      {/* Hero */}
+      <ParallaxHero
+        imageSrc={wagon.heroImage}
+        imageAlt={`Interior del vagón clase ${wagon.name}`}
+        className="pt-24 md:pt-32 pb-14 md:pb-20 min-h-[340px] md:min-h-[460px]"
+        overlayClass="bg-gradient-to-b from-black/50 via-black/55 to-black/70"
+      >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+          {/* Breadcrumb */}
+          <nav className="flex items-center justify-center gap-2 text-white/60 text-xs mb-4">
+            <Link to="/tren-maya" className="hover:text-white transition-colors">Tren Maya</Link>
+            <span>/</span>
+            <span>Clases</span>
+            <span>/</span>
+            <span className="text-white">{wagon.name}</span>
+          </nav>
+
+          {wagon.isFeatured && wagon.badge && (
+            <span className="inline-block px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full mb-3">
+              {wagon.badge}
+            </span>
+          )}
+          <p className="text-accent font-medium tracking-[0.25em] uppercase text-xs mb-2">{wagon.type}</p>
+          <h1 className="font-heading text-4xl md:text-6xl font-bold text-white">{wagon.name}</h1>
+          <p className="mt-3 text-white/75 text-sm md:text-base max-w-xl mx-auto italic">
+            "{wagon.meaningFull}"
+          </p>
+          <p className="mt-4 font-heading text-2xl md:text-3xl font-bold text-white">
+            ${wagon.priceBase.toLocaleString()} <span className="text-base font-normal text-white/70">MXN / tramo</span>
+          </p>
+
+          {/* CTA buttons */}
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <Link
+              to="/contacto"
+              className="inline-block px-8 py-3 rounded-lg font-bold text-sm transition-colors"
+              style={{ backgroundColor: '#D4A853', color: '#2D4A3E' }}
+            >
+              Reservar desde ${wagon.priceBase.toLocaleString()} MXN
+            </Link>
+            <button
+              onClick={() => document.getElementById('comparativa-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-white/70 hover:text-white text-sm transition-colors"
+            >
+              O compara las 3 clases ↓
+            </button>
+          </div>
+        </motion.div>
+      </ParallaxHero>
+
+      {/* Stats row */}
+      <section className="bg-card border-b border-border">
+        <div className="container mx-auto px-4 py-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            {[
+              { value: String(wagon.seats), label: "Asientos" },
+              { value: wagon.config, label: "Configuración" },
+              { value: wagon.seatWidth, label: "Ancho de asiento" },
+              { value: `$${wagon.priceBase.toLocaleString()}`, label: "Precio base" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+              >
+                <p className="font-heading text-2xl md:text-3xl font-bold text-primary">{stat.value}</p>
+                <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <GrecaDivider variant="jade" size="md" />
+
+      {/* Gallery & Video */}
+      <section className="py-10 md:py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-6">
+            <p className="section-label">Galería</p>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Interior del vagón</h2>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            {/* Enhanced photo gallery */}
+            <WagonGallery images={wagon.galleryImages} wagonName={wagon.name} />
+
             {/* Video / Interior view */}
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-2">
