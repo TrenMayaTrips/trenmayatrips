@@ -65,6 +65,17 @@ const BlogArticle = () => {
 
   return (
     <PageLayout>
+      <SEOHead
+        title={`${post.title} | Blog Tren Maya Trips`}
+        description={post.excerpt}
+        canonicalPath={`/blog/${post.slug}`}
+        type="article"
+      />
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Hero */}
       <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
         <img
