@@ -30,11 +30,14 @@ const formatDate = (dateStr: string): string => {
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 };
 
+const ARTICLES_PER_PAGE = 6;
+
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
+  const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
