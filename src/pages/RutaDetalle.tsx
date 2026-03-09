@@ -74,6 +74,34 @@ const RutaDetalle = () => {
     .filter((e) => route.statesTraversed.includes(e.state))
     .slice(0, 6);
 
+  // Calculate arrival time dynamically
+  const calculateArrivalTime = (departure: string): string => {
+    const match = departure.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) return "—";
+
+    let hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
+    const period = match[3].toUpperCase();
+
+    // Convert to 24h
+    if (period === "PM" && hours !== 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    // Add duration
+    const totalMinutes = hours * 60 + minutes + route.durationMinutes;
+    let arrivalHours = Math.floor(totalMinutes / 60) % 24;
+    const arrivalMinutes = totalMinutes % 60;
+    const nextDay = totalMinutes >= 24 * 60;
+
+    // Convert back to 12h format
+    const arrivalPeriod = arrivalHours >= 12 ? "PM" : "AM";
+    if (arrivalHours === 0) arrivalHours = 12;
+    else if (arrivalHours > 12) arrivalHours -= 12;
+
+    const timeStr = `${arrivalHours}:${arrivalMinutes.toString().padStart(2, "0")} ${arrivalPeriod}`;
+    return nextDay ? `${timeStr} +1 día` : timeStr;
+  };
+
   return (
     <PageLayout>
       {/* Hero with parallax */}
