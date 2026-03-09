@@ -1,8 +1,9 @@
 import { useState, useRef, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle } from "lucide-react";
+import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle, Search, MessageSquare } from "lucide-react";
 import { findRoute, routes as allRoutes, type Route } from "@/data/routes";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
@@ -36,22 +37,39 @@ const stateColorMap: Record<string, string> = {
   yucatan: "hsl(45, 70%, 50%)",
 };
 
-const faqItems = [
-  { q: "¿Cómo compro boletos para el Tren Maya?", a: "Puedes solicitar tu cotización directamente con nosotros. En Tren Maya Trips nos encargamos de gestionar tus boletos junto con el circuito turístico completo, sin complicaciones." },
-  { q: "¿Puedo llevar equipaje grande?", a: "Sí, cada pasajero puede llevar una maleta de mano y una pieza de equipaje documentado. Las clases Janal y P'atal permiten equipaje adicional. Hay bodega disponible en todos los vagones." },
-  { q: "¿Hay descuento para residentes locales?", a: "Sí, residentes de los 5 estados de la ruta (Quintana Roo, Yucatán, Campeche, Chiapas y Tabasco) cuentan con tarifas preferenciales presentando identificación oficial con domicilio." },
-  { q: "¿Puedo viajar con mascotas?", a: "Mascotas pequeñas (hasta 10 kg) pueden viajar en transportadora bajo el asiento en clase Xiinbal y Janal. P'atal permite mascotas de hasta 15 kg. Se requiere certificado de salud vigente." },
-  { q: "¿Hay accesibilidad para personas con discapacidad?", a: "Todas las estaciones principales cuentan con rampas y elevadores. Los vagones tienen espacios reservados para sillas de ruedas y baños accesibles. Se recomienda solicitar asistencia al reservar." },
-  { q: "¿El tren tiene retrasos frecuentes?", a: "El Tren Maya mantiene un 92% de puntualidad. Se recomienda llegar 30 minutos antes de la salida. En caso de retrasos mayores a 1 hora, se ofrece compensación o cambio de horario sin costo." },
-  { q: "¿Se puede comer a bordo en todas las clases?", a: "En Xiinbal hay servicio de snacks y bebidas para compra. Janal incluye un snack box regional con tu boleto. P'atal ofrece menú gourmet completo con platillos regionales y bar premium." },
-  { q: "¿Hay WiFi en todo el recorrido?", a: "Las clases Janal y P'atal cuentan con Wi-Fi de alta velocidad. Xiinbal tiene servicio limitado. Nota: en tramos de selva densa la señal puede reducirse temporalmente." },
-];
+// FAQ categories organized by topic
+const faqCategories = {
+  boletos: {
+    title: "Boletos y reservas",
+    questions: [
+      { q: "¿Cómo compro boletos para el Tren Maya?", a: "Puedes solicitar tu cotización directamente con nosotros. En Tren Maya Trips nos encargamos de gestionar tus boletos junto con el circuito turístico completo, sin complicaciones." },
+      { q: "¿Hay descuento para residentes locales?", a: "Sí, residentes de los 5 estados de la ruta (Quintana Roo, Yucatán, Campeche, Chiapas y Tabasco) cuentan con tarifas preferenciales presentando identificación oficial con domicilio." }
+    ]
+  },
+  equipaje: {
+    title: "Equipaje y servicios",
+    questions: [
+      { q: "¿Puedo llevar equipaje grande?", a: "Sí, cada pasajero puede llevar una maleta de mano y una pieza de equipaje documentado. Las clases Janal y P'atal permiten equipaje adicional. Hay bodega disponible en todos los vagones." },
+      { q: "¿Puedo viajar con mascotas?", a: "Mascotas pequeñas (hasta 10 kg) pueden viajar en transportadora bajo el asiento en clase Xiinbal y Janal. P'atal permite mascotas de hasta 15 kg. Se requiere certificado de salud vigente." },
+      { q: "¿Hay accesibilidad para personas con discapacidad?", a: "Todas las estaciones principales cuentan con rampas y elevadores. Los vagones tienen espacios reservados para sillas de ruedas y baños accesibles. Se recomienda solicitar asistencia al reservar." },
+      { q: "¿Se puede comer a bordo en todas las clases?", a: "En Xiinbal hay servicio de snacks y bebidas para compra. Janal incluye un snack box regional con tu boleto. P'atal ofrece menú gourmet completo con platillos regionales y bar premium." },
+      { q: "¿Hay WiFi en todo el recorrido?", a: "Las clases Janal y P'atal cuentan con Wi-Fi de alta velocidad. Xiinbal tiene servicio limitado. Nota: en tramos de selva densa la señal puede reducirse temporalmente." }
+    ]
+  },
+  operacion: {
+    title: "Operación",
+    questions: [
+      { q: "¿El tren tiene retrasos frecuentes?", a: "El Tren Maya mantiene un 92% de puntualidad. Se recomienda llegar 30 minutos antes de la salida. En caso de retrasos mayores a 1 hora, se ofrece compensación o cambio de horario sin costo." }
+    ]
+  }
+};
 
 const TrenMaya = () => {
   const navigate = useNavigate();
   const [origin, setOrigin] = useState("Cancún");
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [faqSearchQuery, setFaqSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [searchResult, setSearchResult] = useState<Route | null>(null);
   const [searchNoResult, setSearchNoResult] = useState<{ transfer: string; estimated: string } | null>(null);
@@ -665,23 +683,111 @@ const TrenMaya = () => {
             </h2>
           </div>
 
-          <div className="max-w-2xl mx-auto space-y-3">
-            {faqItems.map((item, i) => (
-              <div key={i} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <button
-                  onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-4 md:p-5 text-left"
-                >
-                  <span className="font-medium text-foreground text-sm md:text-base pr-4">{item.q}</span>
-                  {expandedFaq === i ? <ChevronUp size={18} className="text-muted-foreground shrink-0" /> : <ChevronDown size={18} className="text-muted-foreground shrink-0" />}
-                </button>
-                {expandedFaq === i && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-4 md:px-5 pb-4 md:pb-5 border-t border-primary/10">
-                    <p className="text-sm text-muted-foreground leading-relaxed pt-3">{item.a}</p>
-                  </motion.div>
-                )}
-              </div>
-            ))}
+          {/* Search input */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Busca tu pregunta..."
+                value={faqSearchQuery}
+                onChange={(e) => {
+                  setFaqSearchQuery(e.target.value);
+                  setExpandedFaq(null);
+                }}
+                className="pl-10 h-12 bg-card border-border"
+              />
+            </div>
+          </div>
+
+          {/* FAQ by categories */}
+          <div className="max-w-2xl mx-auto space-y-8">
+            {Object.entries(faqCategories).map(([key, category]) => {
+              const filteredQuestions = category.questions.filter(
+                (item) =>
+                  faqSearchQuery === "" ||
+                  item.q.toLowerCase().includes(faqSearchQuery.toLowerCase()) ||
+                  item.a.toLowerCase().includes(faqSearchQuery.toLowerCase())
+              );
+
+              if (filteredQuestions.length === 0) return null;
+
+              return (
+                <div key={key}>
+                  <h3 
+                    className="font-heading text-lg font-bold mb-4"
+                    style={{ color: "#D4A853" }}
+                  >
+                    {category.title}
+                  </h3>
+                  <div className="space-y-3">
+                    {filteredQuestions.map((item, i) => {
+                      const globalIndex = Object.entries(faqCategories)
+                        .slice(0, Object.keys(faqCategories).indexOf(key))
+                        .reduce((sum, [, cat]) => sum + cat.questions.length, 0) + i;
+                      
+                      return (
+                        <div key={i} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                          <button
+                            onClick={() => setExpandedFaq(expandedFaq === globalIndex ? null : globalIndex)}
+                            className="w-full flex items-center justify-between p-4 md:p-5 text-left"
+                          >
+                            <span className="font-medium text-foreground text-sm md:text-base pr-4">{item.q}</span>
+                            {expandedFaq === globalIndex ? (
+                              <ChevronUp size={18} className="text-muted-foreground shrink-0" />
+                            ) : (
+                              <ChevronDown size={18} className="text-muted-foreground shrink-0" />
+                            )}
+                          </button>
+                          <AnimatePresence>
+                            {expandedFaq === globalIndex && (
+                              <motion.div 
+                                initial={{ height: 0, opacity: 0 }} 
+                                animate={{ height: "auto", opacity: 1 }} 
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="px-4 md:px-5 pb-4 md:pb-5 border-t border-primary/10">
+                                  <p className="text-sm text-muted-foreground leading-relaxed pt-3">{item.a}</p>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* No results message */}
+            {faqSearchQuery &&
+              Object.values(faqCategories).every(
+                (cat) =>
+                  cat.questions.filter(
+                    (item) =>
+                      item.q.toLowerCase().includes(faqSearchQuery.toLowerCase()) ||
+                      item.a.toLowerCase().includes(faqSearchQuery.toLowerCase())
+                  ).length === 0
+              ) && (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">No encontramos preguntas con "{faqSearchQuery}"</p>
+                </div>
+              )}
+          </div>
+
+          {/* CTA at bottom */}
+          <div className="max-w-2xl mx-auto mt-10 p-6 bg-card rounded-xl border border-border text-center">
+            <p className="text-foreground font-medium mb-3">¿No encuentras lo que buscas?</p>
+            <Link
+              to="/contacto"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
+              style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}
+            >
+              <MessageSquare size={16} />
+              Contacta a un asesor
+            </Link>
           </div>
         </div>
       </section>
