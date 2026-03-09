@@ -10,6 +10,7 @@ import SEOHead from "@/components/seo/SEOHead";
 import ArticleTOC, { TOCItem } from "@/components/blog/ArticleTOC";
 import ArticleSidebarCTA from "@/components/blog/ArticleSidebarCTA";
 import AdPlaceholder from "@/components/blog/AdPlaceholder";
+import RelatedCard from "@/components/blog/RelatedCard";
 import SidebarNewsletter from "@/components/blog/SidebarNewsletter";
 import SidebarPopularPosts from "@/components/blog/SidebarPopularPosts";
 import MobileStickyBooking from "@/components/blog/MobileStickyBooking";
@@ -51,20 +52,24 @@ const BlogArticle = () => {
     return items;
   }, [post]);
 
+  const related = useMemo(() => {
+    if (!post) return [];
+    const others = blogPosts.filter((p) => p.slug !== post.slug);
+    const scored = others.map((p) => {
+      let score = 0;
+      score += p.tags.filter((t) => post.tags.includes(t)).length * 10;
+      if (p.category === post.category) score += 5;
+      if (p.author === post.author) score += 2;
+      score += (new Date(p.publishedAt).getTime() / 1e12);
+      return { post: p, score };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 6).map((s) => s.post);
+  }, [post]);
+
   if (!post) return <Navigate to="/blog" replace />;
 
   const category = blogCategories.find((c) => c.slug === post.category);
-  const related = blogPosts
-    .filter((p) => p.category === post.category && p.slug !== post.slug)
-    .slice(0, 3);
-  // For mobile: merge popular posts into related
-  const popularForMobile = blogPosts
-    .filter((p) => p.slug !== post.slug && p.featured)
-    .slice(0, 3);
-  const mergedRelated = [
-    ...related,
-    ...popularForMobile.filter((p) => !related.some((r) => r.slug === p.slug)),
-  ].slice(0, 6);
 
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("es-MX", {
     year: "numeric",
@@ -303,33 +308,40 @@ const BlogArticle = () => {
       {/* Mobile sticky booking bar */}
       <MobileStickyBooking postSlug={post.slug} />
 
-      {/* Related Posts (mobile: merged with popular) */}
-      {(related.length > 0 || mergedRelated.length > 0) && (
+      {/* AdSense #2 — In-feed before related */}
+      <section className="py-6 bg-background border-t border-border">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <AdPlaceholder variant="horizontal" />
+        </div>
+      </section>
+
+      {/* Related Posts */}
+      {related.length > 0 && (
         <section className="py-10 md:py-16 bg-secondary/30 border-t border-border">
-          <div className="container mx-auto px-4 max-w-4xl">
+          <div className="container mx-auto px-4 max-w-5xl">
             <h2 className="font-heading text-2xl font-bold text-foreground mb-8">
-              Artículos relacionados
+              También te puede interesar
             </h2>
-            {/* Desktop: show related only */}
-            <div className="hidden lg:grid grid-cols-3 gap-4">
-              {related.map((r) => (
-                <Link key={r.slug} to={`/blog/${r.slug}`} className="group block rounded-lg border border-border bg-card p-5 hover:shadow-md transition-all">
-                  <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2">{r.title}</h3>
-                  <p className="text-xs text-muted-foreground">{r.readTime} min · {r.author}</p>
-                </Link>
+            {/* Desktop: grid */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              {related.slice(0, 3).map((r) => (
+                <RelatedCard key={r.slug} post={r} />
               ))}
             </div>
-            {/* Mobile: merged related + popular */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
-              {mergedRelated.map((r) => (
-                <Link key={r.slug} to={`/blog/${r.slug}`} className="group flex gap-3 items-start rounded-lg border border-border bg-card p-4 hover:shadow-md transition-all">
-                  <img src={r.image} alt={r.title} className="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-border" loading="lazy" />
-                  <div className="min-w-0">
-                    <h3 className="font-heading text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-1">{r.title}</h3>
-                    <p className="text-xs text-muted-foreground">{r.readTime} min · {r.author}</p>
-                  </div>
-                </Link>
+            {/* Mobile: horizontal scroll */}
+            <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:hidden -mx-4 px-4">
+              {related.map((r) => (
+                <div key={r.slug} className="min-w-[280px] snap-start">
+                  <RelatedCard post={r} />
+                </div>
               ))}
+            </div>
+            <div className="mt-8 text-center">
+              <Link to="/blog">
+                <Button variant="outline" size="lg">
+                  Explorar todo el blog →
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
