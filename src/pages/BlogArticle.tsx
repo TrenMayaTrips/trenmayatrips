@@ -51,23 +51,24 @@ const BlogArticle = () => {
     return items;
   }, [post]);
 
-  if (!post) return <Navigate to="/blog" replace />;
-
-  const category = blogCategories.find((c) => c.slug === post.category);
   const related = useMemo(() => {
+    if (!post) return [];
     const others = blogPosts.filter((p) => p.slug !== post.slug);
-    // Score: shared tags → same category → same author → recent
     const scored = others.map((p) => {
       let score = 0;
       score += p.tags.filter((t) => post.tags.includes(t)).length * 10;
       if (p.category === post.category) score += 5;
       if (p.author === post.author) score += 2;
-      score += (new Date(p.publishedAt).getTime() / 1e12); // slight recency boost
+      score += (new Date(p.publishedAt).getTime() / 1e12);
       return { post: p, score };
     });
     scored.sort((a, b) => b.score - a.score);
     return scored.slice(0, 6).map((s) => s.post);
   }, [post]);
+
+  if (!post) return <Navigate to="/blog" replace />;
+
+  const category = blogCategories.find((c) => c.slug === post.category);
 
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("es-MX", {
     year: "numeric",
