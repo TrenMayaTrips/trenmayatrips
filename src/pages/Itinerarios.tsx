@@ -496,7 +496,10 @@ const Itinerarios = () => {
                     ¿Dónde prefieres hospedarte?
                   </h2>
                   <p className="text-muted-foreground">
-                    Elige el tipo de alojamiento para cada destino
+                    Elige el tipo de alojamiento y ajusta las noches en cada destino
+                  </p>
+                  <p className="text-sm text-accent font-medium mt-2">
+                    {totalNights} noches en total ({selectedDuration} días − 1)
                   </p>
                 </div>
 
