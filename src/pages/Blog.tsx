@@ -479,7 +479,7 @@ const Blog = () => {
                             </div>
                             <ArrowRight
                               size={16}
-                              className="text-primary group-hover:translate-x-1 transition-transform"
+                              className="text-primary group-hover:translate-x-1 transition-transform duration-300"
                             />
                           </div>
                         </div>
