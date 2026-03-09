@@ -154,6 +154,9 @@ const BlogArticle = () => {
   const midAdAfterBlock = h2Indices.length >= 3 ? h2Indices[Math.floor(h2Indices.length / 2)] : -1;
   // Experience CTA: between 2nd and 3rd H2 (but not same as transport or ad block)
   const experienceCtaAfterBlock = h2Indices.length >= 3 ? h2Indices[1] : -1;
+
+  return (
+    <PageLayout>
       <SEOHead
         title={`${post.title} | Blog Tren Maya Trips`}
         description={post.excerpt}
