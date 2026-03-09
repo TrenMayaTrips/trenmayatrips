@@ -333,7 +333,7 @@ const RutaDetalle = () => {
       </section>
 
       {/* Schedules */}
-      <section className="py-12 md:py-20 bg-secondary/50">
+      <section id="horarios-section" className="py-12 md:py-20 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <p className="section-label">Horarios</p>
