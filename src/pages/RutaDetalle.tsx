@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, ArrowLeft, Star } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, ArrowLeft, Star, ChevronRight } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { routes } from "@/data/routes";
@@ -200,56 +200,104 @@ const RutaDetalle = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto items-start">
             {/* Timeline */}
             <div>
-              {route.timeline.map((stop, i) => (
-                <motion.div
-                  key={stop.name}
-                  initial={{ opacity: 0, x: -15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className={`flex gap-4 relative cursor-pointer transition-all ${
-                    hoveredStation === stop.name ? "scale-[1.02]" : ""
-                  }`}
-                  onMouseEnter={() => setHoveredStation(stop.name)}
-                  onMouseLeave={() => setHoveredStation(null)}
-                >
-                  <div className="flex flex-col items-center">
-                    <div className={`w-5 h-5 rounded-full shrink-0 mt-1 border-2 border-card transition-all ${
-                      stop.isOrigin || stop.isDestination ? "bg-primary ring-4 ring-primary/20" : "bg-muted-foreground/30"
-                    } ${hoveredStation === stop.name ? "ring-4 ring-accent/30 scale-110" : ""}`} />
-                    {i < route.timeline.length - 1 && (
-                      <div className="w-0.5 flex-1 bg-border min-h-[40px]" />
-                    )}
-                  </div>
-                  <div className="pb-8">
-                    <div className="flex items-baseline gap-3 flex-wrap">
-                      <span className="text-xs font-mono text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded">
-                        {stop.time}
-                      </span>
-                      <h3 className={`font-heading font-bold text-foreground ${
-                        stop.isOrigin || stop.isDestination ? "text-lg" : "text-base"
-                      }`}>
-                        {stop.name}
-                      </h3>
-                      {stop.isOrigin && (
-                        <span className="text-[10px] uppercase tracking-wider text-primary font-semibold">Origen</span>
-                      )}
-                      {stop.isDestination && (
-                        <span className="text-[10px] uppercase tracking-wider text-primary font-semibold">Destino</span>
+              {route.timeline.map((stop, i) => {
+                // Map station name to destination slug
+                const stationToSlug: Record<string, string> = {
+                  "Cancún": "cancun", "Cancún Aeropuerto": "cancun",
+                  "Tulum": "tulum", "Tulum Aeropuerto": "tulum",
+                  "Bacalar": "bacalar", "Playa del Carmen": "playa-del-carmen",
+                  "Puerto Morelos": "cancun", // Part of Cancun region
+                  "Mérida": "merida", "Mérida-Teya": "merida",
+                  "Valladolid": "valladolid", "Izamal": "izamal",
+                  "San Francisco de Campeche": "campeche-ciudad",
+                  "Palenque": "palenque", "Calakmul": "calakmul",
+                  "Felipe Carrillo Puerto": "bacalar", // Near Bacalar
+                };
+                const destSlug = stationToSlug[stop.name];
+                const stationLink = destSlug ? `/destinos/${destSlug}` : "/destinos";
+
+                // Parse tag to get link
+                const getTagLink = (tag: string): string | null => {
+                  if (tag.includes("Pueblo Mágico")) return "/destinos?categoria=pueblo-magico";
+                  if (tag.includes("UNESCO")) return "/destinos?categoria=unesco";
+                  if (tag.includes("Chichén Itzá")) return "/experiencias/chichen-itza";
+                  if (tag.includes("Cenote")) return "/experiencias?categoria=cenotes";
+                  if (tag.includes("Zona arqueológica")) return "/experiencias?categoria=arqueologia";
+                  if (tag.includes("Cascadas")) return "/experiencias/cascadas-agua-azul";
+                  if (tag.includes("Ferry")) return "/destinos/playa-del-carmen";
+                  if (tag.includes("Arrecife")) return "/experiencias?categoria=snorkel";
+                  return null;
+                };
+
+                return (
+                  <motion.div
+                    key={stop.name}
+                    initial={{ opacity: 0, x: -15 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className={`flex gap-4 relative cursor-pointer transition-all duration-200 rounded-lg -mx-3 px-3 py-4 md:py-2 group ${
+                      hoveredStation === stop.name ? "bg-[#FAF6F0] scale-[1.01]" : "hover:bg-[#FAF6F0]/50"
+                    }`}
+                    onMouseEnter={() => setHoveredStation(stop.name)}
+                    onMouseLeave={() => setHoveredStation(null)}
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className={`w-5 h-5 rounded-full shrink-0 mt-1 border-2 border-card transition-all ${
+                        stop.isOrigin || stop.isDestination ? "bg-primary ring-4 ring-primary/20" : "bg-muted-foreground/30"
+                      } ${hoveredStation === stop.name ? "ring-4 ring-accent/30 scale-110" : ""}`} />
+                      {i < route.timeline.length - 1 && (
+                        <div className="w-0.5 flex-1 bg-border min-h-[40px]" />
                       )}
                     </div>
-                    {stop.highlights.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mt-2">
-                        {stop.highlights.filter(h => h !== "Origen").map((h) => (
-                          <span key={h} className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
-                            {h}
-                          </span>
-                        ))}
+                    <div className="pb-4 md:pb-6 flex-1">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="text-xs font-mono text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded">
+                          {stop.time}
+                        </span>
+                        <Link 
+                          to={stationLink}
+                          className={`font-heading font-bold text-foreground hover:text-primary transition-colors ${
+                            stop.isOrigin || stop.isDestination ? "text-lg" : "text-base"
+                          }`}
+                        >
+                          {stop.name}
+                        </Link>
+                        {stop.isOrigin && (
+                          <span className="text-[10px] uppercase tracking-wider text-primary font-semibold">Origen</span>
+                        )}
+                        {stop.isDestination && (
+                          <span className="text-[10px] uppercase tracking-wider text-primary font-semibold">Destino</span>
+                        )}
+                        <ChevronRight 
+                          size={16} 
+                          className="ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" 
+                        />
                       </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+                      {stop.highlights.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                          {stop.highlights.filter(h => h !== "Origen").map((h) => {
+                            const tagLink = getTagLink(h);
+                            return tagLink ? (
+                              <Link 
+                                key={h} 
+                                to={tagLink}
+                                className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors"
+                              >
+                                {h}
+                              </Link>
+                            ) : (
+                              <span key={h} className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">
+                                {h}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
             {/* Interactive map */}
