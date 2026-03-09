@@ -356,9 +356,9 @@ const RutaDetalle = () => {
                       <span className="font-mono font-semibold text-foreground">{time}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">Llegada aprox.</span>
-                      <span className="text-sm font-medium text-foreground">
-                        {route.timeline[route.timeline.length - 1]?.time || "—"}
+                      <span className="text-xs text-muted-foreground">Llegada</span>
+                      <span className="text-sm font-medium text-foreground font-mono">
+                        {calculateArrivalTime(time)}
                       </span>
                     </div>
                   </div>
