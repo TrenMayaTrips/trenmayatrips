@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Clock, User, ArrowRight, Search } from "lucide-react";
+import { Clock, User, ArrowRight, Search, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { blogPosts, blogCategories } from "@/data/blog";
@@ -15,19 +15,37 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+type SortOption = "recent" | "oldest" | "popular";
+
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+};
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("recent");
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  const featuredPosts = blogPosts.filter((p) => p.featured);
+  const featuredPosts = blogPosts
+    .filter((p) => p.featured)
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  
   const nonFeaturedPosts = blogPosts.filter((p) => !p.featured);
 
   const filtered = useMemo(() => {
-    // Start with non-featured posts to avoid duplication
-    let results = nonFeaturedPosts;
+    let results = [...nonFeaturedPosts];
+    
     if (selectedCategory) {
       results = results.filter((p) => p.category === selectedCategory);
     }
@@ -40,11 +58,32 @@ const Blog = () => {
           p.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
+    
+    // Sort results
+    switch (sortBy) {
+      case "recent":
+        results.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+        break;
+      case "oldest":
+        results.sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime());
+        break;
+      case "popular":
+        // Using readTime as proxy for popularity (longer articles = more engaged readers)
+        results.sort((a, b) => b.readTime - a.readTime);
+        break;
+    }
+    
     return results;
-  }, [selectedCategory, searchQuery, nonFeaturedPosts]);
+  }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy]);
 
   const scrollToAllArticles = () => {
     allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  
+  const sortLabels: Record<SortOption, string> = {
+    recent: "Más recientes",
+    oldest: "Más antiguos",
+    popular: "Más leídos",
   };
 
   return (
