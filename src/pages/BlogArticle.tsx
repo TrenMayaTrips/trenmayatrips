@@ -13,6 +13,7 @@ import AdPlaceholder from "@/components/blog/AdPlaceholder";
 import RelatedCard from "@/components/blog/RelatedCard";
 import SidebarNewsletter from "@/components/blog/SidebarNewsletter";
 import SidebarPopularPosts from "@/components/blog/SidebarPopularPosts";
+import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import MobileStickyBooking from "@/components/blog/MobileStickyBooking";
 import {
   getArticleContext,
@@ -172,6 +173,8 @@ const BlogArticle = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+
+      <ReadingProgressBar />
 
       {/* Hero */}
       <section className="relative pt-24 md:pt-32 pb-10 md:pb-14 overflow-hidden">
