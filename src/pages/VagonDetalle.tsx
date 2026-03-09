@@ -793,15 +793,25 @@ const VagonDetalle = () => {
             Solicita tu cotización personalizada y reserva tu lugar
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
-            <Button variant="cta" asChild>
-              <Link to="/contacto">Reservar clase {wagon.name}</Link>
-            </Button>
-            <Button variant="ctaOutline" asChild>
-              <a href="https://wa.me/529811234567" target="_blank" rel="noopener noreferrer">
-                💬 WhatsApp
-              </a>
-            </Button>
+            <Link
+              to="/contacto"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-bold text-sm transition-all hover:brightness-110 shadow-lg"
+              style={{ backgroundColor: "#D4A853", color: "#2D4A3E" }}
+            >
+              Reservar desde ${wagon.priceBase.toLocaleString()} MXN →
+            </Link>
+            <a
+              href="https://wa.me/529982186754?text=Hola%2C%20me%20interesa%20la%20clase%20{wagon.name}%20del%20Tren%20Maya"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
+            >
+              💬 Escríbenos al (52) 998 218 6754
+            </a>
           </div>
+          <p className="mt-5 text-primary-foreground/50 text-xs">
+            Sin cargos ocultos · Cancelación flexible · Atención en español
+          </p>
         </div>
       </section>
     </PageLayout>
