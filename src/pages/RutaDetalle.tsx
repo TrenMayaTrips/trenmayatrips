@@ -372,24 +372,33 @@ const RutaDetalle = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="bg-card rounded-xl border border-border overflow-hidden"
+                  className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                 >
                   <button
                     onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
-                    className="w-full flex items-center justify-between p-5 text-left"
+                    className="w-full flex items-center justify-between p-4 md:p-5 text-left"
                   >
-                    <span className="font-medium text-foreground text-sm pr-4">{faq.q}</span>
+                    <span className="font-medium text-foreground text-sm md:text-base pr-4">{faq.q}</span>
                     {expandedFaq === i ? (
                       <ChevronUp size={18} className="text-muted-foreground shrink-0" />
                     ) : (
                       <ChevronDown size={18} className="text-muted-foreground shrink-0" />
                     )}
                   </button>
-                  {expandedFaq === i && (
-                    <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed border-t border-border pt-4">
-                      {faq.a}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {expandedFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-4 md:px-5 pb-4 md:pb-5 border-t border-primary/10">
+                          <p className="text-sm text-muted-foreground leading-relaxed pt-3">{faq.a}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               ))}
             </div>

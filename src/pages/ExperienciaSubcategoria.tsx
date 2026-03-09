@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Search, MapPin, Clock, Star, ChevronRight } from "lucide-react";
+import { Search, MapPin, Clock, Star, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { getCategoryBySlug, getSubcategoryBySlug, guarantees } from "@/data/experience-categories";
