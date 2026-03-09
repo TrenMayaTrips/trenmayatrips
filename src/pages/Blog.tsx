@@ -180,11 +180,48 @@ const Blog = () => {
               </button>
             ))}
           </div>
+
+          {/* Popular Tags */}
+          <div className="mt-4 pt-4 border-t border-border">
+            <div className="flex items-center gap-2 mb-2">
+              <Tag size={14} className="text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">Tags populares:</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {popularTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all duration-200 cursor-pointer ${
+                    selectedTag === tag
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary/70 text-foreground hover:bg-primary hover:text-primary-foreground"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Active Tag Filter Chip */}
+          {selectedTag && (
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Filtrando por:</span>
+              <button
+                onClick={() => setSelectedTag(null)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors"
+              >
+                {selectedTag}
+                <X size={12} />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Featured Posts (only when no filter active) */}
-      {!selectedCategory && !searchQuery && (
+      {!selectedCategory && !searchQuery && !selectedTag && (
         <section className="py-10 md:py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
