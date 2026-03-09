@@ -137,15 +137,23 @@ const BlogArticle = () => {
     return <p key={j} className="text-foreground leading-relaxed text-base">{line}</p>;
   };
 
-  // Find mid-point H2 index for mobile inline ad
+  // Contextual CTA data
+  const articleCtx = getArticleContext(post.slug);
+
+  // Find block indices for CTA insertion
   const h2Indices: number[] = [];
+  let transportBlockIdx = -1;
   post.content.forEach((block, i) => {
-    if (block.split("\n").some((l) => l.startsWith("## "))) h2Indices.push(i);
+    const lines = block.split("\n").filter(Boolean);
+    if (lines.some((l) => l.startsWith("## "))) h2Indices.push(i);
+    // Detect "Cómo Llegar" or transport-related H2
+    if (lines.some((l) => /^## .*(llegar|tren maya|conectar|transporte)/i.test(l))) {
+      transportBlockIdx = i;
+    }
   });
   const midAdAfterBlock = h2Indices.length >= 3 ? h2Indices[Math.floor(h2Indices.length / 2)] : -1;
-
-  return (
-    <PageLayout>
+  // Experience CTA: between 2nd and 3rd H2 (but not same as transport or ad block)
+  const experienceCtaAfterBlock = h2Indices.length >= 3 ? h2Indices[1] : -1;
       <SEOHead
         title={`${post.title} | Blog Tren Maya Trips`}
         description={post.excerpt}
