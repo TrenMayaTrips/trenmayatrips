@@ -440,7 +440,7 @@ const Blog = () => {
                     >
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="blog-card border-2 border-gold/30"
+                        className="blog-card group border-2 border-gold/30"
                       >
                         <div className="relative min-h-[180px] overflow-hidden">
                           <img
