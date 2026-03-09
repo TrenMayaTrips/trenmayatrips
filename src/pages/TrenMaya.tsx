@@ -64,6 +64,144 @@ const faqCategories = {
   }
 };
 
+// Animated Stats Section Component
+const StatsSection = () => {
+  const [isInView, setIsInView] = useState(false);
+  const [animatedValues, setAnimatedValues] = useState({
+    km: 0,
+    stations: 0,
+    states: 0,
+    classes: 0,
+  });
+  
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const statsData = [
+    { 
+      key: 'km',
+      value: trenMayaStats.totalKm, 
+      unit: "km", 
+      label: "De ruta",
+      context: "La ruta férrea más larga de México",
+      icon: Train
+    },
+    { 
+      key: 'stations',
+      value: trenMayaStats.stations, 
+      unit: "", 
+      label: "Estaciones",
+      context: "Conectando los 5 estados del sureste",
+      icon: MapPin
+    },
+    { 
+      key: 'states',
+      value: trenMayaStats.states, 
+      unit: "", 
+      label: "Estados",
+      context: "De Chiapas a Quintana Roo",
+      icon: RouteIcon
+    },
+    { 
+      key: 'classes',
+      value: trenMayaStats.wagonTypes, 
+      unit: "", 
+      label: "Clases",
+      context: "Para cada tipo de viajero",
+      icon: Star
+    },
+  ];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isInView) {
+          setIsInView(true);
+          
+          // Animate each stat with a slight delay
+          statsData.forEach((stat, index) => {
+            const startTime = Date.now() + (index * 200);
+            const duration = 1500;
+            
+            const animate = () => {
+              const now = Date.now();
+              const elapsed = now - startTime;
+              
+              if (elapsed < 0) {
+                requestAnimationFrame(animate);
+                return;
+              }
+              
+              const progress = Math.min(elapsed / duration, 1);
+              // Easing function for smooth animation
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const currentValue = Math.floor(easeOut * stat.value);
+              
+              setAnimatedValues(prev => ({
+                ...prev,
+                [stat.key]: currentValue
+              }));
+              
+              if (progress < 1) {
+                requestAnimationFrame(animate);
+              }
+            };
+            
+            requestAnimationFrame(animate);
+          });
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, [isInView]);
+
+  return (
+    <div ref={sectionRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      {statsData.map((stat, i) => {
+        const IconComponent = stat.icon;
+        const displayValue = stat.key === 'km' 
+          ? animatedValues[stat.key].toLocaleString()
+          : String(animatedValues[stat.key]);
+        
+        return (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="space-y-2"
+          >
+            <div className="flex justify-center">
+              <IconComponent 
+                size={24} 
+                className="text-gold mb-2" 
+                style={{ color: '#D4A574' }}
+              />
+            </div>
+            <p className="font-heading text-3xl md:text-5xl font-bold text-primary">
+              {displayValue}<span className="text-lg md:text-2xl ml-1 text-muted-foreground">{stat.unit}</span>
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+            <p className="text-xs text-muted-foreground opacity-75 max-w-[120px] mx-auto leading-tight">
+              {stat.context}
+            </p>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+};
+
 const TrenMaya = () => {
   const navigate = useNavigate();
   const [origin, setOrigin] = useState("Cancún");
