@@ -110,6 +110,7 @@ export const routes: Route[] = [
     origin: "Mérida",
     destination: "Palenque",
     duration: "8h",
+    durationMinutes: 480,
     stops: 9,
     dailyDepartures: 2,
     badge: "Arqueológica",
