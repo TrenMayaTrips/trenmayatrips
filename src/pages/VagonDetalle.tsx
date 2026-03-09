@@ -717,14 +717,21 @@ const VagonDetalle = () => {
             </h2>
           </div>
 
-          <div className="max-w-2xl mx-auto space-y-0">
+          <div className="max-w-2xl mx-auto space-y-3">
             {wagon.faqs.map((faq, i) => {
               const isOpen = expandedFaq === i;
               return (
-                <div key={i} className="border-b border-border">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
                   <button
                     onClick={() => setExpandedFaq(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between py-4 text-left group"
+                    className="w-full flex items-center justify-between p-4 md:p-5 text-left"
                   >
                     <span className="font-medium text-foreground text-sm md:text-base pr-4">{faq.q}</span>
                     {isOpen ? (
@@ -733,16 +740,21 @@ const VagonDetalle = () => {
                       <ChevronDown size={18} className="shrink-0 text-muted-foreground" />
                     )}
                   </button>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="pb-4"
-                    >
-                      <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </div>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-4 md:px-5 pb-4 md:pb-5 border-t border-primary/10">
+                          <p className="text-sm text-muted-foreground leading-relaxed pt-3">{faq.a}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               );
             })}
           </div>

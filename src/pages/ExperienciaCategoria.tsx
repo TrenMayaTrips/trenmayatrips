@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Search, MapPin, Clock, Star, ChevronRight } from "lucide-react";
+import { Search, MapPin, Clock, Star, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { getCategoryBySlug, guarantees } from "@/data/experience-categories";
@@ -28,6 +28,7 @@ const ExperienciaCategoria = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
     if (!category) return [];
@@ -244,36 +245,87 @@ const ExperienciaCategoria = () => {
       {/* FAQ */}
       <section className="py-10 md:py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground text-center mb-10">
-            Preguntas frecuentes
-          </h2>
+          <div className="text-center mb-10">
+            <p className="section-label">FAQ</p>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+              Preguntas frecuentes
+            </h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div>
               <h3 className="font-heading text-lg font-semibold text-foreground mb-4">Información general</h3>
               <div className="space-y-3">
-                {category.faqCultural.map((faq, i) => (
-                  <details key={i} className="group bg-card rounded-lg border border-border">
-                    <summary className="px-4 py-3 text-sm font-medium text-foreground cursor-pointer list-none flex items-center justify-between">
-                      {faq.question}
-                      <span className="text-muted-foreground group-open:rotate-45 transition-transform text-lg">+</span>
-                    </summary>
-                    <p className="px-4 pb-3 text-sm text-muted-foreground">{faq.answer}</p>
-                  </details>
-                ))}
+                {category.faqCultural.map((faq, i) => {
+                  const idx = i;
+                  const isOpen = expandedFaq === idx;
+                  return (
+                    <div key={i} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                      <button
+                        onClick={() => setExpandedFaq(isOpen ? null : idx)}
+                        className="w-full flex items-center justify-between p-4 text-left"
+                      >
+                        <span className="font-medium text-foreground text-sm pr-4">{faq.question}</span>
+                        {isOpen ? (
+                          <ChevronUp size={18} className="text-muted-foreground shrink-0" />
+                        ) : (
+                          <ChevronDown size={18} className="text-muted-foreground shrink-0" />
+                        )}
+                      </button>
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-4 pb-4 border-t border-primary/10">
+                              <p className="text-sm text-muted-foreground leading-relaxed pt-3">{faq.answer}</p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div>
               <h3 className="font-heading text-lg font-semibold text-foreground mb-4">Tips del experto</h3>
               <div className="space-y-3">
-                {category.faqTips.map((faq, i) => (
-                  <details key={i} className="group bg-card rounded-lg border border-border">
-                    <summary className="px-4 py-3 text-sm font-medium text-foreground cursor-pointer list-none flex items-center justify-between">
-                      {faq.question}
-                      <span className="text-muted-foreground group-open:rotate-45 transition-transform text-lg">+</span>
-                    </summary>
-                    <p className="px-4 pb-3 text-sm text-muted-foreground">{faq.answer}</p>
-                  </details>
-                ))}
+                {category.faqTips.map((faq, i) => {
+                  const idx = 100 + i;
+                  const isOpen = expandedFaq === idx;
+                  return (
+                    <div key={i} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                      <button
+                        onClick={() => setExpandedFaq(isOpen ? null : idx)}
+                        className="w-full flex items-center justify-between p-4 text-left"
+                      >
+                        <span className="font-medium text-foreground text-sm pr-4">{faq.question}</span>
+                        {isOpen ? (
+                          <ChevronUp size={18} className="text-muted-foreground shrink-0" />
+                        ) : (
+                          <ChevronDown size={18} className="text-muted-foreground shrink-0" />
+                        )}
+                      </button>
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-4 pb-4 border-t border-primary/10">
+                              <p className="text-sm text-muted-foreground leading-relaxed pt-3">{faq.answer}</p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
