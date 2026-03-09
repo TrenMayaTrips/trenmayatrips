@@ -28,6 +28,7 @@ const ExperienciaCategoria = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
     if (!category) return [];
