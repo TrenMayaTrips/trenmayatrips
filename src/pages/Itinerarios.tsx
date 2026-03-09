@@ -49,6 +49,7 @@ const Itinerarios = () => {
   const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
   const [stateFilter, setStateFilter] = useState<string | null>(null);
   const [lodgingByDest, setLodgingByDest] = useState<Record<string, string>>({});
+  const [nightsByDest, setNightsByDest] = useState<Record<string, number>>({});
   const [saving, setSaving] = useState(false);
   const [savedCode, setSavedCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -56,6 +57,19 @@ const Itinerarios = () => {
   const { toast } = useToast();
 
   const maxDestinations = selectedDuration ? Math.min(Math.floor(selectedDuration / 1.5), 8) : 4;
+  const totalNights = (selectedDuration || 1) - 1;
+
+  // Distribute nights proportionally when destinations or duration change
+  const distributeNights = (destSlugs: string[], nights: number) => {
+    if (destSlugs.length === 0) return {};
+    const base = Math.floor(nights / destSlugs.length);
+    const remainder = nights % destSlugs.length;
+    const result: Record<string, number> = {};
+    destSlugs.forEach((slug, i) => {
+      result[slug] = base + (i < remainder ? 1 : 0);
+    });
+    return result;
+  };
 
   const filteredDestinations = useMemo(() => {
     let filtered = destinations;
@@ -71,13 +85,48 @@ const Itinerarios = () => {
   );
 
   const toggleDestination = (slug: string) => {
-    setSelectedDestinations((prev) =>
-      prev.includes(slug)
+    setSelectedDestinations((prev) => {
+      const next = prev.includes(slug)
         ? prev.filter((s) => s !== slug)
         : prev.length < maxDestinations
         ? [...prev, slug]
-        : prev
-    );
+        : prev;
+      // Redistribute nights when destinations change
+      setNightsByDest(distributeNights(next, totalNights));
+      return next;
+    });
+  };
+
+  // Redistribute when duration changes
+  useMemo(() => {
+    if (selectedDestinations.length > 0) {
+      setNightsByDest(distributeNights(selectedDestinations, totalNights));
+    }
+  }, [selectedDuration]);
+
+  const adjustNights = (destSlug: string, delta: number) => {
+    setNightsByDest((prev) => {
+      const current = prev[destSlug] || 0;
+      const newVal = current + delta;
+      if (newVal < 0) return prev;
+
+      // Find another destination to take/give the night
+      const otherSlugs = selectedDestinations.filter((s) => s !== destSlug);
+      const otherWithCapacity = delta > 0
+        ? otherSlugs.find((s) => (prev[s] || 0) > 0)
+        : otherSlugs[0];
+
+      if (!otherWithCapacity) return prev;
+
+      const otherCurrent = prev[otherWithCapacity] || 0;
+      if (delta > 0 && otherCurrent <= 0) return prev;
+
+      return {
+        ...prev,
+        [destSlug]: newVal,
+        [otherWithCapacity]: otherCurrent - delta,
+      };
+    });
   };
 
   const setLodging = (destSlug: string, lodgingId: string) => {
@@ -97,9 +146,10 @@ const Itinerarios = () => {
   const totalCost = useMemo(() => {
     return selectedDests.reduce((total, dest) => {
       const lodging = lodgingOptions.find((l) => l.id === lodgingByDest[dest.slug]);
-      return total + (lodging?.pricePerNight || 0) * (selectedDuration || 1);
+      const nights = nightsByDest[dest.slug] || 0;
+      return total + (lodging?.pricePerNight || 0) * nights;
     }, 0);
-  }, [selectedDests, lodgingByDest, selectedDuration]);
+  }, [selectedDests, lodgingByDest, nightsByDest]);
 
   const saveItinerary = async () => {
     setSaving(true);
