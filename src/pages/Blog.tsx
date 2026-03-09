@@ -101,6 +101,24 @@ const Blog = () => {
     return results;
   }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy, selectedTag]);
 
+  // Reset visible count when filters change
+  const resetAndFilter = () => {
+    setVisibleCount(ARTICLES_PER_PAGE);
+  };
+
+  // Watch for filter changes and reset pagination
+  useMemo(() => {
+    resetAndFilter();
+  }, [selectedCategory, selectedTag, searchQuery, sortBy]);
+
+  const visibleArticles = filtered.slice(0, visibleCount);
+  const hasMoreArticles = visibleCount < filtered.length;
+  const allArticlesLoaded = visibleCount >= filtered.length && filtered.length > 0;
+
+  const loadMoreArticles = () => {
+    setVisibleCount((prev) => prev + ARTICLES_PER_PAGE);
+  };
+
   const scrollToAllArticles = () => {
     allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
   };
