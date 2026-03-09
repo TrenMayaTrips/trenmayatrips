@@ -1,8 +1,9 @@
 import { useState, useRef, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle } from "lucide-react";
+import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle, Search, MessageSquare } from "lucide-react";
 import { findRoute, routes as allRoutes, type Route } from "@/data/routes";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
