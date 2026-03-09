@@ -349,33 +349,8 @@ const VagonDetalle = () => {
           </div>
 
           <div className="max-w-4xl mx-auto space-y-6">
-            {/* Photo gallery */}
-            <div>
-              <div className="rounded-xl overflow-hidden border border-border mb-3">
-                <img
-                  src={wagon.galleryImages[activeGalleryIdx]}
-                  alt={`${wagon.name} - Foto ${activeGalleryIdx + 1}`}
-                  className="w-full h-56 md:h-96 object-cover"
-                />
-              </div>
-              {wagon.galleryImages.length > 1 && (
-                <div className="flex gap-2">
-                  {wagon.galleryImages.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveGalleryIdx(i)}
-                      className={`relative h-16 md:h-20 flex-1 rounded-lg overflow-hidden transition-all ${
-                        i === activeGalleryIdx
-                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                          : "opacity-60 hover:opacity-100"
-                      }`}
-                    >
-                      <img src={img} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            {/* Enhanced photo gallery */}
+            <WagonGallery images={wagon.galleryImages} wagonName={wagon.name} />
 
             {/* Video */}
             {wagon.videoUrl && (
