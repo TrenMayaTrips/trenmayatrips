@@ -38,8 +38,33 @@ const Blog = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
   const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const lastScrollY = useRef(0);
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Handle scroll collapse for mobile
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollingDown = currentScrollY > lastScrollY.current;
+      
+      // Only collapse after scrolling past 200px
+      if (currentScrollY > 200) {
+        setIsCollapsed(scrollingDown);
+      } else {
+        setIsCollapsed(false);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile]);
 
   // Calculate popular tags (top 10 most used)
   const popularTags = useMemo(() => {
