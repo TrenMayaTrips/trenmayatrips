@@ -529,38 +529,7 @@ const VagonDetalle = () => {
             <p className="section-label">Distribución</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Layout de asientos</h2>
           </div>
-
-          <div className="max-w-md mx-auto bg-card rounded-xl border border-border p-6">
-            <p className="text-xs text-muted-foreground text-center mb-4">← Frente del tren</p>
-            <div className="space-y-2">
-              {Array.from({ length: Math.min(6, Math.ceil(wagon.seats / 4)) }).map((_, row) => (
-                <div key={row} className="flex items-center justify-center gap-6">
-                  <div className="flex gap-1.5">
-                    <div className="w-8 h-6 rounded bg-primary/20 border border-primary/30" />
-                    <div className="w-8 h-6 rounded bg-primary/20 border border-primary/30" />
-                  </div>
-                  <div className="w-px h-6 bg-border" />
-                  <div className="flex gap-1.5">
-                    <div className="w-8 h-6 rounded bg-primary/20 border border-primary/30" />
-                    <div className="w-8 h-6 rounded bg-primary/20 border border-primary/30" />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <div className="w-4 h-3 rounded bg-primary/20 border border-primary/30" />
-                <span>Disponible</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-4 h-3 rounded bg-muted border border-border" />
-                <span>Ocupado</span>
-              </div>
-            </div>
-            <p className="text-center text-xs text-muted-foreground mt-3">
-              {wagon.seats} asientos · Configuración {wagon.config} · Ancho {wagon.seatWidth}
-            </p>
-          </div>
+          <SeatLayout seats={wagon.seats} config={wagon.config} seatWidth={wagon.seatWidth} />
         </div>
       </section>
 
