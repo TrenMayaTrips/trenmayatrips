@@ -6,6 +6,8 @@ import { blogPosts, blogCategories } from "@/data/blog";
 import { Button } from "@/components/ui/button";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
+import AuthorBox from "@/components/blog/AuthorBox";
+import { getAuthor } from "@/data/authors";
 import SEOHead from "@/components/seo/SEOHead";
 import ArticleTOC, { TOCItem } from "@/components/blog/ArticleTOC";
 import ArticleSidebarCTA from "@/components/blog/ArticleSidebarCTA";
