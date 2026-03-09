@@ -13,6 +13,12 @@ import AdPlaceholder from "@/components/blog/AdPlaceholder";
 import SidebarNewsletter from "@/components/blog/SidebarNewsletter";
 import SidebarPopularPosts from "@/components/blog/SidebarPopularPosts";
 import MobileStickyBooking from "@/components/blog/MobileStickyBooking";
+import {
+  getArticleContext,
+  InlineRouteCTA,
+  InlineExperienceCTA,
+  PostArticleCTA,
+} from "@/components/blog/InlineArticleCTAs";
 
 /** Convert heading text to a URL-friendly id */
 function slugify(text: string): string {
