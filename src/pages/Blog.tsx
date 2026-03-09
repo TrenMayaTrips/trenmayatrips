@@ -486,12 +486,17 @@ const Blog = () => {
                         </div>
                         <div className="flex flex-wrap gap-1.5 mt-3">
                           {post.tags.slice(0, 3).map((tag) => (
-                            <span
+                            <button
                               key={tag}
-                              className="px-2 py-0.5 bg-secondary text-foreground text-[10px] rounded-full"
+                              onClick={(e) => handleTagClick(tag, e)}
+                              className={`px-2 py-0.5 text-[10px] rounded-full transition-all duration-200 cursor-pointer ${
+                                selectedTag === tag
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
+                              }`}
                             >
                               {tag}
-                            </span>
+                            </button>
                           ))}
                         </div>
                       </div>
