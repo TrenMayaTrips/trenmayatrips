@@ -332,9 +332,9 @@ const RutaDetalle = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
             {([
-              { key: "xiinbal" as const, name: "Xiinbal", meaning: "Caminar", type: "Estándar", slug: "xiinbal" },
-              { key: "janal" as const, name: "Janal", meaning: "Comer", type: "Restaurante", slug: "janal" },
-              { key: "patal" as const, name: "P'atal", meaning: "Quedarse", type: "Cama", slug: "patal" },
+              { key: "xiinbal" as const, name: "Xiinbal", meaning: "Caminar", type: "Estándar", slug: "xiinbal", benefits: "Asientos reclinables, A/C" },
+              { key: "janal" as const, name: "Janal", meaning: "Comer", type: "Restaurante", slug: "janal", benefits: "Comida incluida, WiFi" },
+              { key: "patal" as const, name: "P'atal", meaning: "Quedarse", type: "Cama", slug: "patal", benefits: "Cama privada, amenidades premium" },
             ]).map((cls, i) => (
               <motion.div
                 key={cls.key}
@@ -342,24 +342,43 @@ const RutaDetalle = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`bg-card rounded-xl border overflow-hidden ${
+                className={`bg-card rounded-xl border overflow-hidden flex flex-col ${
                   i === 1 ? "border-primary ring-2 ring-primary/20 shadow-lg" : "border-border"
                 }`}
               >
                 {i === 1 && (
                   <div className="bg-primary text-primary-foreground text-xs font-semibold text-center py-1.5">⭐ Más popular</div>
                 )}
-                <div className="p-5 md:p-6 text-center">
+                <div className="p-5 md:p-6 text-center flex-1 flex flex-col">
                   <p className="text-xs text-accent font-medium uppercase tracking-wider">{cls.type}</p>
                   <h3 className="font-heading text-xl font-bold text-foreground mt-1">{cls.name}</h3>
                   <p className="text-xs text-muted-foreground italic">"{cls.meaning}"</p>
+                  {i === 1 && (
+                    <span className="inline-block mx-auto mt-2 text-[10px] bg-accent/15 text-accent font-semibold px-2 py-0.5 rounded-full">
+                      Mejor relación calidad-precio
+                    </span>
+                  )}
                   <p className="font-heading text-3xl font-bold text-foreground mt-4">
                     ${route.prices[cls.key].toLocaleString()}
                     <span className="text-sm font-normal text-muted-foreground ml-1">MXN</span>
                   </p>
-                  <Link to={`/tren-maya/clases/${cls.slug}`} className="inline-block mt-4 text-sm text-primary font-medium hover:underline">
-                    Ver detalles de clase →
-                  </Link>
+                  <p className="text-xs text-muted-foreground mt-2">{cls.benefits}</p>
+                  
+                  <div className="mt-auto pt-4 space-y-2">
+                    <Link
+                      to={`/contacto?ruta=${encodeURIComponent(`${route.origin} → ${route.destination}`)}&clase=${cls.slug}`}
+                      className="block w-full py-3 rounded-lg font-semibold text-sm text-white transition-all hover:brightness-110"
+                      style={{ backgroundColor: "#D4A853", minHeight: "48px" }}
+                    >
+                      Reservar {cls.name}
+                    </Link>
+                    <Link 
+                      to={`/tren-maya/clases/${cls.slug}`} 
+                      className="block text-sm text-primary font-medium hover:underline py-1"
+                    >
+                      Ver detalles de clase →
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             ))}
