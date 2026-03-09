@@ -184,8 +184,13 @@ const Itinerarios = () => {
       </section>
 
       {/* Stepper */}
-      <section className="bg-card border-b border-border sticky top-16 md:top-20 z-30">
+      <section className="bg-card border-b border-border sticky top-16 md:top-20 z-30 shadow-sm">
         <div className="container mx-auto px-4 py-4">
+          {/* "Paso X de 5" — mobile only */}
+          <p className="text-center text-sm text-muted-foreground mb-3 sm:hidden">
+            Paso <span className="font-semibold text-foreground">{currentStep}</span> de {steps.length}
+          </p>
+
           <div className="flex items-center justify-between max-w-2xl mx-auto mb-3">
             {steps.map((step) => {
               const Icon = step.icon;
@@ -214,9 +219,16 @@ const Itinerarios = () => {
                         : "border-muted"
                     }`}
                   >
-                    <Icon size={18} />
+                    {isDone ? <Check size={18} /> : <Icon size={18} />}
                   </div>
-                  <span className="text-xs font-medium hidden sm:block">{step.label}</span>
+                  {/* Desktop: always show label. Mobile: only active step */}
+                  <span
+                    className={`text-[11px] sm:text-xs font-semibold sm:font-medium ${
+                      isActive ? "block text-primary" : "hidden sm:block"
+                    }`}
+                  >
+                    {step.label}
+                  </span>
                 </button>
               );
             })}
