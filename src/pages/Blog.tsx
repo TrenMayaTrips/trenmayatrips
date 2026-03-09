@@ -189,6 +189,9 @@ const Blog = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                             <div className="relative z-10 p-6 flex flex-col justify-end min-h-[200px]">
+                              <p className="text-sm text-white/90 font-medium mb-2">
+                                {formatDate(post.publishedAt)}
+                              </p>
                               <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
                                 ⭐ {category?.label}
                               </span>
