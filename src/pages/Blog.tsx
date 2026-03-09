@@ -30,11 +30,14 @@ const formatDate = (dateStr: string): string => {
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 };
 
+const ARTICLES_PER_PAGE = 6;
+
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
+  const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
   const allArticlesRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -97,6 +100,24 @@ const Blog = () => {
     
     return results;
   }, [selectedCategory, searchQuery, nonFeaturedPosts, sortBy, selectedTag]);
+
+  // Reset visible count when filters change
+  const resetAndFilter = () => {
+    setVisibleCount(ARTICLES_PER_PAGE);
+  };
+
+  // Watch for filter changes and reset pagination
+  useMemo(() => {
+    resetAndFilter();
+  }, [selectedCategory, selectedTag, searchQuery, sortBy]);
+
+  const visibleArticles = filtered.slice(0, visibleCount);
+  const hasMoreArticles = visibleCount < filtered.length;
+  const allArticlesLoaded = visibleCount >= filtered.length && filtered.length > 0;
+
+  const loadMoreArticles = () => {
+    setVisibleCount((prev) => prev + ARTICLES_PER_PAGE);
+  };
 
   const scrollToAllArticles = () => {
     allArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -440,71 +461,96 @@ const Blog = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((post, i) => {
-                const category = blogCategories.find(
-                  (c) => c.slug === post.category
-                );
-                return (
-                  <motion.div
-                    key={post.slug}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.04 }}
-                  >
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all h-full"
+            <>
+              {/* Articles counter */}
+              <p className="text-sm text-muted-foreground mb-6 text-center">
+                Mostrando {visibleArticles.length} de {filtered.length} artículo{filtered.length !== 1 ? "s" : ""}
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {visibleArticles.map((post, i) => {
+                  const category = blogCategories.find(
+                    (c) => c.slug === post.category
+                  );
+                  // Only animate newly loaded articles
+                  const isNewlyLoaded = i >= visibleCount - ARTICLES_PER_PAGE;
+                  return (
+                    <motion.div
+                      key={post.slug}
+                      initial={isNewlyLoaded ? { opacity: 0, y: 20 } : false}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: isNewlyLoaded ? (i % ARTICLES_PER_PAGE) * 0.05 : 0 }}
                     >
-                      <div className="relative min-h-[160px] overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          loading="lazy"
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                        <div className="relative z-10 p-6 flex flex-col justify-end min-h-[160px]">
-                          <span className="text-xs font-medium text-white/80 mb-2">
-                            {category?.emoji} {category?.label}
-                          </span>
-                          <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors line-clamp-2">
-                            {post.title}
-                          </h3>
+                      <Link
+                        to={`/blog/${post.slug}`}
+                        className="block group rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all h-full"
+                      >
+                        <div className="relative min-h-[160px] overflow-hidden">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          <div className="relative z-10 p-6 flex flex-col justify-end min-h-[160px]">
+                            <span className="text-xs font-medium text-white/80 mb-2">
+                              {category?.emoji} {category?.label}
+                            </span>
+                            <h3 className="font-heading text-lg font-bold text-white leading-snug group-hover:text-gold transition-colors line-clamp-2">
+                              {post.title}
+                            </h3>
+                          </div>
                         </div>
-                      </div>
-                      <div className="p-5">
-                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
-                          <span>{post.author}</span>
-                          <span>·</span>
-                          <span>{formatDate(post.publishedAt)}</span>
-                          <span>·</span>
-                          <span>{post.readTime} min lectura</span>
+                        <div className="p-5">
+                          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                            {post.excerpt}
+                          </p>
+                          <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[13px] text-muted-foreground">
+                            <span>{post.author}</span>
+                            <span>·</span>
+                            <span>{formatDate(post.publishedAt)}</span>
+                            <span>·</span>
+                            <span>{post.readTime} min lectura</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5 mt-3">
+                            {post.tags.slice(0, 3).map((tag) => (
+                              <button
+                                key={tag}
+                                onClick={(e) => handleTagClick(tag, e)}
+                                className={`px-2 py-0.5 text-[10px] rounded-full transition-all duration-200 cursor-pointer ${
+                                  selectedTag === tag
+                                    ? "bg-primary text-primary-foreground"
+                                    : "bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                        <div className="flex flex-wrap gap-1.5 mt-3">
-                          {post.tags.slice(0, 3).map((tag) => (
-                            <button
-                              key={tag}
-                              onClick={(e) => handleTagClick(tag, e)}
-                              className={`px-2 py-0.5 text-[10px] rounded-full transition-all duration-200 cursor-pointer ${
-                                selectedTag === tag
-                                  ? "bg-primary text-primary-foreground"
-                                  : "bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
-                              }`}
-                            >
-                              {tag}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Load More / All Loaded */}
+              <div className="mt-10 text-center">
+                {hasMoreArticles ? (
+                  <button
+                    onClick={loadMoreArticles}
+                    className="px-6 py-3 rounded-lg border-2 border-primary text-primary font-medium text-sm hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                  >
+                    Cargar más artículos
+                  </button>
+                ) : allArticlesLoaded ? (
+                  <p className="text-muted-foreground text-sm">
+                    Has visto todos los artículos 🎉
+                  </p>
+                ) : null}
+              </div>
+            </>
           )}
         </div>
       </section>
