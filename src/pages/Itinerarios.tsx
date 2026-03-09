@@ -508,9 +508,30 @@ const Itinerarios = () => {
                     const currentLodging = lodgingByDest[dest.slug];
                     return (
                       <Card key={dest.slug} className="overflow-hidden">
-                        <div className="bg-muted/50 px-5 py-3 border-b border-border flex items-center gap-2">
-                          <span className="text-xl">{dest.emoji}</span>
-                          <h3 className="font-heading font-semibold text-foreground">{dest.name}</h3>
+                        <div className="bg-muted/50 px-5 py-3 border-b border-border flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{dest.emoji}</span>
+                            <h3 className="font-heading font-semibold text-foreground">{dest.name}</h3>
+                          </div>
+                          {/* Nights adjuster */}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => adjustNights(dest.slug, -1)}
+                              disabled={(nightsByDest[dest.slug] || 0) <= 0}
+                              className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-secondary disabled:opacity-30 transition-colors"
+                            >
+                              <Minus size={14} />
+                            </button>
+                            <span className="font-heading font-bold text-foreground min-w-[60px] text-center text-sm">
+                              {nightsByDest[dest.slug] || 0} {(nightsByDest[dest.slug] || 0) === 1 ? "noche" : "noches"}
+                            </span>
+                            <button
+                              onClick={() => adjustNights(dest.slug, 1)}
+                              className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-secondary disabled:opacity-30 transition-colors"
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
                         </div>
                         <CardContent className="p-4">
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
