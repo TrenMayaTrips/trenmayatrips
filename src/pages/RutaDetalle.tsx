@@ -12,7 +12,7 @@ import { useState } from "react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import RutaDestinos from "@/components/routes/RutaDestinos";
-import RutaMiniMap from "@/components/routes/RutaMiniMap";
+import RutaInteractiveMap from "@/components/routes/RutaInteractiveMap";
 import RutaTips from "@/components/routes/RutaTips";
 
 const routeFaqs: Record<string, { q: string; a: string }[]> = {
