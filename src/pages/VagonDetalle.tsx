@@ -52,6 +52,23 @@ const VagonDetalle = () => {
           <p className="mt-4 font-heading text-2xl md:text-3xl font-bold text-white">
             ${wagon.priceBase.toLocaleString()} <span className="text-base font-normal text-white/70">MXN / tramo</span>
           </p>
+
+          {/* CTA buttons */}
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <Link
+              to="/contacto"
+              className="inline-block px-8 py-3 rounded-lg font-bold text-sm transition-colors"
+              style={{ backgroundColor: '#D4A853', color: '#2D4A3E' }}
+            >
+              Reservar desde ${wagon.priceBase.toLocaleString()} MXN
+            </Link>
+            <button
+              onClick={() => document.getElementById('comparativa-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-white/70 hover:text-white text-sm transition-colors"
+            >
+              O compara las 3 clases ↓
+            </button>
+          </div>
         </motion.div>
       </ParallaxHero>
 
@@ -206,7 +223,7 @@ const VagonDetalle = () => {
       </section>
 
       {/* Comparison */}
-      <section className="py-10 md:py-16 bg-secondary/50">
+      <section id="comparativa-section" className="py-10 md:py-16 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <p className="section-label">Comparativa</p>
