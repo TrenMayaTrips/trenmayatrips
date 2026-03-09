@@ -131,7 +131,7 @@ const ArticleTOC = ({ items }: ArticleTOCProps) => {
       <div className="md:hidden">
         <button
           onClick={() => setDrawerOpen(true)}
-          className="fixed bottom-24 left-4 z-40 flex items-center gap-1.5 bg-card border border-border shadow-lg rounded-full px-4 py-2.5 text-sm font-medium text-foreground"
+          className="fixed bottom-32 left-4 z-50 flex items-center gap-1.5 bg-card border border-border shadow-lg rounded-full px-4 py-2.5 text-sm font-medium text-foreground"
           aria-label="Abrir índice"
         >
           <List size={16} className="text-primary" />
