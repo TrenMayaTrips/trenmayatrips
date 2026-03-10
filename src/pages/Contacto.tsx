@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import GrecaDivider from "@/components/maya/GrecaDivider";
+import ContactFAQ, { faqSchemaData } from "@/components/contacto/ContactFAQ";
 import { z } from "zod";
 
 const contactSchema = z.object({
