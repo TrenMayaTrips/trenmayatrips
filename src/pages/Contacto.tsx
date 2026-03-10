@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import GrecaDivider from "@/components/maya/GrecaDivider";
+import ContactFAQ, { faqSchemaData } from "@/components/contacto/ContactFAQ";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -375,45 +376,62 @@ const Contacto = () => {
         </div>
       </section>
 
+      <GrecaDivider variant="jade" size="sm" />
+      <ContactFAQ />
+
       <SEOHead
         title="Contacto — Tren Maya Trips"
         description="Contáctanos para planificar tu viaje en el Tren Maya. Teléfono, email, WhatsApp y ubicación en Cancún, Quintana Roo."
         canonical="https://trenmayatrips.com/contacto"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "name": "Tren Maya Trips",
-          "image": "https://trenmayatrips.com/logo-tmt.png",
-          "telephone": "+529982186754",
-          "email": "info@trenmayantrips.com",
-          "url": "https://trenmayatrips.com",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Av. Mallorca, Mz 31, Lt 84, Residencial Mallorca",
-            "addressLocality": "Benito Juárez",
-            "addressRegion": "Quintana Roo",
-            "addressCountry": "MX"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 21.1619,
-            "longitude": -86.8515
-          },
-          "openingHoursSpecification": [
-            {
-              "@type": "OpeningHoursSpecification",
-              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-              "opens": "09:00",
-              "closes": "18:00"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Tren Maya Trips",
+            image: "https://trenmayatrips.com/logo-tmt.png",
+            telephone: "+529982186754",
+            email: "info@trenmayantrips.com",
+            url: "https://trenmayatrips.com",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "Av. Mallorca, Mz 31, Lt 84, Residencial Mallorca",
+              addressLocality: "Benito Juárez",
+              addressRegion: "Quintana Roo",
+              addressCountry: "MX"
             },
-            {
-              "@type": "OpeningHoursSpecification",
-              "dayOfWeek": "Saturday",
-              "opens": "10:00",
-              "closes": "14:00"
-            }
-          ]
-        }}
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: 21.1619,
+              longitude: -86.8515
+            },
+            openingHoursSpecification: [
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                opens: "09:00",
+                closes: "18:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: "Saturday",
+                opens: "10:00",
+                closes: "14:00"
+              }
+            ]
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqSchemaData.map(item => ({
+              "@type": "Question",
+              name: item.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.answer
+              }
+            }))
+          }
+        ]}
       />
     </PageLayout>
   );
