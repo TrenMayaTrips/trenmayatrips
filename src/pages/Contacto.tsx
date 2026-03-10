@@ -376,6 +376,9 @@ const Contacto = () => {
         </div>
       </section>
 
+      <GrecaDivider variant="jade" size="sm" />
+      <ContactFAQ />
+
       <SEOHead
         title="Contacto — Tren Maya Trips"
         description="Contáctanos para planificar tu viaje en el Tren Maya. Teléfono, email, WhatsApp y ubicación en Cancún, Quintana Roo."
