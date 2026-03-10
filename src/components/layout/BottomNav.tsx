@@ -22,7 +22,6 @@ const BottomNav = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Show when scrolling up or near top, hide when scrolling down
       if (currentScrollY < lastScrollY || currentScrollY < 50) {
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 150) {
@@ -46,7 +45,7 @@ const BottomNav = () => {
           animate={{ y: 0 }}
           exit={{ y: 100 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom"
+          className="fixed bottom-0 left-0 right-0 z-[1100] bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom"
         >
           <div className="flex items-center justify-around h-16 px-2">
             {items.map(({ icon: Icon, label, href }) => {

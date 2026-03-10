@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation, MessageSquare, MessageCircle } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
@@ -39,6 +39,27 @@ const contactInfo = [
   { icon: Clock, label: "Horario", value: "Lun – Vie: 9:00 – 18:00\nSáb: 10:00 – 14:00" }
 ];
 
+const contactChannels = [
+  {
+    icon: MessageSquare,
+    title: "Envíanos un mensaje",
+    subtitle: "Respuesta en 24h",
+    action: "scroll",
+  },
+  {
+    icon: MessageCircle,
+    title: "Escríbenos por WhatsApp",
+    subtitle: "Respuesta inmediata",
+    action: "https://wa.me/529982186754?text=Hola%2C%20me%20interesa%20un%20viaje%20en%20el%20Tren%20Maya",
+  },
+  {
+    icon: Phone,
+    title: "Llámanos",
+    subtitle: "Lun–Vie 9–18h",
+    action: "tel:+529982186754",
+  },
+];
+
 const Contacto = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,11 +72,10 @@ const Contacto = () => {
   const [honeypot, setHoneypot] = useState("");
 
   const validateField = useCallback((field: FieldKey, value: unknown): string | undefined => {
-    const partial = { ...form, [field]: value };
     const fieldSchema = contactSchema.shape[field];
     const result = fieldSchema.safeParse(value);
     return result.success ? undefined : result.error.errors[0]?.message;
-  }, [form]);
+  }, []);
 
   const isFieldValid = useCallback((field: FieldKey): boolean => {
     const value = form[field];
@@ -81,11 +101,8 @@ const Contacto = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Honeypot check
     if (honeypot) return;
 
-    // Mark all touched
     const allTouched: Partial<Record<FieldKey, boolean>> = {};
     (["name", "email", "topic", "subject", "message"] as FieldKey[]).forEach(f => { allTouched[f] = true; });
     setTouched(allTouched);
@@ -129,6 +146,10 @@ const Contacto = () => {
       <Check size={16} className="text-[hsl(var(--jade))] absolute right-3 top-1/2 -translate-y-1/2" />
     ) : null;
 
+  const scrollToForm = () => {
+    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <PageLayout>
       <ParallaxHero imageSrc={heroTrenMaya} imageAlt="Contacto Tren Maya">
@@ -142,6 +163,53 @@ const Contacto = () => {
       </ParallaxHero>
 
       <GrecaDivider variant="jade" size="md" />
+
+      {/* Channel Selector */}
+      <section className="py-10 md:py-14 bg-muted/30">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <h2 className="font-heading text-xl md:text-2xl font-bold text-foreground text-center mb-8">
+            Elige cómo contactarnos
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {contactChannels.map(({ icon: Icon, title, subtitle, action }) => {
+              const isWhatsApp = action.startsWith("https://wa.me");
+              const isPhone = action.startsWith("tel:");
+              const isScroll = action === "scroll";
+
+              const cardContent = (
+                <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl border border-border hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group">
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${
+                    isWhatsApp ? "bg-[#25D366]/10 text-[#25D366]" : "bg-primary/10 text-primary"
+                  }`}>
+                    <Icon size={28} strokeWidth={1.8} />
+                  </div>
+                  <p className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors">{title}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
+                </div>
+              );
+
+              if (isScroll) {
+                return (
+                  <button key={title} onClick={scrollToForm} className="text-left">
+                    {cardContent}
+                  </button>
+                );
+              }
+
+              return (
+                <a
+                  key={title}
+                  href={action}
+                  target={isWhatsApp ? "_blank" : undefined}
+                  rel={isWhatsApp ? "noopener noreferrer" : undefined}
+                >
+                  {cardContent}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
@@ -170,16 +238,6 @@ const Contacto = () => {
                   </div>
                 ))}
               </div>
-              <div className="pt-4">
-                <a
-                  href="https://wa.me/529982186754?text=Hola%2C%20me%20interesa%20un%20viaje%20en%20el%20Tren%20Maya"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[hsl(140,60%,40%)] text-white font-semibold rounded-lg hover:bg-[hsl(140,60%,35%)] transition-colors text-sm"
-                >
-                  💬 Escríbenos por WhatsApp
-                </a>
-              </div>
               {/* Google Maps */}
               <div className="pt-2">
                 <div className="rounded-xl overflow-hidden border border-border">
@@ -207,7 +265,7 @@ const Contacto = () => {
             </div>
 
             {/* Form / Success */}
-            <div className="lg:col-span-2">
+            <div id="contact-form" className="lg:col-span-2">
               {isSuccess ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
