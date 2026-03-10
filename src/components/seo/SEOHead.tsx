@@ -6,7 +6,7 @@ interface SEOHeadProps {
   image?: string;
   canonical?: string;
   type?: "website" | "article";
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const SEOHead = ({ title, description, image, canonical, type = "website", jsonLd }: SEOHeadProps) => {
