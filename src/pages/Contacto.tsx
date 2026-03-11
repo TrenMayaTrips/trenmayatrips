@@ -292,7 +292,7 @@ const Contacto = () => {
                   className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5"
                 >
                   <h2 className="font-heading text-2xl font-bold text-foreground mb-1">Envíanos un mensaje</h2>
-                  <p className="text-muted-foreground text-sm mb-4">Completa el formulario y te responderemos pronto.</p>
+                  <p className="text-muted-foreground text-sm mb-4">Completa el formulario y te responderemos en menos de 24 horas en días hábiles.</p>
 
                   {/* Honeypot */}
                   <div className="hidden" aria-hidden="true">
