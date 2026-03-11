@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation, MessageSquare, MessageCircle, ExternalLink } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
