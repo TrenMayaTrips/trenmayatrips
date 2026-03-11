@@ -241,6 +241,7 @@ const Contacto = () => {
                   </div>
                 ))}
               </div>
+              <MiniTestimonials />
               {/* Google Maps */}
               <div className="pt-2">
                 <div className="rounded-xl overflow-hidden border border-border">
