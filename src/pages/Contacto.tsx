@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation, MessageSquare, MessageCircle, ExternalLink } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
@@ -63,11 +63,11 @@ const contactChannels = [
   },
 ];
 
-const trackEvent = (event: string) => {
+const trackEvent = (event: string, params?: Record<string, unknown>) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const w = window as any;
-    if (typeof w.gtag === "function") w.gtag("event", event);
+    if (typeof w.gtag === "function") w.gtag("event", event, params);
   } catch { /* noop */ }
 };
 
@@ -106,6 +106,30 @@ const Contacto = () => {
   const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
   const [honeypot, setHoneypot] = useState("");
 
+  // Tracking refs
+  const formStarted = useRef(false);
+  const formStartTime = useRef<number>(0);
+
+  // Track form_start on first interaction
+  const trackFormStart = useCallback(() => {
+    if (!formStarted.current) {
+      formStarted.current = true;
+      formStartTime.current = Date.now();
+      trackEvent("form_start");
+    }
+  }, []);
+
+  // Track form_abandon on page leave
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (formStarted.current && !isSuccess) {
+        trackEvent("form_abandon");
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isSuccess]);
+
   const validateField = useCallback((field: FieldKey, value: unknown): string | undefined => {
     const fieldSchema = contactSchema.shape[field];
     const result = fieldSchema.safeParse(value);
@@ -121,6 +145,7 @@ const Contacto = () => {
   const allValid = (["name", "email", "topic", "subject", "message"] as FieldKey[]).every(isFieldValid);
 
   const handleChange = (field: FieldKey, value: string) => {
+    trackFormStart();
     setForm(prev => ({ ...prev, [field]: value }));
     if (touched[field]) {
       const error = validateField(field, value);
@@ -150,6 +175,7 @@ const Contacto = () => {
         fieldErrors[field] = err.message;
       });
       setErrors(fieldErrors);
+      trackEvent("form_error", { failed_fields: Object.keys(fieldErrors).join(",") });
       return;
     }
 
@@ -158,6 +184,11 @@ const Contacto = () => {
       const { error } = await supabase.functions.invoke("send-contact", { body: result.data });
       if (error) throw error;
       setIsSuccess(true);
+      trackEvent("form_submit", {
+        topic: result.data.topic,
+        message_length: result.data.message.length,
+        fill_time_seconds: Math.round((Date.now() - formStartTime.current) / 1000),
+      });
       toast({ title: "¡Mensaje enviado!", description: "Te responderemos lo antes posible." });
     } catch {
       toast({
@@ -196,6 +227,23 @@ const Contacto = () => {
           Estamos aquí para hacer de tu viaje en el Tren Maya una experiencia inolvidable.
         </p>
       </ParallaxHero>
+
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3">
+        <ol className="flex items-center gap-1.5 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <a href="/" itemProp="item" className="text-muted-foreground hover:text-primary transition-colors">
+              <span itemProp="name">Inicio</span>
+            </a>
+            <meta itemProp="position" content="1" />
+          </li>
+          <span className="text-border">&gt;</span>
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <span itemProp="name" className="text-foreground font-medium">Contacto</span>
+            <meta itemProp="position" content="2" />
+          </li>
+        </ol>
+      </nav>
 
       <GrecaDivider variant="jade" size="md" />
 
@@ -431,43 +479,57 @@ const Contacto = () => {
       <ContactFAQ />
 
       <SEOHead
-        title="Contacto — Tren Maya Trips"
-        description="Contáctanos para planificar tu viaje en el Tren Maya. Teléfono, email, WhatsApp y ubicación en Cancún, Quintana Roo."
+        title="Contacto | Tren Maya Trips — Platica con un Experto en Viajes"
+        description="Contáctanos por formulario, WhatsApp o teléfono. Nuestro equipo de expertos en el Tren Maya te asesora gratis. Respuesta en menos de 24h."
         canonical="https://trenmayatrips.com/contacto"
+        image="https://trenmayatrips.com/logo-tmt.png"
         jsonLd={[
           {
             "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            name: "Tren Maya Trips",
-            image: "https://trenmayatrips.com/logo-tmt.png",
-            telephone: "+529982186754",
-            email: "info@trenmayantrips.com",
-            url: "https://trenmayatrips.com",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Av. Mallorca, Mz 31, Lt 84, Residencial Mallorca",
-              addressLocality: "Benito Juárez",
-              addressRegion: "Quintana Roo",
-              addressCountry: "MX"
-            },
-            geo: {
-              "@type": "GeoCoordinates",
-              latitude: 21.1619,
-              longitude: -86.8515
-            },
-            openingHoursSpecification: [
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                opens: "09:00",
-                closes: "18:00"
+            "@type": "ContactPage",
+            name: "Contacto — Tren Maya Trips",
+            url: "https://trenmayatrips.com/contacto",
+            mainEntity: {
+              "@type": "LocalBusiness",
+              name: "Tren Maya Trips",
+              image: "https://trenmayatrips.com/logo-tmt.png",
+              telephone: "+529982186754",
+              email: "info@trenmayatrips.com",
+              url: "https://trenmayatrips.com",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Av. Mallorca, Mz 31, Lt 84, Residencial Mallorca",
+                addressLocality: "Benito Juárez",
+                addressRegion: "Quintana Roo",
+                addressCountry: "MX"
               },
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: "Saturday",
-                opens: "10:00",
-                closes: "14:00"
-              }
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: 21.1619,
+                longitude: -86.8515
+              },
+              openingHoursSpecification: [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                  opens: "09:00",
+                  closes: "18:00"
+                },
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: "Saturday",
+                  opens: "10:00",
+                  closes: "14:00"
+                }
+              ]
+            }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Inicio", item: "https://trenmayatrips.com/" },
+              { "@type": "ListItem", position: 2, name: "Contacto", item: "https://trenmayatrips.com/contacto" }
             ]
           },
           {
