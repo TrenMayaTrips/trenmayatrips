@@ -272,7 +272,7 @@ const Contacto = () => {
                           href={href}
                           target={external ? "_blank" : undefined}
                           rel={external ? "noopener noreferrer" : undefined}
-                          onClick={() => track && typeof window.gtag === "function" && window.gtag("event", track)}
+                          onClick={() => track && trackEvent(track)}
                           className="text-sm text-foreground hover:text-primary hover:underline underline-offset-2 transition-colors whitespace-pre-line inline-flex items-center gap-1"
                         >
                           {value}
