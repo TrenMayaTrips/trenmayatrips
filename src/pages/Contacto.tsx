@@ -64,9 +64,11 @@ const contactChannels = [
 ];
 
 const trackEvent = (event: string) => {
-  if (typeof window !== "undefined" && "gtag" in window) {
-    (window as Record<string, unknown>).gtag?.("event", event);
-  }
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w = window as any;
+    if (typeof w.gtag === "function") w.gtag("event", event);
+  } catch { /* noop */ }
 };
 
 const isOpenNow = (): boolean => {
