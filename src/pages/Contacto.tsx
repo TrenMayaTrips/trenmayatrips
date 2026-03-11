@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation, MessageSquare, MessageCircle } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Clock, CheckCircle, Loader2, Check, Navigation, MessageSquare, MessageCircle, ExternalLink } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
@@ -36,9 +36,9 @@ const topicLabels: Record<string, string> = {
 };
 
 const contactInfo = [
-  { icon: Phone, label: "Teléfono", value: "(52) 998 218 6754", href: "tel:+529982186754" },
-  { icon: Mail, label: "Email", value: "info@trenmayantrips.com", href: "mailto:info@trenmayantrips.com" },
-  { icon: MapPin, label: "Dirección", value: "Av. Mallorca, Residencial Mallorca, Benito Juárez, Quintana Roo" },
+  { icon: Phone, label: "Teléfono", value: "(52) 998 218 6754", href: "tel:+529982186754", track: "contact_phone_click" },
+  { icon: Mail, label: "Email", value: "info@trenmayatrips.com", href: "mailto:info@trenmayatrips.com?subject=Consulta%20desde%20el%20sitio%20web", track: "contact_email_click" },
+  { icon: MapPin, label: "Dirección", value: "Av. Mallorca, Residencial Mallorca, Benito Juárez, Quintana Roo", href: "https://www.google.com/maps/search/?api=1&query=21.1619,-86.8515&query_place_id=ChIJ72X2rgkrTI8RqZqEUeL6h8k", track: "contact_directions_click", external: true },
   { icon: Clock, label: "Horario", value: "Lun – Vie: 9:00 – 18:00\nSáb: 10:00 – 14:00" }
 ];
 
@@ -62,6 +62,38 @@ const contactChannels = [
     action: "tel:+529982186754",
   },
 ];
+
+const trackEvent = (event: string) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w = window as any;
+    if (typeof w.gtag === "function") w.gtag("event", event);
+  } catch { /* noop */ }
+};
+
+const isOpenNow = (): boolean => {
+  const now = new Date();
+  // Cancún is UTC-5 (no DST)
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const cancun = new Date(utc - 5 * 3600000);
+  const day = cancun.getDay(); // 0=Sun
+  const h = cancun.getHours();
+  const m = cancun.getMinutes();
+  const time = h * 60 + m;
+  if (day >= 1 && day <= 5) return time >= 540 && time < 1080; // 9:00–18:00
+  if (day === 6) return time >= 600 && time < 840; // 10:00–14:00
+  return false;
+};
+
+const OpenNowBadge = () => {
+  const open = useMemo(() => isOpenNow(), []);
+  return (
+    <span className={`inline-flex items-center gap-1.5 mt-1.5 text-xs font-medium ${open ? "text-[hsl(var(--jade))]" : "text-destructive"}`}>
+      <span className={`w-2 h-2 rounded-full ${open ? "bg-[hsl(var(--jade))] animate-pulse" : "bg-destructive"}`} />
+      {open ? "Abierto ahora" : "Cerrado ahora"}
+    </span>
+  );
+};
 
 const Contacto = () => {
   const { toast } = useToast();
@@ -225,15 +257,29 @@ const Contacto = () => {
                 Nuestro equipo de expertos en viajes está listo para asesorarte personalmente.
               </p>
               <div className="space-y-5 pt-2">
-                {contactInfo.map(({ icon: Icon, label, value, href }) => (
+                {contactInfo.map(({ icon: Icon, label, value, href, track, external }) => (
                   <div key={label} className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Icon size={18} className="text-primary" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</p>
-                      {href ? (
-                        <a href={href} className="text-sm text-foreground hover:text-primary transition-colors whitespace-pre-line">{value}</a>
+                      {label === "Horario" ? (
+                        <div>
+                          <p className="text-sm text-foreground whitespace-pre-line">{value}</p>
+                          <OpenNowBadge />
+                        </div>
+                      ) : href ? (
+                        <a
+                          href={href}
+                          target={external ? "_blank" : undefined}
+                          rel={external ? "noopener noreferrer" : undefined}
+                          onClick={() => track && trackEvent(track)}
+                          className="text-sm text-foreground hover:text-primary hover:underline underline-offset-2 transition-colors whitespace-pre-line inline-flex items-center gap-1"
+                        >
+                          {value}
+                          {external && <ExternalLink size={12} className="opacity-50" />}
+                        </a>
                       ) : (
                         <p className="text-sm text-foreground whitespace-pre-line">{value}</p>
                       )}
