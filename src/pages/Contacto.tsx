@@ -14,6 +14,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import ContactFAQ, { faqSchemaData } from "@/components/contacto/ContactFAQ";
+import TrustIndicators from "@/components/contacto/TrustIndicators";
+import MiniTestimonials from "@/components/contacto/MiniTestimonials";
 import { z } from "zod";
 
 const contactSchema = z.object({
