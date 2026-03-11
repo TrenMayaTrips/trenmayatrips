@@ -371,6 +371,8 @@ const Contacto = () => {
                       <><Send size={18} className="mr-2" />Enviar mensaje</>
                     )}
                   </Button>
+
+                  <TrustIndicators />
                 </motion.form>
               )}
             </div>
