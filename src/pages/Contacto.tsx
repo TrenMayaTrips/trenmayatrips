@@ -14,6 +14,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import ContactFAQ, { faqSchemaData } from "@/components/contacto/ContactFAQ";
+import TrustIndicators from "@/components/contacto/TrustIndicators";
+import MiniTestimonials from "@/components/contacto/MiniTestimonials";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -239,6 +241,7 @@ const Contacto = () => {
                   </div>
                 ))}
               </div>
+              <MiniTestimonials />
               {/* Google Maps */}
               <div className="pt-2">
                 <div className="rounded-xl overflow-hidden border border-border">
@@ -290,7 +293,7 @@ const Contacto = () => {
                   className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5"
                 >
                   <h2 className="font-heading text-2xl font-bold text-foreground mb-1">Envíanos un mensaje</h2>
-                  <p className="text-muted-foreground text-sm mb-4">Completa el formulario y te responderemos pronto.</p>
+                  <p className="text-muted-foreground text-sm mb-4">Completa el formulario y te responderemos en menos de 24 horas en días hábiles.</p>
 
                   {/* Honeypot */}
                   <div className="hidden" aria-hidden="true">
@@ -369,6 +372,8 @@ const Contacto = () => {
                       <><Send size={18} className="mr-2" />Enviar mensaje</>
                     )}
                   </Button>
+
+                  <TrustIndicators />
                 </motion.form>
               )}
             </div>
