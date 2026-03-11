@@ -175,6 +175,7 @@ const Contacto = () => {
         fieldErrors[field] = err.message;
       });
       setErrors(fieldErrors);
+      trackEvent("form_error", { failed_fields: Object.keys(fieldErrors).join(",") });
       return;
     }
 
