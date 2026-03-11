@@ -63,11 +63,11 @@ const contactChannels = [
   },
 ];
 
-const trackEvent = (event: string) => {
+const trackEvent = (event: string, params?: Record<string, unknown>) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const w = window as any;
-    if (typeof w.gtag === "function") w.gtag("event", event);
+    if (typeof w.gtag === "function") w.gtag("event", event, params);
   } catch { /* noop */ }
 };
 
