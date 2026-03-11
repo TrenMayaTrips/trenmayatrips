@@ -479,43 +479,57 @@ const Contacto = () => {
       <ContactFAQ />
 
       <SEOHead
-        title="Contacto — Tren Maya Trips"
-        description="Contáctanos para planificar tu viaje en el Tren Maya. Teléfono, email, WhatsApp y ubicación en Cancún, Quintana Roo."
+        title="Contacto | Tren Maya Trips — Platica con un Experto en Viajes"
+        description="Contáctanos por formulario, WhatsApp o teléfono. Nuestro equipo de expertos en el Tren Maya te asesora gratis. Respuesta en menos de 24h."
         canonical="https://trenmayatrips.com/contacto"
+        image="https://trenmayatrips.com/logo-tmt.png"
         jsonLd={[
           {
             "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            name: "Tren Maya Trips",
-            image: "https://trenmayatrips.com/logo-tmt.png",
-            telephone: "+529982186754",
-            email: "info@trenmayantrips.com",
-            url: "https://trenmayatrips.com",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Av. Mallorca, Mz 31, Lt 84, Residencial Mallorca",
-              addressLocality: "Benito Juárez",
-              addressRegion: "Quintana Roo",
-              addressCountry: "MX"
-            },
-            geo: {
-              "@type": "GeoCoordinates",
-              latitude: 21.1619,
-              longitude: -86.8515
-            },
-            openingHoursSpecification: [
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                opens: "09:00",
-                closes: "18:00"
+            "@type": "ContactPage",
+            name: "Contacto — Tren Maya Trips",
+            url: "https://trenmayatrips.com/contacto",
+            mainEntity: {
+              "@type": "LocalBusiness",
+              name: "Tren Maya Trips",
+              image: "https://trenmayatrips.com/logo-tmt.png",
+              telephone: "+529982186754",
+              email: "info@trenmayatrips.com",
+              url: "https://trenmayatrips.com",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Av. Mallorca, Mz 31, Lt 84, Residencial Mallorca",
+                addressLocality: "Benito Juárez",
+                addressRegion: "Quintana Roo",
+                addressCountry: "MX"
               },
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: "Saturday",
-                opens: "10:00",
-                closes: "14:00"
-              }
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: 21.1619,
+                longitude: -86.8515
+              },
+              openingHoursSpecification: [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                  opens: "09:00",
+                  closes: "18:00"
+                },
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: "Saturday",
+                  opens: "10:00",
+                  closes: "14:00"
+                }
+              ]
+            }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Inicio", item: "https://trenmayatrips.com/" },
+              { "@type": "ListItem", position: 2, name: "Contacto", item: "https://trenmayatrips.com/contacto" }
             ]
           },
           {
