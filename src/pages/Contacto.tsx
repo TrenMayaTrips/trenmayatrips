@@ -228,6 +228,23 @@ const Contacto = () => {
         </p>
       </ParallaxHero>
 
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3">
+        <ol className="flex items-center gap-1.5 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <a href="/" itemProp="item" className="text-muted-foreground hover:text-primary transition-colors">
+              <span itemProp="name">Inicio</span>
+            </a>
+            <meta itemProp="position" content="1" />
+          </li>
+          <span className="text-border">&gt;</span>
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <span itemProp="name" className="text-foreground font-medium">Contacto</span>
+            <meta itemProp="position" content="2" />
+          </li>
+        </ol>
+      </nav>
+
       <GrecaDivider variant="jade" size="md" />
 
       {/* Channel Selector */}
