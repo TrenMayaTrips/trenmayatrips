@@ -106,6 +106,30 @@ const Contacto = () => {
   const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
   const [honeypot, setHoneypot] = useState("");
 
+  // Tracking refs
+  const formStarted = useRef(false);
+  const formStartTime = useRef<number>(0);
+
+  // Track form_start on first interaction
+  const trackFormStart = useCallback(() => {
+    if (!formStarted.current) {
+      formStarted.current = true;
+      formStartTime.current = Date.now();
+      trackEvent("form_start");
+    }
+  }, []);
+
+  // Track form_abandon on page leave
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (formStarted.current && !isSuccess) {
+        trackEvent("form_abandon");
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isSuccess]);
+
   const validateField = useCallback((field: FieldKey, value: unknown): string | undefined => {
     const fieldSchema = contactSchema.shape[field];
     const result = fieldSchema.safeParse(value);
