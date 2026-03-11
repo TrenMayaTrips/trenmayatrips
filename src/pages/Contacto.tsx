@@ -36,9 +36,9 @@ const topicLabels: Record<string, string> = {
 };
 
 const contactInfo = [
-  { icon: Phone, label: "Teléfono", value: "(52) 998 218 6754", href: "tel:+529982186754" },
-  { icon: Mail, label: "Email", value: "info@trenmayantrips.com", href: "mailto:info@trenmayantrips.com" },
-  { icon: MapPin, label: "Dirección", value: "Av. Mallorca, Residencial Mallorca, Benito Juárez, Quintana Roo" },
+  { icon: Phone, label: "Teléfono", value: "(52) 998 218 6754", href: "tel:+529982186754", track: "contact_phone_click" },
+  { icon: Mail, label: "Email", value: "info@trenmayatrips.com", href: "mailto:info@trenmayatrips.com?subject=Consulta%20desde%20el%20sitio%20web", track: "contact_email_click" },
+  { icon: MapPin, label: "Dirección", value: "Av. Mallorca, Residencial Mallorca, Benito Juárez, Quintana Roo", href: "https://www.google.com/maps/search/?api=1&query=21.1619,-86.8515&query_place_id=ChIJ72X2rgkrTI8RqZqEUeL6h8k", track: "contact_directions_click", external: true },
   { icon: Clock, label: "Horario", value: "Lun – Vie: 9:00 – 18:00\nSáb: 10:00 – 14:00" }
 ];
 
