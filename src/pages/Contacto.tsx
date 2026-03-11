@@ -145,6 +145,7 @@ const Contacto = () => {
   const allValid = (["name", "email", "topic", "subject", "message"] as FieldKey[]).every(isFieldValid);
 
   const handleChange = (field: FieldKey, value: string) => {
+    trackFormStart();
     setForm(prev => ({ ...prev, [field]: value }));
     if (touched[field]) {
       const error = validateField(field, value);
