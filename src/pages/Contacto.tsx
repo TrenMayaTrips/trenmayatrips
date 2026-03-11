@@ -63,6 +63,36 @@ const contactChannels = [
   },
 ];
 
+const trackEvent = (event: string) => {
+  if (typeof window !== "undefined" && "gtag" in window) {
+    (window as Record<string, unknown>).gtag?.("event", event);
+  }
+};
+
+const isOpenNow = (): boolean => {
+  const now = new Date();
+  // Cancún is UTC-5 (no DST)
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const cancun = new Date(utc - 5 * 3600000);
+  const day = cancun.getDay(); // 0=Sun
+  const h = cancun.getHours();
+  const m = cancun.getMinutes();
+  const time = h * 60 + m;
+  if (day >= 1 && day <= 5) return time >= 540 && time < 1080; // 9:00–18:00
+  if (day === 6) return time >= 600 && time < 840; // 10:00–14:00
+  return false;
+};
+
+const OpenNowBadge = () => {
+  const open = useMemo(() => isOpenNow(), []);
+  return (
+    <span className={`inline-flex items-center gap-1.5 mt-1.5 text-xs font-medium ${open ? "text-[hsl(var(--jade))]" : "text-destructive"}`}>
+      <span className={`w-2 h-2 rounded-full ${open ? "bg-[hsl(var(--jade))] animate-pulse" : "bg-destructive"}`} />
+      {open ? "Abierto ahora" : "Cerrado ahora"}
+    </span>
+  );
+};
+
 const Contacto = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
