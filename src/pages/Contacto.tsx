@@ -184,6 +184,11 @@ const Contacto = () => {
       const { error } = await supabase.functions.invoke("send-contact", { body: result.data });
       if (error) throw error;
       setIsSuccess(true);
+      trackEvent("form_submit", {
+        topic: result.data.topic,
+        message_length: result.data.message.length,
+        fill_time_seconds: Math.round((Date.now() - formStartTime.current) / 1000),
+      });
       toast({ title: "¡Mensaje enviado!", description: "Te responderemos lo antes posible." });
     } catch {
       toast({
