@@ -225,15 +225,29 @@ const Contacto = () => {
                 Nuestro equipo de expertos en viajes está listo para asesorarte personalmente.
               </p>
               <div className="space-y-5 pt-2">
-                {contactInfo.map(({ icon: Icon, label, value, href }) => (
+                {contactInfo.map(({ icon: Icon, label, value, href, track, external }) => (
                   <div key={label} className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Icon size={18} className="text-primary" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</p>
-                      {href ? (
-                        <a href={href} className="text-sm text-foreground hover:text-primary transition-colors whitespace-pre-line">{value}</a>
+                      {label === "Horario" ? (
+                        <div>
+                          <p className="text-sm text-foreground whitespace-pre-line">{value}</p>
+                          <OpenNowBadge />
+                        </div>
+                      ) : href ? (
+                        <a
+                          href={href}
+                          target={external ? "_blank" : undefined}
+                          rel={external ? "noopener noreferrer" : undefined}
+                          onClick={() => track && typeof window.gtag === "function" && window.gtag("event", track)}
+                          className="text-sm text-foreground hover:text-primary hover:underline underline-offset-2 transition-colors whitespace-pre-line inline-flex items-center gap-1"
+                        >
+                          {value}
+                          {external && <ExternalLink size={12} className="opacity-50" />}
+                        </a>
                       ) : (
                         <p className="text-sm text-foreground whitespace-pre-line">{value}</p>
                       )}
