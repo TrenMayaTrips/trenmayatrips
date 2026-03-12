@@ -22,7 +22,7 @@ const ArticleSidebarCTA = ({ postSlug }: ArticleSidebarCTAProps) => {
   const cta = ctaMap[postSlug] || defaultCta;
 
   return (
-    <div className="rounded-xl bg-[hsl(160,30%,26%)] p-5 text-white">
+    <div className="rounded-xl bg-jade-dark p-5 text-primary-foreground">
       <div className="flex items-center gap-2 mb-3">
         <Train size={18} className="text-gold" />
         <span className="text-xs font-medium text-gold uppercase tracking-wider">Tren Maya</span>
