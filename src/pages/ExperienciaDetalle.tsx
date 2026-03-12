@@ -14,6 +14,7 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import VideoModule from "@/components/ui/VideoModule";
 import MobileStickyBookingBar from "@/components/experiences/MobileStickyBookingBar";
+import ItineraryTimeline from "@/components/experiences/ItineraryTimeline";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
@@ -155,20 +156,7 @@ const ExperienciaDetalle = () => {
                 )}
 
                 {activeTab === "Itinerario" && (
-                  <div className="space-y-0">
-                    {exp.itinerary.map((item, i) => (
-                      <div key={i} className="flex gap-4 relative">
-                        <div className="flex flex-col items-center">
-                          <div className="w-3 h-3 rounded-full bg-primary shrink-0 mt-1.5" />
-                          {i < exp.itinerary.length - 1 && <div className="w-0.5 flex-1 bg-border" />}
-                        </div>
-                        <div className="pb-6">
-                          <p className="text-xs font-semibold text-primary">{item.time}</p>
-                          <p className="text-sm text-foreground mt-0.5">{item.activity}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <ItineraryTimeline itinerary={exp.itinerary} slug={exp.slug} />
                 )}
 
                 {activeTab === "Incluye" && (
