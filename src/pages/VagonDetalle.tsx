@@ -432,8 +432,7 @@ const VagonDetalle = () => {
           <div className="mt-6 flex flex-col items-center gap-3">
             <Link
               to="/contacto"
-              className="inline-block px-8 py-3 rounded-lg font-bold text-sm transition-colors"
-              style={{ backgroundColor: '#D4A853', color: '#2D4A3E' }}
+               className="inline-block px-8 py-3 rounded-lg font-bold text-sm transition-colors bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Reservar desde ${wagon.priceBase.toLocaleString()} MXN
             </Link>
