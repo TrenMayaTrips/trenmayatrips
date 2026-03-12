@@ -234,7 +234,11 @@ const ExperienciaDetalle = () => {
         </div>
       </section>
 
+      {/* Mobile sticky booking bar */}
+      <MobileStickyBookingBar price={exp.price} />
+
       {/* Related */}
+      <div ref={relatedRef}>
       {relatedExps.length > 0 && (
         <section className="py-10 md:py-14 bg-secondary">
           <div className="container mx-auto px-4">
