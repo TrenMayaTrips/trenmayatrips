@@ -98,7 +98,7 @@ const ExperienciaDetalle = () => {
             <span className="flex items-center gap-1"><Clock size={14} /> {exp.duration}</span>
             <span className="flex items-center gap-1"><Users size={14} /> {exp.groupSize}</span>
             <span className="flex items-center gap-1"><MapPin size={14} /> {exp.stateName}</span>
-            <span className="flex items-center gap-1 text-gold"><Star size={14} fill="currentColor" /> {exp.rating} ({exp.reviews} reseñas)</span>
+            <a href="#resenas" className="flex items-center gap-1 text-gold hover:underline cursor-pointer"><Star size={14} fill="currentColor" /> {exp.rating} ({exp.reviews} reseñas)</a>
           </div>
         </div>
       </section>
