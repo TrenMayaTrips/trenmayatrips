@@ -1,8 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft, ShieldCheck } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import { getExperienceBySlug, experiences, categoryLabels } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
@@ -10,6 +10,7 @@ import ImageGallery from "@/components/experiences/ImageGallery";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import VideoModule from "@/components/ui/VideoModule";
+import MobileStickyBookingBar from "@/components/experiences/MobileStickyBookingBar";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
@@ -17,7 +18,20 @@ const ExperienciaDetalle = () => {
   const params = useParams();
   const slug = params.slug || params.slugOrCategory || "";
   const [activeTab, setActiveTab] = useState("Resumen");
+  const [sidebarStuck, setSidebarStuck] = useState(true);
+  const relatedRef = useRef<HTMLDivElement>(null);
   const exp = getExperienceBySlug(slug);
+
+  // Stop sticky when related section is visible
+  useEffect(() => {
+    if (!relatedRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setSidebarStuck(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-100px 0px 0px 0px" }
+    );
+    observer.observe(relatedRef.current);
+    return () => observer.disconnect();
+  }, [exp]);
 
   if (!exp) return <Navigate to="/experiencias" replace />;
 
@@ -163,8 +177,11 @@ const ExperienciaDetalle = () => {
             </div>
 
             {/* Sidebar */}
-            <div>
-              <EstelaCard variant="gold" className="sticky top-28">
+            <div className="hidden lg:block">
+              <EstelaCard
+                variant="gold"
+                className={sidebarStuck ? "sticky top-28 max-h-[calc(100vh-120px)]" : ""}
+              >
                 <div className="bg-card rounded-xl p-5 md:p-6">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Desde</p>
                   <p className="font-heading text-3xl font-bold text-foreground">
@@ -173,11 +190,15 @@ const ExperienciaDetalle = () => {
                   <p className="text-xs text-muted-foreground mt-1">por persona</p>
 
                   <Button variant="cta" className="mt-5 w-full" asChild>
-                    <a href="#reservar">Solicitar Cotización</a>
+                    <a href="#reservar">Apartar mi lugar</a>
                   </Button>
+                  <p className="text-center text-[11px] text-muted-foreground mt-2 flex items-center justify-center gap-1">
+                    <ShieldCheck size={12} className="text-primary" />
+                    Sin compromiso · Respuesta en 24h
+                  </p>
                   <Button variant="ghost" className="mt-3 w-full border border-border hover:bg-secondary" asChild>
                     <a
-                      href="https://wa.me/529982186754"
+                      href="https://wa.me/529982186754?text=Hola,%20me%20interesa%20la%20experiencia%20de%20este%20enlace"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -212,7 +233,11 @@ const ExperienciaDetalle = () => {
         </div>
       </section>
 
+      {/* Mobile sticky booking bar */}
+      <MobileStickyBookingBar price={exp.price} />
+
       {/* Related */}
+      <div ref={relatedRef}>
       {relatedExps.length > 0 && (
         <section className="py-10 md:py-14 bg-secondary">
           <div className="container mx-auto px-4">
@@ -242,6 +267,7 @@ const ExperienciaDetalle = () => {
           </div>
         </section>
       )}
+      </div>
     </PageLayout>
   );
 };
