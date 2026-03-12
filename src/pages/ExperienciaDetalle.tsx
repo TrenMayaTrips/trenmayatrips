@@ -15,6 +15,8 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import VideoModule from "@/components/ui/VideoModule";
 import MobileStickyBookingBar from "@/components/experiences/MobileStickyBookingBar";
 import ItineraryTimeline from "@/components/experiences/ItineraryTimeline";
+import TrenMayaConnection from "@/components/experiences/TrenMayaConnection";
+import { getTrainConnection } from "@/data/experience-train-connections";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
