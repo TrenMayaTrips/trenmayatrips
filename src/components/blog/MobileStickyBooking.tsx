@@ -21,19 +21,19 @@ const MobileStickyBooking = ({ postSlug }: MobileStickyBookingProps) => {
 
   return (
     <div className="fixed bottom-16 left-0 right-0 z-40 md:hidden">
-      <div className="mx-3 flex items-center justify-between gap-3 rounded-xl bg-[hsl(160,30%,26%)] px-4 py-3 shadow-lg">
+      <div className="mx-3 flex items-center justify-between gap-3 rounded-xl bg-jade-dark px-4 py-3 shadow-lg">
         <div className="min-w-0">
-          <p className="text-xs text-white/70 truncate flex items-center gap-1">
-            <Train size={12} className="text-gold flex-shrink-0" />
+          <p className="text-xs text-primary-foreground/70 truncate flex items-center gap-1">
+            <Train size={12} className="text-accent flex-shrink-0" />
             Desde {cta.price}
           </p>
-          <p className="text-sm font-semibold text-white truncate">
+          <p className="text-sm font-semibold text-primary-foreground truncate">
             Visita {cta.destination}
           </p>
         </div>
         <Link
           to="/itinerarios"
-          className="flex-shrink-0 flex items-center gap-1 px-4 py-2 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+          className="flex-shrink-0 flex items-center gap-1 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
         >
           Reservar <ArrowRight size={14} />
         </Link>

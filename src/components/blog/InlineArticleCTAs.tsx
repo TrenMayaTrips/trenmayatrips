@@ -132,7 +132,7 @@ export const InlineRouteCTA = ({ ctx }: InlineRouteCTAProps) => (
         </p>
         <Link
           to={`/tren-maya/rutas/${ctx.routeSlug}`}
-          className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+          className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
         >
           Ver ruta y horarios <ArrowRight size={14} />
         </Link>
@@ -194,7 +194,7 @@ export const PostArticleCTA = ({ ctx }: PostArticleCTAProps) => (
       </div>
       <Link
         to="/itinerarios"
-        className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+        className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
       >
         Armar mi itinerario <ArrowRight size={14} />
       </Link>

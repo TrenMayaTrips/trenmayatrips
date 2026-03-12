@@ -245,7 +245,7 @@ const Packages = () => {
                   </p>
                   <div className="text-right">
                     <p className="text-[10px] text-muted-foreground leading-none mb-0.5">Desde</p>
-                    <p className="font-heading text-2xl font-bold" style={{ color: '#2D4A3E' }}>
+                    <p className="font-heading text-2xl font-bold text-primary">
                       ${pkg.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
                     </p>
                   </div>
@@ -459,8 +459,7 @@ const Packages = () => {
                 <Button
                   onClick={() => setShowCompareModal(true)}
                   disabled={selectedForCompare.length < 2}
-                  className="flex-1 text-primary-foreground"
-                  style={{ backgroundColor: '#2D4A3E' }}
+                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Comparar seleccionados ({selectedForCompare.length})
                 </Button>

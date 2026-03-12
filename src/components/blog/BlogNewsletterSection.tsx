@@ -127,7 +127,7 @@ const BlogNewsletterSection = () => {
                           onClick={() => toggleInterest(interest.id)}
                           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 snap-start transition-all duration-200 ${
                             isSelected
-                              ? "bg-gold text-obsidian"
+                              ? "bg-accent text-accent-foreground"
                               : "bg-primary-foreground/10 text-primary-foreground/80 hover:bg-primary-foreground/20"
                           }`}
                         >
@@ -155,7 +155,7 @@ const BlogNewsletterSection = () => {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-gold text-obsidian font-semibold rounded-lg hover:bg-gold/90 transition-colors text-sm min-h-[48px] disabled:opacity-60"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-semibold rounded-lg hover:bg-accent/90 transition-colors text-sm min-h-[48px] disabled:opacity-60"
                   >
                     {status === "loading" ? (
                       <Loader2 size={16} className="animate-spin" />

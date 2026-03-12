@@ -180,7 +180,7 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
               key={i}
               d={segment}
               fill="none"
-              stroke="#2D4A3E"
+              stroke="hsl(var(--jade))"
               strokeWidth="3"
               strokeDasharray="8 4"
               strokeLinecap="round"
@@ -196,7 +196,7 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
             const isTerminal = c.stop.isOrigin || c.stop.isDestination;
             const isHovered = hoveredStation === c.stop.name || tooltipStation?.name === c.stop.name;
             const radius = isTerminal ? 6 : 4;
-            const fillColor = isTerminal ? "#D4A853" : "#2D4A3E";
+            const fillColor = isTerminal ? "hsl(var(--gold))" : "hsl(var(--jade))";
 
             return (
               <g key={i}>

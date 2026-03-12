@@ -237,7 +237,7 @@ const RutaDetalle = () => {
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.08 }}
                     className={`flex gap-4 relative cursor-pointer transition-all duration-200 rounded-lg -mx-3 px-3 py-4 md:py-2 group ${
-                      hoveredStation === stop.name ? "bg-[#FAF6F0] scale-[1.01]" : "hover:bg-[#FAF6F0]/50"
+                      hoveredStation === stop.name ? "bg-sand scale-[1.01]" : "hover:bg-sand/50"
                     }`}
                     onMouseEnter={() => setHoveredStation(stop.name)}
                     onMouseLeave={() => setHoveredStation(null)}

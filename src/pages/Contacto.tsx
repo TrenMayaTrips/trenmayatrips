@@ -88,8 +88,8 @@ const isOpenNow = (): boolean => {
 const OpenNowBadge = () => {
   const open = useMemo(() => isOpenNow(), []);
   return (
-    <span className={`inline-flex items-center gap-1.5 mt-1.5 text-xs font-medium ${open ? "text-[hsl(var(--jade))]" : "text-destructive"}`}>
-      <span className={`w-2 h-2 rounded-full ${open ? "bg-[hsl(var(--jade))] animate-pulse" : "bg-destructive"}`} />
+    <span className={`inline-flex items-center gap-1.5 mt-1.5 text-xs font-medium ${open ? "text-primary" : "text-destructive"}`}>
+      <span className={`w-2 h-2 rounded-full ${open ? "bg-primary animate-pulse" : "bg-destructive"}`} />
       {open ? "Abierto ahora" : "Cerrado ahora"}
     </span>
   );

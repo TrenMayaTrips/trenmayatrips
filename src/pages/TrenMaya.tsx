@@ -553,8 +553,7 @@ const TrenMaya = () => {
                               href="https://wa.me/529811234567?text=Quiero%20reservar%20en%20clase%20Janal"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="w-full py-2.5 rounded-lg font-bold text-sm transition-colors block text-center"
-                              style={{ backgroundColor: '#2D4A3E', color: 'white' }}
+                              className="w-full py-2.5 rounded-lg font-bold text-sm transition-colors block text-center bg-primary text-primary-foreground hover:bg-primary/90"
                             >
                               Reservar ahora
                             </a>

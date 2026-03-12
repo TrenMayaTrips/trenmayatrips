@@ -22,7 +22,7 @@ const ArticleSidebarCTA = ({ postSlug }: ArticleSidebarCTAProps) => {
   const cta = ctaMap[postSlug] || defaultCta;
 
   return (
-    <div className="rounded-xl bg-[hsl(160,30%,26%)] p-5 text-white">
+    <div className="rounded-xl bg-jade-dark p-5 text-primary-foreground">
       <div className="flex items-center gap-2 mb-3">
         <Train size={18} className="text-gold" />
         <span className="text-xs font-medium text-gold uppercase tracking-wider">Tren Maya</span>
@@ -30,13 +30,13 @@ const ArticleSidebarCTA = ({ postSlug }: ArticleSidebarCTAProps) => {
       <h3 className="font-heading text-base font-bold leading-snug mb-1">
         ¿Quieres visitar {cta.destination}?
       </h3>
-      <p className="text-sm text-white/70 mb-1">{cta.route}</p>
-      <p className="text-sm text-white/80 mb-4">
+      <p className="text-sm text-primary-foreground/70 mb-1">{cta.route}</p>
+      <p className="text-sm text-primary-foreground/80 mb-4">
         Viaja en el Tren Maya desde <strong className="text-gold">{cta.price}</strong>
       </p>
       <Link
         to="/itinerarios"
-        className="flex items-center justify-center gap-2 w-full py-2.5 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+        className="flex items-center justify-center gap-2 w-full py-2.5 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
       >
         Reservar ahora <ArrowRight size={14} />
       </Link>

@@ -432,8 +432,7 @@ const VagonDetalle = () => {
           <div className="mt-6 flex flex-col items-center gap-3">
             <Link
               to="/contacto"
-              className="inline-block px-8 py-3 rounded-lg font-bold text-sm transition-colors"
-              style={{ backgroundColor: '#D4A853', color: '#2D4A3E' }}
+               className="inline-block px-8 py-3 rounded-lg font-bold text-sm transition-colors bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Reservar desde ${wagon.priceBase.toLocaleString()} MXN
             </Link>
@@ -609,12 +608,11 @@ const VagonDetalle = () => {
                     return (
                       <th
                         key={w.slug}
-                        className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""}`}
-                        style={{
-                          backgroundColor: isCurrent ? "#D4A853" : "hsl(var(--primary) / 0.85)",
-                          color: isCurrent ? "#2D4A3E" : "hsl(var(--primary-foreground))",
-                          borderTop: isCurrent ? "3px solid #D4A853" : "none",
-                        }}
+                        className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""} ${
+                          isCurrent
+                            ? "bg-accent text-accent-foreground border-t-[3px] border-accent"
+                            : "bg-primary/85 text-primary-foreground"
+                        }`}
                       >
                         <Link
                           to={`/tren-maya/clases/${w.slug}`}
@@ -679,20 +677,7 @@ const VagonDetalle = () => {
                         ) : (
                           <Link
                             to={`/tren-maya/clases/${w.slug}`}
-                            className="inline-block px-4 py-2 rounded-lg text-xs font-bold border-2 transition-colors"
-                            style={{
-                              borderColor: "#D4A853",
-                              color: "#D4A853",
-                              backgroundColor: "transparent",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = "#D4A853";
-                              e.currentTarget.style.color = "#2D4A3E";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = "transparent";
-                              e.currentTarget.style.color = "#D4A853";
-                            }}
+                            className="inline-block px-4 py-2 rounded-lg text-xs font-bold border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-accent-foreground transition-colors"
                           >
                             {isUpgrade ? `Subir a ${w.name} →` : `Ver ${w.name} →`}
                           </Link>
@@ -807,8 +792,7 @@ const VagonDetalle = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <Link
               to="/contacto"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-bold text-sm transition-all hover:brightness-110 shadow-lg"
-              style={{ backgroundColor: "#D4A853", color: "#2D4A3E" }}
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-bold text-sm transition-all hover:brightness-110 shadow-lg bg-accent text-accent-foreground"
             >
               Reservar desde ${wagon.priceBase.toLocaleString()} MXN →
             </Link>

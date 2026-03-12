@@ -388,7 +388,7 @@ const Blog = () => {
                               <p className="text-sm text-white/90 font-medium mb-2">
                                 {formatDate(post.publishedAt)}
                               </p>
-                              <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
+                              <span className="text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full w-fit mb-3">
                                 ⭐ {category?.label}
                               </span>
                               <h3 className="font-heading text-lg font-bold text-white leading-tight">
@@ -452,7 +452,7 @@ const Blog = () => {
                             <p className="text-sm text-white/90 font-medium mb-2">
                               {formatDate(post.publishedAt)}
                             </p>
-                            <span className="text-xs font-medium bg-gold/90 text-obsidian px-3 py-1 rounded-full w-fit mb-3">
+                            <span className="text-xs font-medium bg-accent/90 text-accent-foreground px-3 py-1 rounded-full w-fit mb-3">
                               ⭐ Destacado · {category?.label}
                             </span>
                             <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-gold transition-colors duration-200">
