@@ -245,7 +245,7 @@ const Packages = () => {
                   </p>
                   <div className="text-right">
                     <p className="text-[10px] text-muted-foreground leading-none mb-0.5">Desde</p>
-                    <p className="font-heading text-2xl font-bold" style={{ color: '#2D4A3E' }}>
+                    <p className="font-heading text-2xl font-bold text-primary">
                       ${pkg.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">MXN</span>
                     </p>
                   </div>
