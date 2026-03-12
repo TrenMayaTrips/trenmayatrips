@@ -177,8 +177,12 @@ const ExperienciaDetalle = () => {
             </div>
 
             {/* Sidebar */}
-            <div>
-              <EstelaCard variant="gold" className="sticky top-28">
+            <div className="hidden lg:block">
+              <EstelaCard
+                variant="gold"
+                className={sidebarStuck ? "sticky top-28" : ""}
+                style={sidebarStuck ? { maxHeight: "calc(100vh - 120px)" } : undefined}
+              >
                 <div className="bg-card rounded-xl p-5 md:p-6">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Desde</p>
                   <p className="font-heading text-3xl font-bold text-foreground">
@@ -187,11 +191,15 @@ const ExperienciaDetalle = () => {
                   <p className="text-xs text-muted-foreground mt-1">por persona</p>
 
                   <Button variant="cta" className="mt-5 w-full" asChild>
-                    <a href="#reservar">Solicitar Cotización</a>
+                    <a href="#reservar">Apartar mi lugar</a>
                   </Button>
+                  <p className="text-center text-[11px] text-muted-foreground mt-2 flex items-center justify-center gap-1">
+                    <ShieldCheck size={12} className="text-primary" />
+                    Sin compromiso · Respuesta en 24h
+                  </p>
                   <Button variant="ghost" className="mt-3 w-full border border-border hover:bg-secondary" asChild>
                     <a
-                      href="https://wa.me/529982186754"
+                      href="https://wa.me/529982186754?text=Hola,%20me%20interesa%20la%20experiencia%20de%20este%20enlace"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
