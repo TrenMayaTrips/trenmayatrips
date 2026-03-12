@@ -6,8 +6,10 @@ const WhatsAppFAB = () => {
   const isMobile = useIsMobile();
   const location = useLocation();
 
-  // Hide on /contacto — contact channels are already visible on that page
+  // Hide on /contacto and on experience detail pages in mobile (WhatsApp is in the sticky bar)
+  const isExperienceDetail = location.pathname.startsWith("/experiencias/") && location.pathname.split("/").length > 2;
   if (location.pathname === "/contacto") return null;
+  if (isMobile && isExperienceDetail) return null;
 
   return (
     <a
