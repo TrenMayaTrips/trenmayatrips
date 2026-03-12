@@ -678,20 +678,7 @@ const VagonDetalle = () => {
                         ) : (
                           <Link
                             to={`/tren-maya/clases/${w.slug}`}
-                            className="inline-block px-4 py-2 rounded-lg text-xs font-bold border-2 transition-colors"
-                            style={{
-                              borderColor: "#D4A853",
-                              color: "#D4A853",
-                              backgroundColor: "transparent",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = "#D4A853";
-                              e.currentTarget.style.color = "#2D4A3E";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = "transparent";
-                              e.currentTarget.style.color = "#D4A853";
-                            }}
+                            className="inline-block px-4 py-2 rounded-lg text-xs font-bold border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-accent-foreground transition-colors"
                           >
                             {isUpgrade ? `Subir a ${w.name} →` : `Ver ${w.name} →`}
                           </Link>
