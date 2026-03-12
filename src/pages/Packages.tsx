@@ -459,8 +459,7 @@ const Packages = () => {
                 <Button
                   onClick={() => setShowCompareModal(true)}
                   disabled={selectedForCompare.length < 2}
-                  className="flex-1 text-primary-foreground"
-                  style={{ backgroundColor: '#2D4A3E' }}
+                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Comparar seleccionados ({selectedForCompare.length})
                 </Button>

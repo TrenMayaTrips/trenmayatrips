@@ -33,7 +33,7 @@ const MobileStickyBooking = ({ postSlug }: MobileStickyBookingProps) => {
         </div>
         <Link
           to="/itinerarios"
-          className="flex-shrink-0 flex items-center gap-1 px-4 py-2 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+          className="flex-shrink-0 flex items-center gap-1 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
         >
           Reservar <ArrowRight size={14} />
         </Link>

@@ -36,7 +36,7 @@ const ArticleSidebarCTA = ({ postSlug }: ArticleSidebarCTAProps) => {
       </p>
       <Link
         to="/itinerarios"
-        className="flex items-center justify-center gap-2 w-full py-2.5 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+        className="flex items-center justify-center gap-2 w-full py-2.5 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
       >
         Reservar ahora <ArrowRight size={14} />
       </Link>
