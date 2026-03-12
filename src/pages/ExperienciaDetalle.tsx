@@ -263,6 +263,10 @@ const ExperienciaDetalle = () => {
       <GrecaDivider variant="jade" size="sm" />
       <ReviewsSection data={reviewData} overallRating={exp.rating} totalReviews={exp.reviews} />
 
+      {/* Tren Maya connection */}
+      <GrecaDivider variant="gold" size="sm" />
+      <TrenMayaConnection connection={trainConnection} experienceTitle={exp.title} />
+
       {/* Mobile sticky booking bar */}
       <MobileStickyBookingBar price={exp.price} />
       <div ref={relatedRef}>
