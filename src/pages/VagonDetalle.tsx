@@ -609,11 +609,11 @@ const VagonDetalle = () => {
                       <th
                         key={w.slug}
                         className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""}`}
-                        style={{
-                          backgroundColor: isCurrent ? "#D4A853" : "hsl(var(--primary) / 0.85)",
-                          color: isCurrent ? "#2D4A3E" : "hsl(var(--primary-foreground))",
-                          borderTop: isCurrent ? "3px solid #D4A853" : "none",
-                        }}
+                        className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""} ${
+                          isCurrent
+                            ? "bg-accent text-accent-foreground border-t-[3px] border-accent"
+                            : "bg-primary/85 text-primary-foreground"
+                        }`}
                       >
                         <Link
                           to={`/tren-maya/clases/${w.slug}`}
