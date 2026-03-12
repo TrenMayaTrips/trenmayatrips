@@ -132,7 +132,7 @@ export const InlineRouteCTA = ({ ctx }: InlineRouteCTAProps) => (
         </p>
         <Link
           to={`/tren-maya/rutas/${ctx.routeSlug}`}
-          className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+          className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
         >
           Ver ruta y horarios <ArrowRight size={14} />
         </Link>
