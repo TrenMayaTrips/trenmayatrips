@@ -30,8 +30,8 @@ const ArticleSidebarCTA = ({ postSlug }: ArticleSidebarCTAProps) => {
       <h3 className="font-heading text-base font-bold leading-snug mb-1">
         ¿Quieres visitar {cta.destination}?
       </h3>
-      <p className="text-sm text-white/70 mb-1">{cta.route}</p>
-      <p className="text-sm text-white/80 mb-4">
+      <p className="text-sm text-primary-foreground/70 mb-1">{cta.route}</p>
+      <p className="text-sm text-primary-foreground/80 mb-4">
         Viaja en el Tren Maya desde <strong className="text-gold">{cta.price}</strong>
       </p>
       <Link
