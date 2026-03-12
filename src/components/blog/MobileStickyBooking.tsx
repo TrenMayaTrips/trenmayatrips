@@ -23,11 +23,11 @@ const MobileStickyBooking = ({ postSlug }: MobileStickyBookingProps) => {
     <div className="fixed bottom-16 left-0 right-0 z-40 md:hidden">
       <div className="mx-3 flex items-center justify-between gap-3 rounded-xl bg-jade-dark px-4 py-3 shadow-lg">
         <div className="min-w-0">
-          <p className="text-xs text-white/70 truncate flex items-center gap-1">
-            <Train size={12} className="text-gold flex-shrink-0" />
+          <p className="text-xs text-primary-foreground/70 truncate flex items-center gap-1">
+            <Train size={12} className="text-accent flex-shrink-0" />
             Desde {cta.price}
           </p>
-          <p className="text-sm font-semibold text-white truncate">
+          <p className="text-sm font-semibold text-primary-foreground truncate">
             Visita {cta.destination}
           </p>
         </div>
