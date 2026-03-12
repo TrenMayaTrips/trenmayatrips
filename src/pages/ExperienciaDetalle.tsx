@@ -1,8 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft, ShieldCheck } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import { getExperienceBySlug, experiences, categoryLabels } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
@@ -10,6 +10,7 @@ import ImageGallery from "@/components/experiences/ImageGallery";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import VideoModule from "@/components/ui/VideoModule";
+import MobileStickyBookingBar from "@/components/experiences/MobileStickyBookingBar";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
