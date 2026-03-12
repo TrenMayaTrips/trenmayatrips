@@ -18,7 +18,20 @@ const ExperienciaDetalle = () => {
   const params = useParams();
   const slug = params.slug || params.slugOrCategory || "";
   const [activeTab, setActiveTab] = useState("Resumen");
+  const [sidebarStuck, setSidebarStuck] = useState(true);
+  const relatedRef = useRef<HTMLDivElement>(null);
   const exp = getExperienceBySlug(slug);
+
+  // Stop sticky when related section is visible
+  useEffect(() => {
+    if (!relatedRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setSidebarStuck(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-100px 0px 0px 0px" }
+    );
+    observer.observe(relatedRef.current);
+    return () => observer.disconnect();
+  }, [exp]);
 
   if (!exp) return <Navigate to="/experiencias" replace />;
 
