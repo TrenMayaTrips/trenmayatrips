@@ -127,7 +127,7 @@ const BlogNewsletterSection = () => {
                           onClick={() => toggleInterest(interest.id)}
                           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 snap-start transition-all duration-200 ${
                             isSelected
-                              ? "bg-gold text-obsidian"
+                              ? "bg-accent text-accent-foreground"
                               : "bg-primary-foreground/10 text-primary-foreground/80 hover:bg-primary-foreground/20"
                           }`}
                         >
