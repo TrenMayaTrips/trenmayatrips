@@ -46,6 +46,7 @@ const ExperienciaDetalle = () => {
     .filter(Boolean);
 
   const reviewData = getReviewsForExperience(exp.slug, exp.rating, exp.reviews);
+  const trainConnection = getTrainConnection(exp.slug, exp.state);
 
   const jsonLd = {
     "@context": "https://schema.org",
