@@ -268,6 +268,7 @@ const ExperienciaDetalle = () => {
           </div>
         </section>
       )}
+      </div>
     </PageLayout>
   );
 };
