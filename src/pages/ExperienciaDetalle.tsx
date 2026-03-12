@@ -14,6 +14,7 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import VideoModule from "@/components/ui/VideoModule";
 import MobileStickyBookingBar from "@/components/experiences/MobileStickyBookingBar";
+import ItineraryTimeline from "@/components/experiences/ItineraryTimeline";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
