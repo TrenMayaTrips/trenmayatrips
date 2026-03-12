@@ -268,10 +268,12 @@ const ExperienciaDetalle = () => {
         </div>
       </section>
 
+      {/* Reviews */}
+      <GrecaDivider variant="jade" size="sm" />
+      <ReviewsSection data={reviewData} overallRating={exp.rating} totalReviews={exp.reviews} />
+
       {/* Mobile sticky booking bar */}
       <MobileStickyBookingBar price={exp.price} />
-
-      {/* Related */}
       <div ref={relatedRef}>
       {relatedExps.length > 0 && (
         <section className="py-10 md:py-14 bg-secondary">
