@@ -194,7 +194,7 @@ export const PostArticleCTA = ({ ctx }: PostArticleCTAProps) => (
       </div>
       <Link
         to="/itinerarios"
-        className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gold text-obsidiana font-semibold rounded-lg text-sm hover:bg-gold/90 transition-colors"
+        className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-semibold rounded-lg text-sm hover:bg-accent/90 transition-colors"
       >
         Armar mi itinerario <ArrowRight size={14} />
       </Link>
