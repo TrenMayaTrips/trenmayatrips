@@ -15,6 +15,8 @@ import EstelaCard from "@/components/maya/EstelaCard";
 import VideoModule from "@/components/ui/VideoModule";
 import MobileStickyBookingBar from "@/components/experiences/MobileStickyBookingBar";
 import ItineraryTimeline from "@/components/experiences/ItineraryTimeline";
+import TrenMayaConnection from "@/components/experiences/TrenMayaConnection";
+import { getTrainConnection } from "@/data/experience-train-connections";
 
 const tabs = ["Resumen", "Itinerario", "Incluye", "Recomendaciones"];
 
@@ -44,6 +46,7 @@ const ExperienciaDetalle = () => {
     .filter(Boolean);
 
   const reviewData = getReviewsForExperience(exp.slug, exp.rating, exp.reviews);
+  const trainConnection = getTrainConnection(exp.slug, exp.state);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -259,6 +262,10 @@ const ExperienciaDetalle = () => {
       {/* Reviews */}
       <GrecaDivider variant="jade" size="sm" />
       <ReviewsSection data={reviewData} overallRating={exp.rating} totalReviews={exp.reviews} />
+
+      {/* Tren Maya connection */}
+      <GrecaDivider variant="gold" size="sm" />
+      <TrenMayaConnection connection={trainConnection} experienceTitle={exp.title} />
 
       {/* Mobile sticky booking bar */}
       <MobileStickyBookingBar price={exp.price} />
