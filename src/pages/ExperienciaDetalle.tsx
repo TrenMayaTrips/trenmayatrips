@@ -42,8 +42,40 @@ const ExperienciaDetalle = () => {
     .map((s) => experiences.find((e) => e.slug === s))
     .filter(Boolean);
 
+  const reviewData = getReviewsForExperience(exp.slug, exp.rating, exp.reviews);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    name: exp.title,
+    description: exp.description,
+    touristType: categoryLabels[exp.category],
+    offers: {
+      "@type": "Offer",
+      price: exp.price,
+      priceCurrency: exp.currency,
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: exp.rating,
+      reviewCount: exp.reviews,
+      bestRating: 5,
+    },
+    review: reviewData.reviews.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name },
+      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
+      reviewBody: r.text,
+    })),
+  };
+
   return (
     <PageLayout>
+      <SEOHead
+        title={`${exp.title} — Tren Maya Trips`}
+        description={exp.description}
+        jsonLd={jsonLd}
+      />
       {/* Hero */}
       <section className="pt-24 md:pt-32 pb-10 md:pb-14 bg-gradient-to-b from-jade-dark to-primary">
         <div className="container mx-auto px-4">
