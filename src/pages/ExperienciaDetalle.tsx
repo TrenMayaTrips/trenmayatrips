@@ -180,8 +180,7 @@ const ExperienciaDetalle = () => {
             <div className="hidden lg:block">
               <EstelaCard
                 variant="gold"
-                className={sidebarStuck ? "sticky top-28" : ""}
-                style={sidebarStuck ? { maxHeight: "calc(100vh - 120px)" } : undefined}
+                className={sidebarStuck ? "sticky top-28 max-h-[calc(100vh-120px)]" : ""}
               >
                 <div className="bg-card rounded-xl p-5 md:p-6">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Desde</p>
