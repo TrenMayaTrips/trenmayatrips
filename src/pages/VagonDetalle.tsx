@@ -608,7 +608,6 @@ const VagonDetalle = () => {
                     return (
                       <th
                         key={w.slug}
-                        className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""}`}
                         className={`px-4 py-3 font-medium text-center relative ${isLast ? "rounded-tr-lg" : ""} ${
                           isCurrent
                             ? "bg-accent text-accent-foreground border-t-[3px] border-accent"
