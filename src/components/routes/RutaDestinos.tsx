@@ -109,7 +109,7 @@ const RutaDestinos = ({ statesTraversed, timelineStops = [] }: RutaDestinosProps
                   loading="lazy"
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-card/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <span className="absolute top-2 right-2 text-[10px] bg-primary/90 text-primary-foreground px-1.5 py-0.5 rounded-full font-semibold">
                 {destinationTypes[dest.type]}
               </span>
