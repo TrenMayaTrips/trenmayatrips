@@ -196,7 +196,7 @@ const DestinoDetalle = () => {
                           loading="lazy"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-3 left-4">
                         <h3 className="font-heading text-lg font-bold text-white">{rel.emoji} {rel.name}</h3>
                         <p className="text-xs text-white/70">{rel.tagline}</p>
