@@ -52,7 +52,7 @@ const DestinoExperiencias = ({ stateName, stateSlug }: DestinoExperienciasProps)
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                         <span className="absolute top-3 right-3 px-2 py-0.5 bg-primary/90 text-primary-foreground text-[10px] font-semibold rounded-full">
                           {exp.category === "aventura" ? "🏔️ Aventura" : exp.category === "cultural" ? "🏛️ Cultural" : exp.category === "gastronomico" ? "🍫 Gastronómico" : "🧘 Bienestar"}
                         </span>
