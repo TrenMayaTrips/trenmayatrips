@@ -366,7 +366,7 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
             variant="gold"
           >
             {!isMobileExpanded && (
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent z-10 pointer-events-none" />
             )}
             <div className="p-4">
               <div className="text-center mb-3">
