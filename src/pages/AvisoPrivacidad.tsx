@@ -4,7 +4,7 @@ import SEOHead from "@/components/seo/SEOHead";
 
 const AvisoPrivacidad = () => {
   return (
-    <PageLayout showStickyCTA={false}>
+    <PageLayout >
       <SEOHead
         title="Aviso de Privacidad — Tren Maya Trips"
         description="Aviso de privacidad de Tren Maya Trips. Conoce cómo recopilamos, usamos y protegemos tus datos personales conforme a la LFPDPPP."

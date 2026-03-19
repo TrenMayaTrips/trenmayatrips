@@ -4,7 +4,7 @@ import SEOHead from "@/components/seo/SEOHead";
 
 const TerminosCondiciones = () => {
   return (
-    <PageLayout showStickyCTA={false}>
+    <PageLayout >
       <SEOHead
         title="Términos y Condiciones — Tren Maya Trips"
         description="Términos y condiciones de uso del sitio web y servicios de Tren Maya Trips."
