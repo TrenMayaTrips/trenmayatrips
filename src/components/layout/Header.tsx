@@ -147,6 +147,14 @@ const Header = () => {
                   );
                 })}
                 <a
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  className="ml-1 p-2 text-foreground/70 hover:text-primary transition-colors"
+                  aria-label="Buscar"
+                >
+                  <Search size={18} />
+                </button>
+                <a
                   href="#reservar"
                   className="ml-2 px-5 py-2.5 bg-jade-dark text-primary-foreground font-semibold text-sm rounded-md hover:bg-primary transition-colors"
                 >
