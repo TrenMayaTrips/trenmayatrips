@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Compass, CalendarDays, Newspaper, MoreHorizontal, Phone, MessageCircle, ChevronRight, ChevronDown, MapPin, Sparkles, Package } from "lucide-react";
+import {
+  Home,
+  Compass,
+  CalendarDays,
+  MoreHorizontal,
+  Phone,
+  MessageCircle,
+  ChevronRight,
+  ChevronDown,
+  MapPin,
+  Sparkles,
+  Package,
+  Train,
+} from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -22,6 +35,7 @@ interface NavItemDef {
   label: string;
   href: string;
   subLinks?: SubLink[];
+  isCenter?: boolean;
 }
 
 const navItems: NavItemDef[] = [
@@ -36,19 +50,21 @@ const navItems: NavItemDef[] = [
       { label: "Paquetes", href: "/paquetes", icon: Package },
     ],
   },
-  { icon: Newspaper, label: "Blog", href: "/blog" },
-];
-
-const moreLinks = [
+  { icon: CalendarDays, label: "Reservar", href: "/itinerarios", isCenter: true },
   {
-    title: "Tren Maya",
-    links: [
-      { label: "Todo sobre el Tren Maya", href: "/tren-maya" },
+    icon: Train,
+    label: "Tren Maya",
+    href: "/tren-maya",
+    subLinks: [
+      { label: "Todo sobre el Tren", href: "/tren-maya", icon: Train },
       { label: "Clase Xiinbal", href: "/tren-maya/clases/xiinbal" },
       { label: "Clase Janal", href: "/tren-maya/clases/janal" },
       { label: "Clase P'atal", href: "/tren-maya/clases/patal" },
     ],
   },
+];
+
+const moreLinks = [
   {
     title: "Rutas",
     links: [
@@ -60,8 +76,7 @@ const moreLinks = [
   {
     title: "Más",
     links: [
-      { label: "Experiencias", href: "/experiencias" },
-      { label: "Paquetes", href: "/paquetes" },
+      { label: "Blog", href: "/blog" },
       { label: "Contacto", href: "/contacto" },
       { label: "Sobre Nosotros", href: "/sobre-nosotros" },
       { label: "Sostenibilidad", href: "/sostenibilidad" },
@@ -80,22 +95,18 @@ const BottomNav = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY < lastScrollY || currentScrollY < 50) {
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 150) {
         setIsVisible(false);
         setSubMenuOpen(null);
       }
-
       setLastScrollY(currentScrollY);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Close submenu on route change
   useEffect(() => {
     setSubMenuOpen(null);
   }, [location.pathname]);
@@ -112,27 +123,6 @@ const BottomNav = () => {
 
   return (
     <>
-      {/* Persistent floating Reservar pill — always visible */}
-      <AnimatePresence>
-        {!isVisible && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 20, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-4 right-4 z-[1200]"
-          >
-            <Link
-              to="/itinerarios"
-              className="flex items-center gap-1.5 px-4 py-2.5 bg-jade-dark text-primary-foreground text-xs font-semibold rounded-full shadow-lg hover:bg-primary transition-colors"
-            >
-              <CalendarDays size={14} />
-              Reservar
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Sub-menu popover */}
       <AnimatePresence>
         {subMenuOpen && isVisible && (
@@ -190,14 +180,33 @@ const BottomNav = () => {
             className="fixed bottom-0 left-0 right-0 z-[1100] bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom"
           >
             <div className="flex items-center justify-around h-16 px-1">
-              {/* Left nav items */}
-              {navItems.map(({ icon: Icon, label, href, subLinks }) => {
+              {navItems.map(({ icon: Icon, label, href, subLinks, isCenter }) => {
                 const isActive =
                   location.pathname === href ||
                   (href !== "/" && location.pathname.startsWith(href));
                 const hasSubMenu = !!subLinks;
                 const isSubOpen = subMenuOpen === label;
 
+                // Center "Reservar" button — elevated style
+                if (isCenter) {
+                  return (
+                    <Link
+                      key={label}
+                      to={href}
+                      onClick={() => setSubMenuOpen(null)}
+                      className="flex flex-col items-center justify-center gap-0.5 min-w-[52px] min-h-[48px] -mt-3"
+                    >
+                      <span className="flex items-center justify-center w-12 h-12 rounded-full bg-jade-dark text-primary-foreground shadow-lg border-[3px] border-card">
+                        <Icon size={22} strokeWidth={2} />
+                      </span>
+                      <span className="text-[10px] font-semibold text-foreground mt-0.5">
+                        {label}
+                      </span>
+                    </Link>
+                  );
+                }
+
+                // Items with submenu
                 if (hasSubMenu) {
                   return (
                     <button
@@ -223,6 +232,7 @@ const BottomNav = () => {
                   );
                 }
 
+                // Regular items
                 return (
                   <Link
                     key={label}
@@ -241,20 +251,6 @@ const BottomNav = () => {
                   </Link>
                 );
               })}
-
-              {/* Reservar — prominent center-ish button */}
-              <Link
-                to="/itinerarios"
-                onClick={() => setSubMenuOpen(null)}
-                className="flex flex-col items-center justify-center gap-0.5 min-w-[52px] min-h-[48px] -mt-3"
-              >
-                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-jade-dark text-primary-foreground shadow-md">
-                  <CalendarDays size={20} strokeWidth={2} />
-                </span>
-                <span className="text-[10px] font-semibold text-foreground mt-0.5">
-                  Reservar
-                </span>
-              </Link>
 
               {/* Más button */}
               <button
