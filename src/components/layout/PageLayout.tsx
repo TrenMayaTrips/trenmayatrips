@@ -3,12 +3,14 @@ import Header from "./Header";
 import Footer from "./Footer";
 import BottomNav from "./BottomNav";
 import WhatsAppFAB from "./WhatsAppFAB";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface PageLayoutProps {
   children: ReactNode;
 }
 
 const PageLayout = ({ children }: PageLayoutProps) => {
+  const isMobile = useIsMobile();
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
