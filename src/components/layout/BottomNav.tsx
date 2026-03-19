@@ -128,7 +128,7 @@ const BottomNav = () => {
             transition={{ duration: 0.15 }}
             className="fixed bottom-[68px] left-0 right-0 z-[1099] px-4 pb-2 safe-area-bottom"
           >
-            <div className="bg-card/98 backdrop-blur-lg border border-border rounded-xl shadow-xl p-2">
+            <div className="bg-card backdrop-blur-lg border border-border rounded-xl shadow-xl p-2">
               {navItems
                 .find((i) => i.label === subMenuOpen)
                 ?.subLinks?.map((sub) => {

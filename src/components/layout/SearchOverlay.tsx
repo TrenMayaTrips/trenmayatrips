@@ -68,7 +68,7 @@ const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] bg-background"
     >
       <div className="container mx-auto px-4 pt-4">
         {/* Search bar */}
