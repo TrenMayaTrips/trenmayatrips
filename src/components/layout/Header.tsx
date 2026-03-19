@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
 import logoTmt from "@/assets/logo-tmt.png";
+import SearchOverlay from "./SearchOverlay";
 
 interface NavChild {
   label: string;
