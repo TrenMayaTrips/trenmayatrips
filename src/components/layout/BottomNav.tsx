@@ -73,7 +73,7 @@ const moreLinks = [
     links: [
       { label: "Blog", href: "/blog" },
       { label: "Contacto", href: "/contacto" },
-      { label: "Sobre Nosotros", href: "/sobre-nosotros" },
+      { label: "Sobre Nosotros", href: "/nosotros" },
       { label: "Sostenibilidad", href: "/sostenibilidad" },
     ],
   },
