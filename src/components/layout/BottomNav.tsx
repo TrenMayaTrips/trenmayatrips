@@ -69,14 +69,6 @@ const navItems: NavItemDef[] = [
 
 const moreLinks = [
   {
-    title: "Rutas",
-    links: [
-      { label: "Cancún – Mérida", href: "/tren-maya/rutas/cancun-merida" },
-      { label: "Cancún – Tulum", href: "/tren-maya/rutas/cancun-tulum" },
-      { label: "Mérida – Palenque", href: "/tren-maya/rutas/merida-palenque" },
-    ],
-  },
-  {
     title: "Más",
     links: [
       { label: "Blog", href: "/blog" },
