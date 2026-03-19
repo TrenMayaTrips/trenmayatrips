@@ -146,7 +146,6 @@ const Header = () => {
                     </Link>
                   );
                 })}
-                <a
                 <button
                   onClick={() => setSearchOpen(true)}
                   className="ml-1 p-2 text-foreground/70 hover:text-primary transition-colors"
