@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Compass, CalendarDays, Newspaper, MoreHorizontal, Train, Phone, MessageCircle, ChevronRight, X } from "lucide-react";
+import { Home, Compass, CalendarDays, Newspaper, MoreHorizontal, Phone, MessageCircle, ChevronRight, ChevronDown, MapPin, Sparkles, Package } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -10,10 +10,31 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-const navItems = [
+interface SubLink {
+  label: string;
+  href: string;
+  icon?: React.ComponentType<{ size?: number; className?: string }>;
+}
+
+interface NavItemDef {
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  label: string;
+  href: string;
+  subLinks?: SubLink[];
+}
+
+const navItems: NavItemDef[] = [
   { icon: Home, label: "Inicio", href: "/" },
-  { icon: Compass, label: "Explorar", href: "/destinos" },
-  { icon: CalendarDays, label: "Reservar", href: "/itinerarios" },
+  {
+    icon: Compass,
+    label: "Explorar",
+    href: "/destinos",
+    subLinks: [
+      { label: "Destinos", href: "/destinos", icon: MapPin },
+      { label: "Experiencias", href: "/experiencias", icon: Sparkles },
+      { label: "Paquetes", href: "/paquetes", icon: Package },
+    ],
+  },
   { icon: Newspaper, label: "Blog", href: "/blog" },
 ];
 
@@ -53,6 +74,7 @@ const BottomNav = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [subMenuOpen, setSubMenuOpen] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,6 +84,7 @@ const BottomNav = () => {
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 150) {
         setIsVisible(false);
+        setSubMenuOpen(null);
       }
 
       setLastScrollY(currentScrollY);
@@ -71,10 +94,91 @@ const BottomNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Close submenu on route change
+  useEffect(() => {
+    setSubMenuOpen(null);
+  }, [location.pathname]);
+
   if (!isMobile) return null;
+
+  const handleNavTap = (item: NavItemDef) => {
+    if (item.subLinks) {
+      setSubMenuOpen(subMenuOpen === item.label ? null : item.label);
+    } else {
+      setSubMenuOpen(null);
+    }
+  };
 
   return (
     <>
+      {/* Persistent floating Reservar pill — always visible */}
+      <AnimatePresence>
+        {!isVisible && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 20, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed bottom-4 right-4 z-[1200]"
+          >
+            <Link
+              to="/itinerarios"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-jade-dark text-primary-foreground text-xs font-semibold rounded-full shadow-lg hover:bg-primary transition-colors"
+            >
+              <CalendarDays size={14} />
+              Reservar
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Sub-menu popover */}
+      <AnimatePresence>
+        {subMenuOpen && isVisible && (
+          <motion.div
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed bottom-[68px] left-0 right-0 z-[1099] px-4 pb-2 safe-area-bottom"
+          >
+            <div className="bg-card/98 backdrop-blur-lg border border-border rounded-xl shadow-xl p-2">
+              {navItems
+                .find((i) => i.label === subMenuOpen)
+                ?.subLinks?.map((sub) => {
+                  const SubIcon = sub.icon;
+                  return (
+                    <Link
+                      key={sub.href}
+                      to={sub.href}
+                      onClick={() => setSubMenuOpen(null)}
+                      className="flex items-center gap-3 py-3 px-3 rounded-lg text-sm font-medium text-foreground/85 hover:bg-secondary/60 transition-colors"
+                    >
+                      {SubIcon && <SubIcon size={18} className="text-primary" />}
+                      {sub.label}
+                    </Link>
+                  );
+                })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Backdrop for submenu */}
+      <AnimatePresence>
+        {subMenuOpen && isVisible && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1 }}
+            className="fixed inset-0 z-[1098]"
+            onClick={() => setSubMenuOpen(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Main bottom nav */}
       <AnimatePresence>
         {isVisible && (
           <motion.nav
@@ -84,16 +188,45 @@ const BottomNav = () => {
             transition={{ duration: 0.25, ease: "easeOut" }}
             className="fixed bottom-0 left-0 right-0 z-[1100] bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom"
           >
-            <div className="flex items-center justify-around h-16 px-2">
-              {navItems.map(({ icon: Icon, label, href }) => {
+            <div className="flex items-center justify-around h-16 px-1">
+              {/* Left nav items */}
+              {navItems.map(({ icon: Icon, label, href, subLinks }) => {
                 const isActive =
                   location.pathname === href ||
                   (href !== "/" && location.pathname.startsWith(href));
+                const hasSubMenu = !!subLinks;
+                const isSubOpen = subMenuOpen === label;
+
+                if (hasSubMenu) {
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => handleNavTap({ icon: Icon, label, href, subLinks })}
+                      className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] min-h-[48px] transition-colors ${
+                        isActive || isSubOpen
+                          ? "text-primary"
+                          : "text-muted-foreground hover:text-primary"
+                      }`}
+                    >
+                      <Icon size={20} strokeWidth={isActive || isSubOpen ? 2.2 : 1.8} />
+                      <span className="flex items-center gap-0.5">
+                        <span className={`text-[10px] ${isActive || isSubOpen ? "font-semibold" : "font-medium"}`}>
+                          {label}
+                        </span>
+                        <ChevronDown
+                          size={10}
+                          className={`transition-transform ${isSubOpen ? "rotate-180" : ""}`}
+                        />
+                      </span>
+                    </button>
+                  );
+                }
 
                 return (
                   <Link
                     key={label}
                     to={href}
+                    onClick={() => setSubMenuOpen(null)}
                     className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] min-h-[48px] transition-colors ${
                       isActive
                         ? "text-primary"
@@ -101,20 +234,33 @@ const BottomNav = () => {
                     }`}
                   >
                     <Icon size={20} strokeWidth={isActive ? 2.2 : 1.8} />
-                    <span
-                      className={`text-[10px] ${
-                        isActive ? "font-semibold" : "font-medium"
-                      }`}
-                    >
+                    <span className={`text-[10px] ${isActive ? "font-semibold" : "font-medium"}`}>
                       {label}
                     </span>
                   </Link>
                 );
               })}
 
+              {/* Reservar — prominent center-ish button */}
+              <Link
+                to="/itinerarios"
+                onClick={() => setSubMenuOpen(null)}
+                className="flex flex-col items-center justify-center gap-0.5 min-w-[52px] min-h-[48px] -mt-3"
+              >
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-jade-dark text-primary-foreground shadow-md">
+                  <CalendarDays size={20} strokeWidth={2} />
+                </span>
+                <span className="text-[10px] font-semibold text-foreground mt-0.5">
+                  Reservar
+                </span>
+              </Link>
+
               {/* Más button */}
               <button
-                onClick={() => setSheetOpen(true)}
+                onClick={() => {
+                  setSubMenuOpen(null);
+                  setSheetOpen(true);
+                }}
                 className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] min-h-[48px] transition-colors ${
                   sheetOpen
                     ? "text-primary"
@@ -184,7 +330,7 @@ const BottomNav = () => {
             <Link
               to="/itinerarios"
               onClick={() => setSheetOpen(false)}
-              className="block mx-2 py-3.5 bg-primary text-primary-foreground font-semibold text-center rounded-lg text-sm hover:bg-primary/90 transition-colors"
+              className="block mx-2 py-3.5 bg-jade-dark text-primary-foreground font-semibold text-center rounded-lg text-sm hover:bg-primary/90 transition-colors"
             >
               Reservar ahora
             </Link>
