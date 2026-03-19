@@ -65,13 +65,15 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll hint */}
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-primary-foreground/40"
-      >
-        <ChevronDown size={28} />
-      </motion.div>
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-primary-foreground/40"
+        >
+          <ChevronDown size={28} />
+        </motion.div>
+      </div>
     </section>
   );
 };
