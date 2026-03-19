@@ -9,15 +9,16 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import type { LucideIcon } from "lucide-react";
 
 interface SubLink {
   label: string;
   href: string;
-  icon?: React.ComponentType<{ size?: number; className?: string }>;
+  icon?: LucideIcon;
 }
 
 interface NavItemDef {
-  icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  icon: LucideIcon;
   label: string;
   href: string;
   subLinks?: SubLink[];
