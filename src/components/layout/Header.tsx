@@ -50,6 +50,7 @@ const navLinks: NavItem[] = [
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
   const isMobile = useIsMobile();
   const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
