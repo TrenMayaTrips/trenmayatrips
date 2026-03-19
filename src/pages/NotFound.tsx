@@ -13,7 +13,7 @@ const popularDestinos = [
 
 const NotFound = () => {
   return (
-    <PageLayout >
+    <PageLayout>
       <section className="py-20 md:py-32 relative min-h-[60vh] flex items-center">
         <MayaPattern variant="greca" opacity={0.04} />
         <div className="container mx-auto px-4 relative z-10">
