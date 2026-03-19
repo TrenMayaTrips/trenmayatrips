@@ -15,7 +15,7 @@ const PageLayout = ({ children }: PageLayoutProps) => {
       <main className={`flex-1 pt-16 md:pt-20 ${isMobile ? "pb-20" : ""}`}>{children}</main>
       <Footer />
       <WhatsAppFAB />
-      {showStickyCTA && <StickyCTA />}
+      
       <BottomNav />
     </div>
   );

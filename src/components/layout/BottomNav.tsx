@@ -60,6 +60,9 @@ const navItems: NavItemDef[] = [
       { label: "Clase Xiinbal", href: "/tren-maya/clases/xiinbal" },
       { label: "Clase Janal", href: "/tren-maya/clases/janal" },
       { label: "Clase P'atal", href: "/tren-maya/clases/patal" },
+      { label: "Cancún – Mérida", href: "/tren-maya/rutas/cancun-merida", icon: MapPin },
+      { label: "Cancún – Tulum", href: "/tren-maya/rutas/cancun-tulum", icon: MapPin },
+      { label: "Mérida – Palenque", href: "/tren-maya/rutas/merida-palenque", icon: MapPin },
     ],
   },
 ];
