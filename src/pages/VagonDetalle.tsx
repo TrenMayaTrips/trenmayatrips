@@ -389,7 +389,7 @@ const SeatLayout = ({ seats, config, seatWidth, slug }: SeatLayoutProps) => {
       </p>
 
       {/* Wagon container */}
-      <div className="overflow-x-auto pb-3 scrollbar-hide">
+      <div className="overflow-x-auto pb-3 scrollbar-hide flex justify-center">
         <div
           className="inline-flex items-stretch border-2 border-border rounded-[2rem] overflow-hidden bg-card min-w-fit"
           style={{ minHeight: 180 }}
