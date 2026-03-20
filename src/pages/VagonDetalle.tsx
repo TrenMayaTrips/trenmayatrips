@@ -382,7 +382,7 @@ const SeatLayout = ({ seats, config, seatWidth, slug }: SeatLayoutProps) => {
   );
 
   return (
-    <div className="mx-auto">
+    <div className="mx-auto max-w-full overflow-hidden">
       {/* Scroll hint on mobile */}
       <p className="text-[11px] text-muted-foreground text-center mb-2 md:hidden">
         ← Desliza para ver el vagón completo →
@@ -391,7 +391,7 @@ const SeatLayout = ({ seats, config, seatWidth, slug }: SeatLayoutProps) => {
       {/* Wagon container */}
       <div className="overflow-x-auto pb-3 scrollbar-hide">
         <div
-          className="inline-flex items-stretch border-2 border-border rounded-[2rem] overflow-hidden bg-card mx-auto min-w-fit"
+          className="inline-flex items-stretch border-2 border-border rounded-[2rem] overflow-hidden bg-card min-w-fit"
           style={{ minHeight: 180 }}
         >
           {/* WC Zone */}
