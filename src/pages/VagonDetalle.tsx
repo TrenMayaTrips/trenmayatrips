@@ -706,7 +706,7 @@ const VagonDetalle = () => {
             <p className="section-label">Distribución</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Layout de asientos</h2>
           </div>
-          <SeatLayout seats={wagon.seats} config={wagon.config} seatWidth={wagon.seatWidth} />
+          <SeatLayout seats={wagon.seats} config={wagon.config} seatWidth={wagon.seatWidth} slug={wagon.slug} />
         </div>
       </section>
 
