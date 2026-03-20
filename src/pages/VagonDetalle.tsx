@@ -253,127 +253,229 @@ const WagonGallery = ({ images, wagonName }: WagonGalleryProps) => {
   );
 };
 
-// ── Seat Layout Component ────────────────────────────────────────────────────
-type SeatPos = "A" | "B" | "C" | "D";
+// ── Seat Layout Component — Horizontal Wagon ─────────────────────────────────
 
-const SEAT_META: Record<SeatPos, { type: "window" | "aisle"; label: string }> = {
-  A: { type: "window", label: "Ventana" },
-  B: { type: "aisle",  label: "Pasillo" },
-  C: { type: "aisle",  label: "Pasillo" },
-  D: { type: "window", label: "Ventana" },
-};
-
-function buildOccupied(seats: number): Set<string> {
-  const rows = Math.min(6, Math.ceil(seats / 4));
-  const occ = new Set<string>();
-  let s = seats * 37 + 7;
-  for (let r = 0; r < rows; r++) {
-    for (const pos of ["A", "B", "C", "D"] as SeatPos[]) {
-      s = (s * 1664525 + 1013904223) & 0xffffffff;
-      if ((s >>> 28) < 4) occ.add(`${r}-${pos}`);
-    }
-  }
-  return occ;
+interface WagonZone {
+  type: "wc" | "seats" | "luggage";
+  columns?: number; // only for seats
 }
 
-interface SeatLayoutProps { seats: number; config: string; seatWidth: string; }
+interface WagonLayout {
+  zones: WagonZone[];
+  seatNumbers: number[][]; // 4 rows × N seat-columns, 0 = empty
+}
 
-const SeatLayout = ({ seats, config, seatWidth }: SeatLayoutProps) => {
-  const rows = Math.min(6, Math.ceil(seats / 4));
-  const occupied = useMemo(() => buildOccupied(seats), [seats]);
-  const [tooltip, setTooltip] = useState<{ row: number; pos: SeatPos } | null>(null);
-
-  const styleOf = (row: number, pos: SeatPos): "window" | "aisle" | "occupied" =>
-    occupied.has(`${row}-${pos}`) ? "occupied" : SEAT_META[pos].type;
-
-  const cellCls = (style: "window" | "aisle" | "occupied") => {
-    if (style === "window")
-      return "bg-primary/15 border-primary/40 hover:bg-primary/25 cursor-pointer";
-    if (style === "aisle")
-      return "bg-muted border-border hover:bg-muted/70 cursor-pointer";
-    return "bg-muted-foreground/25 border-muted-foreground/20 cursor-not-allowed opacity-60";
-  };
-
-  const SeatCell = ({ row, pos }: { row: number; pos: SeatPos }) => {
-    const style = styleOf(row, pos);
-    const active = tooltip?.row === row && tooltip?.pos === pos;
-    const toggle = () => {
-      if (style === "occupied") return;
-      setTooltip(active ? null : { row, pos });
+function buildWagonLayout(slug: string, totalSeats: number): WagonLayout {
+  if (slug === "patal") {
+    // P'atal: 32 seats, VIP wider spacing
+    const cols = 8;
+    const rows: number[][] = [[], [], [], []];
+    let n = 1;
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < 4; r++) {
+        rows[r].push(n <= totalSeats ? n : 0);
+        n++;
+      }
+    }
+    return {
+      zones: [
+        { type: "wc" },
+        { type: "seats", columns: cols },
+        { type: "luggage" },
+      ],
+      seatNumbers: rows,
     };
-    return (
-      <div className="relative">
-        <div
-          className={`w-9 h-7 rounded border text-[9px] font-semibold flex items-center justify-center transition-colors select-none ${cellCls(style)} ${active ? "ring-2 ring-accent ring-offset-1 ring-offset-card" : ""}`}
-          onMouseEnter={() => style !== "occupied" && setTooltip({ row, pos })}
-          onMouseLeave={() => setTooltip(null)}
-          onTouchEnd={(e) => { e.preventDefault(); toggle(); }}
-          aria-label={`Fila ${row + 1}, Asiento ${pos} — ${SEAT_META[pos].label}`}
-        >
-          {style === "occupied" ? "×" : pos}
-        </div>
+  }
 
-        {active && (
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20 pointer-events-none">
-            <div className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-foreground text-background text-[10px] font-medium shadow-xl">
-              Fila {row + 1} · {pos} · {SEAT_META[pos].label}
-            </div>
-            <div className="w-0 h-0 mx-auto border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-foreground" />
-          </div>
-        )}
-      </div>
-    );
+  if (slug === "janal") {
+    // Janal: 52 seats, split into two halves with luggage in center
+    const halfCols = 7; // 7 cols × 4 rows = 28 per half ≈ 52 total
+    const rows: number[][] = [[], [], [], []];
+    let n = 1;
+    for (let c = 0; c < halfCols; c++) {
+      for (let r = 0; r < 4; r++) {
+        rows[r].push(n <= totalSeats ? n : 0);
+        n++;
+      }
+    }
+    // insert luggage gap marker (0) at midpoint
+    const mid = Math.ceil(halfCols / 2);
+    for (let r = 0; r < 4; r++) {
+      rows[r].splice(mid, 0, -1); // -1 = luggage gap
+    }
+    // second half
+    for (let c = 0; c < halfCols; c++) {
+      for (let r = 0; r < 4; r++) {
+        rows[r].push(n <= totalSeats ? n : 0);
+        n++;
+      }
+    }
+    return {
+      zones: [
+        { type: "wc" },
+        { type: "seats", columns: halfCols },
+        { type: "luggage" },
+        { type: "seats", columns: halfCols },
+      ],
+      seatNumbers: rows,
+    };
+  }
+
+  // Xiinbal: 68 seats, 2+2 config, two halves with luggage in center
+  const halfCols = 9;
+  const rows: number[][] = [[], [], [], []];
+  let n = 1;
+  for (let c = 0; c < halfCols; c++) {
+    for (let r = 0; r < 4; r++) {
+      rows[r].push(n <= totalSeats ? n : 0);
+      n++;
+    }
+  }
+  const mid = Math.ceil(halfCols / 2);
+  for (let r = 0; r < 4; r++) {
+    rows[r].splice(mid, 0, -1);
+  }
+  for (let c = 0; c < halfCols; c++) {
+    for (let r = 0; r < 4; r++) {
+      rows[r].push(n <= totalSeats ? n : 0);
+      n++;
+    }
+  }
+
+  return {
+    zones: [
+      { type: "wc" },
+      { type: "seats", columns: halfCols },
+      { type: "luggage" },
+      { type: "seats", columns: halfCols },
+    ],
+    seatNumbers: rows,
   };
+}
+
+interface SeatLayoutProps { seats: number; config: string; seatWidth: string; slug: string; }
+
+const SeatLayout = ({ seats, config, seatWidth, slug }: SeatLayoutProps) => {
+  const layout = useMemo(() => buildWagonLayout(slug, seats), [slug, seats]);
+  const [hoveredSeat, setHoveredSeat] = useState<number | null>(null);
+
+  // Flatten seat columns (skip luggage gaps marked as -1)
+  const allCols: ("seat" | "luggage")[] = [];
+  let seatColIdx = 0;
+  for (const row of [layout.seatNumbers[0]]) {
+    for (const val of row) {
+      if (val === -1) {
+        allCols.push("luggage");
+      } else {
+        allCols.push("seat");
+        seatColIdx++;
+      }
+    }
+  }
+
+  const LuggageIcon = () => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="6" y="7" width="12" height="13" rx="2" />
+      <path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+    </svg>
+  );
 
   return (
-    <div className="max-w-sm mx-auto bg-card rounded-xl border border-border overflow-hidden shadow-sm">
-      {/* Front / Door */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-secondary/70 border-b border-border text-xs text-muted-foreground">
-        <span className="flex items-center gap-1.5">🚪 Entrada / Salida</span>
-        <span className="font-medium">← Frente del tren</span>
-      </div>
+    <div className="mx-auto">
+      {/* Scroll hint on mobile */}
+      <p className="text-[11px] text-muted-foreground text-center mb-2 md:hidden">
+        ← Desliza para ver el vagón completo →
+      </p>
 
-      {/* Rows */}
-      <div className="px-5 py-4 space-y-2">
-        {Array.from({ length: rows }).map((_, row) => (
-          <div key={row} className="flex items-center justify-center gap-5">
-            <div className="flex gap-1.5">
-              <SeatCell row={row} pos="A" />
-              <SeatCell row={row} pos="B" />
-            </div>
-            <span className="text-[10px] text-muted-foreground/40 font-mono w-4 text-center">{row + 1}</span>
-            <div className="flex gap-1.5">
-              <SeatCell row={row} pos="C" />
-              <SeatCell row={row} pos="D" />
-            </div>
+      {/* Wagon container */}
+      <div className="overflow-x-auto pb-3 scrollbar-hide">
+        <div
+          className="inline-flex items-stretch border-2 border-border rounded-[2rem] overflow-hidden bg-card mx-auto min-w-fit"
+          style={{ minHeight: 180 }}
+        >
+          {/* WC Zone */}
+          <div className="flex flex-col items-center justify-center px-3 md:px-4 bg-primary/10 border-r-2 border-border min-w-[52px]">
+            <span className="text-lg">🚻</span>
+            <span className="text-[9px] font-semibold text-primary mt-1 tracking-wide">WC</span>
           </div>
-        ))}
-      </div>
 
-      {/* Rear / Bathrooms */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-secondary/70 border-t border-border text-xs text-muted-foreground">
-        <span className="flex items-center gap-1.5">🚻 Sanitarios</span>
-        <span className="font-medium">Parte trasera →</span>
+          {/* Seats area */}
+          <div className="flex items-center px-2 md:px-3 py-3 gap-0">
+            {layout.seatNumbers[0].map((_, colIdx) => {
+              const isLuggage = layout.seatNumbers[0][colIdx] === -1;
+
+              if (isLuggage) {
+                return (
+                  <div
+                    key={`lug-${colIdx}`}
+                    className="flex flex-col items-center justify-center mx-1 md:mx-2 px-2 py-2 rounded-lg bg-gold/10 border border-gold/30 min-w-[36px]"
+                  >
+                    <LuggageIcon />
+                    <span className="text-[8px] text-gold-dark font-medium mt-0.5">Equipaje</span>
+                  </div>
+                );
+              }
+
+              // Render a column of 4 seats (A, B | aisle | C, D)
+              const seatA = layout.seatNumbers[0][colIdx];
+              const seatB = layout.seatNumbers[1][colIdx];
+              const seatC = layout.seatNumbers[2][colIdx];
+              const seatD = layout.seatNumbers[3][colIdx];
+
+              return (
+                <div key={`col-${colIdx}`} className="flex flex-col items-center gap-0 mx-[1px] md:mx-[2px]">
+                  {/* Row A (window) */}
+                  <SeatCell num={seatA} type="window" hovered={hoveredSeat} setHovered={setHoveredSeat} />
+                  {/* Row B (aisle) */}
+                  <SeatCell num={seatB} type="aisle" hovered={hoveredSeat} setHovered={setHoveredSeat} />
+                  {/* Aisle gap */}
+                  <div className="h-3 md:h-4 flex items-center">
+                    <div className="w-full h-[1px] bg-border" />
+                  </div>
+                  {/* Row C (aisle) */}
+                  <SeatCell num={seatC} type="aisle" hovered={hoveredSeat} setHovered={setHoveredSeat} />
+                  {/* Row D (window) */}
+                  <SeatCell num={seatD} type="window" hovered={hoveredSeat} setHovered={setHoveredSeat} />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* End luggage zone */}
+          <div className="flex flex-col items-center justify-center px-3 md:px-4 bg-gold/10 border-l-2 border-border min-w-[52px]">
+            <LuggageIcon />
+            <span className="text-[8px] text-gold-dark font-medium mt-0.5">Equipaje</span>
+          </div>
+        </div>
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap items-center justify-center gap-4 px-4 py-3 border-t border-border bg-background text-xs text-muted-foreground">
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5">
-          <div className="w-4 h-3 rounded bg-primary/15 border border-primary/40" />
+          <div className="w-5 h-4 rounded-t-md bg-primary/15 border border-primary/40" />
           Ventana
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-4 h-3 rounded bg-muted border border-border" />
+          <div className="w-5 h-4 rounded-t-md bg-muted border border-border" />
           Pasillo
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-4 h-3 rounded bg-muted-foreground/25 border border-muted-foreground/20 opacity-60" />
-          Ocupado
+          <div className="w-4 h-4 rounded bg-gold/10 border border-gold/30 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-3 h-3 text-gold" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="7" width="12" height="13" rx="2" /></svg>
+          </div>
+          Equipaje
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded bg-primary/10 flex items-center justify-center">
+            <span className="text-[9px]">🚻</span>
+          </div>
+          WC
         </div>
       </div>
 
       {/* Specs + disclaimer */}
-      <div className="px-5 py-3 border-t border-border bg-background text-center space-y-1">
+      <div className="text-center mt-4 space-y-1">
         <p className="text-xs text-muted-foreground">
           {seats} asientos · Configuración {config} · Ancho {seatWidth}
         </p>
@@ -381,6 +483,54 @@ const SeatLayout = ({ seats, config, seatWidth }: SeatLayoutProps) => {
           La selección de asiento estará disponible al momento de la reserva.
         </p>
       </div>
+    </div>
+  );
+};
+
+// Individual seat cell
+const SeatCell = ({
+  num,
+  type,
+  hovered,
+  setHovered,
+}: {
+  num: number;
+  type: "window" | "aisle";
+  hovered: number | null;
+  setHovered: (n: number | null) => void;
+}) => {
+  if (num <= 0) return <div className="w-7 h-6 md:w-8 md:h-7" />;
+
+  const isWindow = type === "window";
+  const isHovered = hovered === num;
+
+  return (
+    <div className="relative">
+      <div
+        className={`w-7 h-6 md:w-8 md:h-7 rounded-t-md border text-[8px] md:text-[9px] font-semibold flex items-center justify-center transition-colors select-none cursor-pointer ${
+          isWindow
+            ? "bg-primary/15 border-primary/40 hover:bg-primary/25"
+            : "bg-muted border-border hover:bg-muted/70"
+        } ${isHovered ? "ring-2 ring-accent ring-offset-1 ring-offset-card" : ""}`}
+        onMouseEnter={() => setHovered(num)}
+        onMouseLeave={() => setHovered(null)}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          setHovered(isHovered ? null : num);
+        }}
+        aria-label={`Asiento ${num} — ${isWindow ? "Ventana" : "Pasillo"}`}
+      >
+        {num}
+      </div>
+
+      {isHovered && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20 pointer-events-none">
+          <div className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-foreground text-background text-[10px] font-medium shadow-xl">
+            Asiento {num} · {isWindow ? "Ventana" : "Pasillo"}
+          </div>
+          <div className="w-0 h-0 mx-auto border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-foreground" />
+        </div>
+      )}
     </div>
   );
 };
@@ -556,7 +706,7 @@ const VagonDetalle = () => {
             <p className="section-label">Distribución</p>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Layout de asientos</h2>
           </div>
-          <SeatLayout seats={wagon.seats} config={wagon.config} seatWidth={wagon.seatWidth} />
+          <SeatLayout seats={wagon.seats} config={wagon.config} seatWidth={wagon.seatWidth} slug={wagon.slug} />
         </div>
       </section>
 
