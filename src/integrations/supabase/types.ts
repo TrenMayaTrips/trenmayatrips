@@ -44,6 +44,134 @@ export type Database = {
         }
         Relationships: []
       }
+      experience_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          description_en: string | null
+          experience_category_key: string
+          faq_cultural: Json | null
+          faq_tips: Json | null
+          featured_image: string | null
+          hero_description: string | null
+          hero_description_en: string | null
+          hero_headline: string | null
+          hero_headline_en: string | null
+          icon: string | null
+          id: string
+          name: string
+          name_en: string | null
+          slug: string
+          sort_order: number
+          status: Database["public"]["Enums"]["content_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          experience_category_key: string
+          faq_cultural?: Json | null
+          faq_tips?: Json | null
+          featured_image?: string | null
+          hero_description?: string | null
+          hero_description_en?: string | null
+          hero_headline?: string | null
+          hero_headline_en?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          name_en?: string | null
+          slug: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          experience_category_key?: string
+          faq_cultural?: Json | null
+          faq_tips?: Json | null
+          featured_image?: string | null
+          hero_description?: string | null
+          hero_description_en?: string | null
+          hero_headline?: string | null
+          hero_headline_en?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          name_en?: string | null
+          slug?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      experience_subcategories: {
+        Row: {
+          category_id: string
+          created_at: string
+          description: string | null
+          description_en: string | null
+          featured_image: string | null
+          hero_description: string | null
+          hero_description_en: string | null
+          icon: string | null
+          id: string
+          name: string
+          name_en: string | null
+          slug: string
+          sort_order: number
+          status: Database["public"]["Enums"]["content_status"]
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          featured_image?: string | null
+          hero_description?: string | null
+          hero_description_en?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          name_en?: string | null
+          slug: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          featured_image?: string | null
+          hero_description?: string | null
+          hero_description_en?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          name_en?: string | null
+          slug?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experience_subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "experience_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
@@ -103,7 +231,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      content_status: "draft" | "published" | "paused"
+      tmt_state: "quintana_roo" | "yucatan" | "campeche" | "tabasco" | "chiapas"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -230,6 +359,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      content_status: ["draft", "published", "paused"],
+      tmt_state: ["quintana_roo", "yucatan", "campeche", "tabasco", "chiapas"],
+    },
   },
 } as const
