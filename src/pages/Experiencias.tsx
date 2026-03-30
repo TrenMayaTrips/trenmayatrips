@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
-import { categories } from "@/data/experience-categories";
+import { useExperienceCategories } from "@/hooks/useExperienceCategories";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { experienceGallery } from "@/data/experience-gallery";
