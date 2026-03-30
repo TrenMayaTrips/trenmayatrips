@@ -26,8 +26,7 @@ const ExperienciaSubcategoria = () => {
     subcategorySlug: string;
   }>();
 
-  const category = getCategoryBySlug(categorySlug || "");
-  const subcategory = getSubcategoryBySlug(categorySlug || "", subcategorySlug || "");
+  const { category, subcategory, isLoading } = useSubcategoryBySlug(categorySlug, subcategorySlug);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);

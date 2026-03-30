@@ -24,7 +24,7 @@ import {
 
 const ExperienciaCategoria = () => {
   const { slugOrCategory } = useParams<{ slugOrCategory: string }>();
-  const category = getCategoryBySlug(slugOrCategory || "");
+  const { category, isLoading } = useCategoryBySlug(slugOrCategory);
   const experience = getExperienceBySlug(slugOrCategory || "");
 
   const [searchQuery, setSearchQuery] = useState("");
