@@ -4,7 +4,8 @@ import { useState, useMemo } from "react";
 import { Search, MapPin, Clock, Star, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
-import { getCategoryBySlug, guarantees } from "@/data/experience-categories";
+import { useCategoryBySlug } from "@/hooks/useExperienceCategories";
+import { guarantees } from "@/data/experience-categories";
 import { experiences, categoryLabels, stateLabels, getExperienceBySlug } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
@@ -23,7 +24,7 @@ import {
 
 const ExperienciaCategoria = () => {
   const { slugOrCategory } = useParams<{ slugOrCategory: string }>();
-  const category = getCategoryBySlug(slugOrCategory || "");
+  const { category, isLoading } = useCategoryBySlug(slugOrCategory);
   const experience = getExperienceBySlug(slugOrCategory || "");
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -42,6 +43,17 @@ const ExperienciaCategoria = () => {
       return matchesCategory && matchesSearch && matchesState;
     });
   }, [category, searchQuery, selectedState]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+        </div>
+      </PageLayout>
+    );
+  }
 
   // If it's an experience slug (not a category), render the detail page
   if (!category && experience) return <ExperienciaDetalle />;

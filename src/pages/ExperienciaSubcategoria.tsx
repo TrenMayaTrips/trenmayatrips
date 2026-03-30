@@ -4,7 +4,8 @@ import { useState, useMemo } from "react";
 import { Search, MapPin, Clock, Star, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
-import { getCategoryBySlug, getSubcategoryBySlug, guarantees } from "@/data/experience-categories";
+import { useSubcategoryBySlug } from "@/hooks/useExperienceCategories";
+import { guarantees } from "@/data/experience-categories";
 import { experiences, stateLabels } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
@@ -25,8 +26,7 @@ const ExperienciaSubcategoria = () => {
     subcategorySlug: string;
   }>();
 
-  const category = getCategoryBySlug(categorySlug || "");
-  const subcategory = getSubcategoryBySlug(categorySlug || "", subcategorySlug || "");
+  const { category, subcategory, isLoading } = useSubcategoryBySlug(categorySlug, subcategorySlug);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -44,6 +44,16 @@ const ExperienciaSubcategoria = () => {
       return matchesCategory && matchesSearch && matchesState;
     });
   }, [category, searchQuery, selectedState]);
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!category || !subcategory) return <Navigate to={category ? `/experiencias/${category.slug}` : "/experiencias"} replace />;
 
