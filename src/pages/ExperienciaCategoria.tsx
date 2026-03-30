@@ -44,6 +44,17 @@ const ExperienciaCategoria = () => {
     });
   }, [category, searchQuery, selectedState]);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+        </div>
+      </PageLayout>
+    );
+  }
+
   // If it's an experience slug (not a category), render the detail page
   if (!category && experience) return <ExperienciaDetalle />;
   if (!category) return <Navigate to="/experiencias" replace />;
