@@ -799,7 +799,7 @@ const VagonDetalle = () => {
                     <td className={`px-4 py-3 font-medium text-foreground ${i % 2 === 0 ? "bg-card" : "bg-secondary/30"}`}>
                       {row.label}
                     </td>
-                    {wagonClassesDetailed.map((w) => {
+                    {allWagons.map((w) => {
                       const isCurrent = w.slug === wagon.slug;
                       return (
                         <td
