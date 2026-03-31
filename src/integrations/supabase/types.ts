@@ -267,6 +267,153 @@ export type Database = {
           },
         ]
       }
+      experiences: {
+        Row: {
+          category_id: string | null
+          category_key: string
+          created_at: string
+          currency: string
+          description: string
+          description_en: string | null
+          destination_id: string | null
+          duration: string
+          featured_image: string | null
+          gallery: Json | null
+          group_size: string | null
+          id: string
+          includes: string[] | null
+          is_featured: boolean
+          itinerary: Json | null
+          languages: string[] | null
+          long_description: string | null
+          long_description_en: string | null
+          net_price: number | null
+          not_includes: string[] | null
+          price: number
+          provider_id: string | null
+          rating: number | null
+          rating_breakdown: Json | null
+          rating_distribution: Json | null
+          recommendations: string[] | null
+          related_slugs: string[] | null
+          reviews_count: number | null
+          reviews_data: Json | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          sort_order: number
+          state: Database["public"]["Enums"]["tmt_state"]
+          state_label: string
+          status: Database["public"]["Enums"]["content_status"]
+          title: string
+          title_en: string | null
+          updated_at: string
+          video_url: string | null
+          wellet_code: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          category_key: string
+          created_at?: string
+          currency?: string
+          description: string
+          description_en?: string | null
+          destination_id?: string | null
+          duration: string
+          featured_image?: string | null
+          gallery?: Json | null
+          group_size?: string | null
+          id?: string
+          includes?: string[] | null
+          is_featured?: boolean
+          itinerary?: Json | null
+          languages?: string[] | null
+          long_description?: string | null
+          long_description_en?: string | null
+          net_price?: number | null
+          not_includes?: string[] | null
+          price: number
+          provider_id?: string | null
+          rating?: number | null
+          rating_breakdown?: Json | null
+          rating_distribution?: Json | null
+          recommendations?: string[] | null
+          related_slugs?: string[] | null
+          reviews_count?: number | null
+          reviews_data?: Json | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          sort_order?: number
+          state: Database["public"]["Enums"]["tmt_state"]
+          state_label: string
+          status?: Database["public"]["Enums"]["content_status"]
+          title: string
+          title_en?: string | null
+          updated_at?: string
+          video_url?: string | null
+          wellet_code?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          category_key?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          description_en?: string | null
+          destination_id?: string | null
+          duration?: string
+          featured_image?: string | null
+          gallery?: Json | null
+          group_size?: string | null
+          id?: string
+          includes?: string[] | null
+          is_featured?: boolean
+          itinerary?: Json | null
+          languages?: string[] | null
+          long_description?: string | null
+          long_description_en?: string | null
+          net_price?: number | null
+          not_includes?: string[] | null
+          price?: number
+          provider_id?: string | null
+          rating?: number | null
+          rating_breakdown?: Json | null
+          rating_distribution?: Json | null
+          recommendations?: string[] | null
+          related_slugs?: string[] | null
+          reviews_count?: number | null
+          reviews_data?: Json | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          sort_order?: number
+          state?: Database["public"]["Enums"]["tmt_state"]
+          state_label?: string
+          status?: Database["public"]["Enums"]["content_status"]
+          title?: string
+          title_en?: string | null
+          updated_at?: string
+          video_url?: string | null
+          wellet_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experiences_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "experience_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "experiences_destination_id_fkey"
+            columns: ["destination_id"]
+            isOneToOne: false
+            referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
