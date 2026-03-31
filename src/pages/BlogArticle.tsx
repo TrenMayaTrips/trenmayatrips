@@ -287,7 +287,16 @@ const BlogArticle = () => {
               <PostArticleCTA ctx={articleCtx} />
 
               {/* Author Card */}
-              <AuthorBox author={getAuthor(post.author)} />
+              {authorData && <AuthorBox author={{
+                name: authorData.name,
+                role: authorData.role || "",
+                bio: authorData.bio || "",
+                initials: authorData.initials || "",
+                photo: authorData.photo || undefined,
+                linkedin: authorData.linkedin || undefined,
+                twitter: authorData.twitter || undefined,
+                website: authorData.website || undefined,
+              }} />}
               <div className="mt-8 lg:hidden">
                 <SidebarNewsletter />
               </div>
