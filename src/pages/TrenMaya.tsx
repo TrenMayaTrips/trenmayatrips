@@ -353,7 +353,7 @@ const TrenMaya = () => {
                   onChange={(e) => setOrigin(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm min-h-[44px]"
                 >
-                  {allStationNames.map((s) => (
+                  {stationNames.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
