@@ -4,22 +4,25 @@ import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle, Search, MessageSquare, RouteIcon, Star } from "lucide-react";
-import { findRoute, routes as allRoutes, type Route } from "@/data/routes";
+import { useRoutes, type Route } from "@/hooks/useRoutes";
+import { useWagonClasses } from "@/hooks/useWagonClasses";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
-import { wagonClasses } from "@/data/stations";
-import { allStationNames } from "@/data/routes";
 import { useStations } from "@/hooks/useStations";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
 import trenJanal from "@/assets/tren-janal-interior.jpg";
 import trenPatal from "@/assets/tren-patal-interior.jpg";
 
-const wagonImages = [trenXiinbal, trenJanal, trenPatal];
+const wagonImages: Record<string, string> = {
+  xiinbal: trenXiinbal,
+  janal: trenJanal,
+  patal: trenPatal,
+};
 
 const stateLabelsMap: Record<string, string> = {
   chiapas: "Chiapas",
