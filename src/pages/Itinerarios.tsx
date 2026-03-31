@@ -121,7 +121,7 @@ const Itinerarios = () => {
 
   const selectedDests = useMemo(
     () => destinations.filter((d) => selectedDestinations.includes(d.slug)),
-    [selectedDestinations]
+    [selectedDestinations, destinations]
   );
 
   const toggleDestination = (slug: string) => {

@@ -123,6 +123,8 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
     setSelectedStation(stop);
   };
 
+  const { data: destinations = [] } = useDestinations();
+
   const getDestinationInfo = (stationName: string) => {
     const slug = stationToDestinationSlug[stationName];
     if (!slug) return null;

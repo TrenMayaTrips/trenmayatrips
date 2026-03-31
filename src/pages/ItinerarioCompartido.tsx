@@ -27,6 +27,8 @@ const lodgingOptions = [
 ];
 
 const ItinerarioCompartido = () => {
+  const { data: destinations = [] } = useDestinations();
+  const { data: states = [] } = useStatesInfo();
   const { code } = useParams<{ code: string }>();
   const [itinerary, setItinerary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
