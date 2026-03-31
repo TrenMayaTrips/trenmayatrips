@@ -1,8 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { stations, Station } from "@/data/stations";
-import { stationDetails } from "@/data/station-details";
+import { useStations, type StationFromDB } from "@/hooks/useStations";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /* ── SVG coordinates for each station ── */

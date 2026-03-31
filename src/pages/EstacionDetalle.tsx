@@ -5,7 +5,8 @@ import { ChevronDown, ChevronUp, ArrowRight, Lightbulb } from "lucide-react";
 import { useState } from "react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
-import { findStationBySlug } from "@/data/station-details";
+import { useStationBySlug } from "@/hooks/useStations";
+import { Loader2 } from "lucide-react";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 
