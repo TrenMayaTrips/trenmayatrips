@@ -528,9 +528,8 @@ const TrenMaya = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {wagonClasses.map((wagon, i) => {
-              const isFeatured = i === 1;
-              const prices = [890, 1490, 2490];
+            {wagonClassesList.map((wagon, i) => {
+              const isFeatured = wagon.isFeatured;
               return (
                 <motion.div
                   key={wagon.name}
@@ -543,15 +542,18 @@ const TrenMaya = () => {
                     <div className={`bg-card rounded-xl overflow-hidden relative ${
                       isFeatured ? "shadow-lg" : ""
                     }`}>
-                      {isFeatured && (
+                      {isFeatured && wagon.badge && (
                         <div className="bg-primary text-primary-foreground text-xs font-semibold text-center py-1.5">
-                          ⭐ Más popular
+                          {wagon.badge}
                         </div>
                       )}
                       <div className="h-40 overflow-hidden">
                         <img
-                          src={wagonImages[i]}
+                          src={wagonImages[wagon.slug] || wagon.heroImage}
                           alt={`Interior del vagón clase ${wagon.name}`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
                           className="w-full h-full object-cover"
                           loading="lazy"
                         />
