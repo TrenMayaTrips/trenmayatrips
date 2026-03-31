@@ -26,7 +26,8 @@ const ExperienciaDetalle = () => {
   const [activeTab, setActiveTab] = useState("Resumen");
   const [sidebarStuck, setSidebarStuck] = useState(true);
   const relatedRef = useRef<HTMLDivElement>(null);
-  const exp = getExperienceBySlug(slug);
+  const { data: exp, isLoading } = useExperienceBySlug(slug);
+  const { data: relatedExps = [] } = useRelatedExperiences(exp?.related || []);
 
   // Stop sticky when related section is visible
   useEffect(() => {
@@ -39,11 +40,17 @@ const ExperienciaDetalle = () => {
     return () => observer.disconnect();
   }, [exp]);
 
-  if (!exp) return <Navigate to="/experiencias" replace />;
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
 
-  const relatedExps = exp.related
-    .map((s) => experiences.find((e) => e.slug === s))
-    .filter(Boolean);
+  if (!exp) return <Navigate to="/experiencias" replace />;
 
   const reviewData = getReviewsForExperience(exp.slug, exp.rating, exp.reviews);
   const trainConnection = getTrainConnection(exp.slug, exp.state);
