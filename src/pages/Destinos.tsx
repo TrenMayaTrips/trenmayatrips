@@ -1,10 +1,9 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Calendar, Star, ChevronRight, Train, LayoutGrid, List } from "lucide-react";
+import { MapPin, Clock, Calendar, Star, ChevronRight, Train, LayoutGrid, List, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
-import { destinations, states, destinationTypes } from "@/data/destinations";
-import type { StateInfo } from "@/data/destinations";
+import { useDestinations, useStatesInfo, destinationTypes } from "@/hooks/useDestinations";
 import { Button } from "@/components/ui/button";
 import { destinationImageMap } from "@/data/destination-images";
 import heroDestinos from "@/assets/hero-destinos.jpg";
