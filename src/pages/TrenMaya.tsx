@@ -79,7 +79,7 @@ const StatsSection = () => {
   const statsData = [
     { 
       key: 'km',
-      value: trenMayaStats.totalKm, 
+      value: 1554, 
       unit: "km", 
       label: "De ruta",
       context: "La ruta férrea más larga de México",
@@ -87,7 +87,7 @@ const StatsSection = () => {
     },
     { 
       key: 'stations',
-      value: trenMayaStats.stations, 
+      value: 34, 
       unit: "", 
       label: "Estaciones",
       context: "Conectando los 5 estados del sureste",
@@ -95,7 +95,7 @@ const StatsSection = () => {
     },
     { 
       key: 'states',
-      value: trenMayaStats.states, 
+      value: 5, 
       unit: "", 
       label: "Estados",
       context: "De Chiapas a Quintana Roo",
@@ -103,7 +103,7 @@ const StatsSection = () => {
     },
     { 
       key: 'classes',
-      value: trenMayaStats.wagonTypes, 
+      value: 3, 
       unit: "", 
       label: "Clases",
       context: "Para cada tipo de viajero",
