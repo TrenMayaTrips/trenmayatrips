@@ -4,7 +4,7 @@ import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ArrowUpDown, Chevron
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
+import { useExperiences, categoryLabels, stateLabels } from "@/hooks/useExperiences";
 import { useExperienceCategories } from "@/hooks/useExperienceCategories";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
