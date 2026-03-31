@@ -52,6 +52,7 @@ const RutaDetalle = () => {
 
   const { data: route, isLoading } = useRouteBySlug(slug);
   const { data: allRoutes = [] } = useRoutes();
+  const { data: allExperiences = [] } = useExperiences();
 
   if (isLoading) {
     return (
@@ -81,9 +82,6 @@ const RutaDetalle = () => {
   const relatedRoutes = allRoutes.filter(
     (r) => r.slug !== route.slug && (r.origin === route.origin || r.origin === route.destination || r.destination === route.origin || r.destination === route.destination)
   ).slice(0, 3);
-
-  // Experiences in route states (max 6)
-  const { data: allExperiences = [] } = useExperiences();
   const routeExperiences = allExperiences
     .filter((e) => route.statesTraversed.includes(e.state))
     .slice(0, 6);
