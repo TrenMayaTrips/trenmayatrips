@@ -258,7 +258,7 @@ const Destinos = () => {
                       <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground pt-3 border-t border-border">
                         <div className="flex items-center gap-1.5">
                           <Train size={12} className="text-primary" />
-                          <span>{dest.nearestStation}</span>
+                          <span>{(dest as any).nearestStation}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Clock size={12} className="text-accent" />
