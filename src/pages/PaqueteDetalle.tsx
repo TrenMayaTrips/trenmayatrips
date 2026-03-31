@@ -18,12 +18,23 @@ const difficultyColors: Record<string, string> = {
 
 const PaqueteDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const pkg = packages.find((p) => p.slug === slug);
+  const { data: pkg, isLoading } = usePackageBySlug(slug);
+  const { data: allPackages = [] } = usePackages();
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!pkg) return <NotFound />;
 
   const heroImage = packageImageMap[pkg.slug] || "/placeholder.svg";
-  const related = packages.filter((p) => p.type === pkg.type && p.slug !== pkg.slug).slice(0, 3);
+  const related = allPackages.filter((p) => p.type === pkg.type && p.slug !== pkg.slug).slice(0, 3);
 
   const handleQuote = () => {
     const message = `Hola, me interesa el paquete "${pkg.title}" (${pkg.duration} días, $${pkg.price.toLocaleString()} MXN). ¿Pueden ayudarme con una cotización?`;

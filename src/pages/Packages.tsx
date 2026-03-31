@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 const Packages = () => {
+  const { data: packages = [], isLoading } = usePackages();
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [compareMode, setCompareMode] = useState(false);
   const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
@@ -27,9 +28,10 @@ const Packages = () => {
     return selectedType
       ? packages.filter((pkg) => pkg.type === selectedType)
       : packages;
-  }, [selectedType]);
+  }, [selectedType, packages]);
 
   const priceRange = useMemo(() => {
+    if (filtered.length === 0) return { min: 0, max: 0 };
     const prices = filtered.map((p) => p.price);
     return { min: Math.min(...prices), max: Math.max(...prices) };
   }, [filtered]);
