@@ -432,6 +432,120 @@ export type Database = {
         }
         Relationships: []
       }
+      packages: {
+        Row: {
+          best_for: string | null
+          best_for_en: string | null
+          created_at: string
+          currency: string
+          description: string
+          description_en: string | null
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          duration_days: number
+          excludes: string[] | null
+          featured_image: string | null
+          gallery: Json | null
+          group_size: string | null
+          highlights: string[] | null
+          id: string
+          includes: string[] | null
+          is_featured: boolean
+          itinerary: Json | null
+          max_altitude: number | null
+          net_price: number | null
+          price: number
+          rating: number | null
+          reviews_count: number | null
+          seasonal_rating: Json | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          sort_order: number
+          states: string[] | null
+          status: Database["public"]["Enums"]["content_status"]
+          title: string
+          title_en: string | null
+          type: Database["public"]["Enums"]["package_type"]
+          updated_at: string
+          video_url: string | null
+          wellet_code: string | null
+        }
+        Insert: {
+          best_for?: string | null
+          best_for_en?: string | null
+          created_at?: string
+          currency?: string
+          description: string
+          description_en?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          duration_days: number
+          excludes?: string[] | null
+          featured_image?: string | null
+          gallery?: Json | null
+          group_size?: string | null
+          highlights?: string[] | null
+          id?: string
+          includes?: string[] | null
+          is_featured?: boolean
+          itinerary?: Json | null
+          max_altitude?: number | null
+          net_price?: number | null
+          price: number
+          rating?: number | null
+          reviews_count?: number | null
+          seasonal_rating?: Json | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          sort_order?: number
+          states?: string[] | null
+          status?: Database["public"]["Enums"]["content_status"]
+          title: string
+          title_en?: string | null
+          type: Database["public"]["Enums"]["package_type"]
+          updated_at?: string
+          video_url?: string | null
+          wellet_code?: string | null
+        }
+        Update: {
+          best_for?: string | null
+          best_for_en?: string | null
+          created_at?: string
+          currency?: string
+          description?: string
+          description_en?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          duration_days?: number
+          excludes?: string[] | null
+          featured_image?: string | null
+          gallery?: Json | null
+          group_size?: string | null
+          highlights?: string[] | null
+          id?: string
+          includes?: string[] | null
+          is_featured?: boolean
+          itinerary?: Json | null
+          max_altitude?: number | null
+          net_price?: number | null
+          price?: number
+          rating?: number | null
+          reviews_count?: number | null
+          seasonal_rating?: Json | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          sort_order?: number
+          states?: string[] | null
+          status?: Database["public"]["Enums"]["content_status"]
+          title?: string
+          title_en?: string | null
+          type?: Database["public"]["Enums"]["package_type"]
+          updated_at?: string
+          video_url?: string | null
+          wellet_code?: string | null
+        }
+        Relationships: []
+      }
       saved_itineraries: {
         Row: {
           created_at: string
@@ -649,6 +763,8 @@ export type Database = {
         | "naturaleza"
         | "playa"
         | "pueblo"
+      difficulty_level: "fácil" | "moderado" | "desafiante"
+      package_type: "cultural" | "aventura" | "gastronomico" | "mixto"
       station_type: "principal" | "estacion" | "paradero"
       tmt_state: "quintana_roo" | "yucatan" | "campeche" | "tabasco" | "chiapas"
     }
@@ -787,6 +903,8 @@ export const Constants = {
         "playa",
         "pueblo",
       ],
+      difficulty_level: ["fácil", "moderado", "desafiante"],
+      package_type: ["cultural", "aventura", "gastronomico", "mixto"],
       station_type: ["principal", "estacion", "paradero"],
       tmt_state: ["quintana_roo", "yucatan", "campeche", "tabasco", "chiapas"],
     },
