@@ -66,7 +66,7 @@ const Experiencias = () => {
           exp.stateName.toLowerCase().includes(q)
       )
       .slice(0, 5);
-  }, [searchQuery]);
+  }, [searchQuery, experiences]);
 
   // Close suggestions on click outside
   useEffect(() => {
