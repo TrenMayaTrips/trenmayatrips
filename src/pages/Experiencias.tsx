@@ -94,7 +94,7 @@ const Experiencias = () => {
     if (sortBy === "duracion") return [...result].sort((a, b) => parseDurationHours(a.duration) - parseDurationHours(b.duration));
     if (sortBy === "rating") return [...result].sort((a, b) => b.rating - a.rating);
     return result;
-  }, [searchQuery, selectedCategory, selectedState, sortBy]);
+  }, [searchQuery, selectedCategory, selectedState, sortBy, experiences]);
 
   const perPage = isMobile ? 6 : 9;
   const totalPages = Math.ceil(filtered.length / perPage);
