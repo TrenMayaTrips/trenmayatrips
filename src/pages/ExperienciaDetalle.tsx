@@ -298,42 +298,40 @@ const ExperienciaDetalle = () => {
                     {imgSrc ? (
                       <img
                         src={imgSrc}
-                        alt={rel!.title}
+                        alt={rel.title}
                         loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[hsl(var(--primary)/0.8)] to-[hsl(160,40%,15%)] flex items-center justify-center p-4">
-                        <span className="text-primary-foreground font-heading text-center text-sm font-semibold">{rel!.title}</span>
+                        <span className="text-primary-foreground font-heading text-center text-sm font-semibold">{rel.title}</span>
                       </div>
                     )}
-                    {/* Category badge */}
                     <span className="absolute top-2 left-2 bg-background/85 backdrop-blur-sm text-foreground text-[11px] font-medium px-2 py-0.5 rounded-full">
-                      {categoryLabels[rel!.category] || rel!.category}
+                      {categoryLabels[rel.category] || rel.category}
                     </span>
                   </div>
-                  {/* Content */}
                   <div className="p-4 space-y-2">
                     <h3 className="font-heading text-base font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                      {rel!.title}
+                      {rel.title}
                     </h3>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <MapPin className="w-3 h-3" />
-                      <span>{rel!.stateName}</span>
+                      <span>{rel.stateName}</span>
                     </div>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {rel!.duration}
+                        {rel.duration}
                       </span>
                       <span className="flex items-center gap-1">
                         <Star className="w-3 h-3 fill-accent text-accent" />
-                        {rel!.rating} ({rel!.reviews})
+                        {rel.rating} ({rel.reviews})
                       </span>
                     </div>
                     <div className="pt-1 border-t border-border flex items-center justify-end">
                       <span className="text-sm font-bold text-primary">
-                        Desde ${rel!.price.toLocaleString()} MXN
+                        Desde ${rel.price.toLocaleString()} MXN
                       </span>
                     </div>
                   </div>

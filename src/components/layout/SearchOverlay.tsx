@@ -20,6 +20,7 @@ interface SearchOverlayProps {
 
 const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
   const { data: destinations = [] } = useDestinations();
+  const { data: experiences = [] } = useExperiences();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 

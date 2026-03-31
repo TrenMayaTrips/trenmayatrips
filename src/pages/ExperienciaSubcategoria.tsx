@@ -36,7 +36,7 @@ const ExperienciaSubcategoria = () => {
 
   const filtered = useMemo(() => {
     if (!category) return [];
-    return experiences.filter((exp) => {
+    return allExperiences.filter((exp) => {
       const matchesCategory = exp.category === category.experienceCategory;
       const matchesSearch =
         !searchQuery ||
@@ -45,7 +45,7 @@ const ExperienciaSubcategoria = () => {
       const matchesState = !selectedState || exp.state === selectedState;
       return matchesCategory && matchesSearch && matchesState;
     });
-  }, [category, searchQuery, selectedState]);
+  }, [category, allExperiences, searchQuery, selectedState]);
 
   if (isLoading) {
     return (

@@ -12,7 +12,7 @@ interface DestinoExperienciasProps {
 }
 
 const DestinoExperiencias = ({ stateName, stateSlug }: DestinoExperienciasProps) => {
-  const stateExperiences = experiences.filter((e) => e.state === stateSlug);
+  const { data: stateExperiences = [] } = useExperiencesByState(stateSlug);
 
   if (stateExperiences.length === 0) return null;
 

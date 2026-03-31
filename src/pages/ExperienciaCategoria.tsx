@@ -58,7 +58,7 @@ const ExperienciaCategoria = () => {
   }
 
   // If it's an experience slug (not a category), render the detail page
-  if (!category && experience) return <ExperienciaDetalle />;
+  if (!category && experienceBySlug) return <ExperienciaDetalle />;
   if (!category) return <Navigate to="/experiencias" replace />;
 
 

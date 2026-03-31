@@ -52,6 +52,7 @@ const Experiencias = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { data: experiences = [], isLoading: experiencesLoading } = useExperiences();
 
   // Search suggestions (max 5)
   const suggestions = useMemo(() => {
