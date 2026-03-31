@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Clock, User, ArrowRight, Search, ChevronDown, X, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
-import { blogPosts, blogCategories } from "@/data/blog";
+import { useBlogPosts, useBlogCategories, useFeaturedPosts, type BlogPost } from "@/hooks/useBlog";
+import { Loader2 } from "lucide-react";
 import heroBlog from "@/assets/hero-blog.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import GrecaDivider from "@/components/maya/GrecaDivider";
@@ -32,6 +33,8 @@ const formatDate = (dateStr: string): string => {
 const ARTICLES_PER_PAGE = 6;
 
 const Blog = () => {
+  const { data: blogPosts = [], isLoading: postsLoading } = useBlogPosts();
+  const { data: blogCategories = [], isLoading: catsLoading } = useBlogCategories();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -77,7 +80,7 @@ const Blog = () => {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([tag]) => tag);
-  }, []);
+  }, [blogPosts]);
 
   const featuredPosts = blogPosts
     .filter((p) => p.featured)

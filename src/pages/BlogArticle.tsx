@@ -2,12 +2,13 @@ import { useMemo } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Clock, User, Calendar, Tag, Share2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
-import { blogPosts, blogCategories } from "@/data/blog";
+import { useBlogPostBySlug, useBlogPosts, useBlogCategories } from "@/hooks/useBlog";
+import { useAuthorByName } from "@/hooks/useBlogAuthors";
 import { Button } from "@/components/ui/button";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import EstelaCard from "@/components/maya/EstelaCard";
 import AuthorBox from "@/components/blog/AuthorBox";
-import { getAuthor } from "@/data/authors";
+import { Loader2 } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ArticleTOC, { TOCItem } from "@/components/blog/ArticleTOC";
 import ArticleSidebarCTA from "@/components/blog/ArticleSidebarCTA";
@@ -36,7 +37,11 @@ function slugify(text: string): string {
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const { data: post, isLoading } = useBlogPostBySlug(slug || "");
+  const { data: allPosts = [] } = useBlogPosts();
+  const { data: blogCategories = [] } = useBlogCategories();
+  const authorName = post?.author || "";
+  const { data: authorData } = useAuthorByName(authorName);
 
   const tocItems = useMemo<TOCItem[]>(() => {
     if (!post) return [];
@@ -57,7 +62,7 @@ const BlogArticle = () => {
 
   const related = useMemo(() => {
     if (!post) return [];
-    const others = blogPosts.filter((p) => p.slug !== post.slug);
+    const others = allPosts.filter((p) => p.slug !== post.slug);
     const scored = others.map((p) => {
       let score = 0;
       score += p.tags.filter((t) => post.tags.includes(t)).length * 10;
@@ -68,7 +73,17 @@ const BlogArticle = () => {
     });
     scored.sort((a, b) => b.score - a.score);
     return scored.slice(0, 6).map((s) => s.post);
-  }, [post]);
+  }, [post, allPosts]);
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!post) return <Navigate to="/blog" replace />;
 
@@ -272,7 +287,16 @@ const BlogArticle = () => {
               <PostArticleCTA ctx={articleCtx} />
 
               {/* Author Card */}
-              <AuthorBox author={getAuthor(post.author)} />
+              {authorData && <AuthorBox author={{
+                name: authorData.name,
+                role: authorData.role || "",
+                bio: authorData.bio || "",
+                initials: authorData.initials || "",
+                photo: authorData.photo || undefined,
+                linkedin: authorData.linkedin || undefined,
+                twitter: authorData.twitter || undefined,
+                website: authorData.website || undefined,
+              }} />}
               <div className="mt-8 lg:hidden">
                 <SidebarNewsletter />
               </div>

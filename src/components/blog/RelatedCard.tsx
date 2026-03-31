@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Clock, User } from "lucide-react";
-import { blogCategories, type BlogPost } from "@/data/blog";
+import { useBlogCategories, type BlogPost } from "@/hooks/useBlog";
 import { Badge } from "@/components/ui/badge";
 
 interface RelatedCardProps {
@@ -8,6 +8,7 @@ interface RelatedCardProps {
 }
 
 const RelatedCard = ({ post }: RelatedCardProps) => {
+  const { data: blogCategories = [] } = useBlogCategories();
   const category = blogCategories.find((c) => c.slug === post.category);
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("es-MX", {
     month: "short",
