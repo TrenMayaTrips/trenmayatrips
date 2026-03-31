@@ -223,6 +223,102 @@ export type Database = {
         }
         Relationships: []
       }
+      stations: {
+        Row: {
+          accessibility: string | null
+          connections: Json | null
+          created_at: string
+          full_name: string | null
+          full_name_en: string | null
+          has_detail_page: boolean
+          highlights: string[] | null
+          id: string
+          image: string | null
+          km: number
+          name: string
+          name_en: string | null
+          nearby_destinations: Json | null
+          parking: string | null
+          schedule: string | null
+          seo_description: string | null
+          seo_title: string | null
+          services: Json | null
+          slug: string
+          sort_order: number
+          state: Database["public"]["Enums"]["tmt_state"]
+          state_label: string
+          status: Database["public"]["Enums"]["content_status"]
+          subtitle: string | null
+          subtitle_en: string | null
+          tips: string[] | null
+          transport: Json | null
+          type: Database["public"]["Enums"]["station_type"]
+          updated_at: string
+        }
+        Insert: {
+          accessibility?: string | null
+          connections?: Json | null
+          created_at?: string
+          full_name?: string | null
+          full_name_en?: string | null
+          has_detail_page?: boolean
+          highlights?: string[] | null
+          id?: string
+          image?: string | null
+          km?: number
+          name: string
+          name_en?: string | null
+          nearby_destinations?: Json | null
+          parking?: string | null
+          schedule?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          services?: Json | null
+          slug: string
+          sort_order?: number
+          state: Database["public"]["Enums"]["tmt_state"]
+          state_label: string
+          status?: Database["public"]["Enums"]["content_status"]
+          subtitle?: string | null
+          subtitle_en?: string | null
+          tips?: string[] | null
+          transport?: Json | null
+          type?: Database["public"]["Enums"]["station_type"]
+          updated_at?: string
+        }
+        Update: {
+          accessibility?: string | null
+          connections?: Json | null
+          created_at?: string
+          full_name?: string | null
+          full_name_en?: string | null
+          has_detail_page?: boolean
+          highlights?: string[] | null
+          id?: string
+          image?: string | null
+          km?: number
+          name?: string
+          name_en?: string | null
+          nearby_destinations?: Json | null
+          parking?: string | null
+          schedule?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          services?: Json | null
+          slug?: string
+          sort_order?: number
+          state?: Database["public"]["Enums"]["tmt_state"]
+          state_label?: string
+          status?: Database["public"]["Enums"]["content_status"]
+          subtitle?: string | null
+          subtitle_en?: string | null
+          tips?: string[] | null
+          transport?: Json | null
+          type?: Database["public"]["Enums"]["station_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -257,6 +353,7 @@ export type Database = {
     Enums: {
       app_role: "admin" | "moderator" | "user"
       content_status: "draft" | "published" | "paused"
+      station_type: "principal" | "estacion" | "paradero"
       tmt_state: "quintana_roo" | "yucatan" | "campeche" | "tabasco" | "chiapas"
     }
     CompositeTypes: {
@@ -387,6 +484,7 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "moderator", "user"],
       content_status: ["draft", "published", "paused"],
+      station_type: ["principal", "estacion", "paradero"],
       tmt_state: ["quintana_roo", "yucatan", "campeche", "tabasco", "chiapas"],
     },
   },
