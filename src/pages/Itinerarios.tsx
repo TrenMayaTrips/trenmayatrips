@@ -117,7 +117,7 @@ const Itinerarios = () => {
       filtered = filtered.filter((d) => d.state === stateFilter);
     }
     return filtered;
-  }, [stateFilter]);
+  }, [stateFilter, destinations]);
 
   const selectedDests = useMemo(
     () => destinations.filter((d) => selectedDestinations.includes(d.slug)),
