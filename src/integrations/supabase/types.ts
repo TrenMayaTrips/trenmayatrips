@@ -44,6 +44,101 @@ export type Database = {
         }
         Relationships: []
       }
+      destinations: {
+        Row: {
+          best_months: string | null
+          created_at: string
+          description: string | null
+          description_en: string | null
+          emoji: string | null
+          featured_image: string | null
+          gallery: Json | null
+          highlights: string[] | null
+          id: string
+          name: string
+          name_en: string | null
+          nearest_station_id: string | null
+          nearest_station_name: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          sort_order: number
+          state: Database["public"]["Enums"]["tmt_state"]
+          state_label: string
+          status: Database["public"]["Enums"]["content_status"]
+          tagline: string | null
+          tagline_en: string | null
+          travel_time: string | null
+          type: Database["public"]["Enums"]["destination_type"]
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          best_months?: string | null
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          emoji?: string | null
+          featured_image?: string | null
+          gallery?: Json | null
+          highlights?: string[] | null
+          id?: string
+          name: string
+          name_en?: string | null
+          nearest_station_id?: string | null
+          nearest_station_name?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          sort_order?: number
+          state: Database["public"]["Enums"]["tmt_state"]
+          state_label: string
+          status?: Database["public"]["Enums"]["content_status"]
+          tagline?: string | null
+          tagline_en?: string | null
+          travel_time?: string | null
+          type: Database["public"]["Enums"]["destination_type"]
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          best_months?: string | null
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          emoji?: string | null
+          featured_image?: string | null
+          gallery?: Json | null
+          highlights?: string[] | null
+          id?: string
+          name?: string
+          name_en?: string | null
+          nearest_station_id?: string | null
+          nearest_station_name?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          sort_order?: number
+          state?: Database["public"]["Enums"]["tmt_state"]
+          state_label?: string
+          status?: Database["public"]["Enums"]["content_status"]
+          tagline?: string | null
+          tagline_en?: string | null
+          travel_time?: string | null
+          type?: Database["public"]["Enums"]["destination_type"]
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "destinations_nearest_station_id_fkey"
+            columns: ["nearest_station_id"]
+            isOneToOne: false
+            referencedRelation: "stations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       experience_categories: {
         Row: {
           created_at: string
@@ -223,6 +318,54 @@ export type Database = {
         }
         Relationships: []
       }
+      states_info: {
+        Row: {
+          capital: string | null
+          color: string | null
+          created_at: string
+          emoji: string | null
+          featured_image: string | null
+          id: string
+          name: string
+          name_en: string | null
+          slug: string
+          sort_order: number
+          tagline: string | null
+          tagline_en: string | null
+          updated_at: string
+        }
+        Insert: {
+          capital?: string | null
+          color?: string | null
+          created_at?: string
+          emoji?: string | null
+          featured_image?: string | null
+          id?: string
+          name: string
+          name_en?: string | null
+          slug: string
+          sort_order?: number
+          tagline?: string | null
+          tagline_en?: string | null
+          updated_at?: string
+        }
+        Update: {
+          capital?: string | null
+          color?: string | null
+          created_at?: string
+          emoji?: string | null
+          featured_image?: string | null
+          id?: string
+          name?: string
+          name_en?: string | null
+          slug?: string
+          sort_order?: number
+          tagline?: string | null
+          tagline_en?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       stations: {
         Row: {
           accessibility: string | null
@@ -353,6 +496,12 @@ export type Database = {
     Enums: {
       app_role: "admin" | "moderator" | "user"
       content_status: "draft" | "published" | "paused"
+      destination_type:
+        | "ciudad"
+        | "arqueologia"
+        | "naturaleza"
+        | "playa"
+        | "pueblo"
       station_type: "principal" | "estacion" | "paradero"
       tmt_state: "quintana_roo" | "yucatan" | "campeche" | "tabasco" | "chiapas"
     }
@@ -484,6 +633,13 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "moderator", "user"],
       content_status: ["draft", "published", "paused"],
+      destination_type: [
+        "ciudad",
+        "arqueologia",
+        "naturaleza",
+        "playa",
+        "pueblo",
+      ],
       station_type: ["principal", "estacion", "paradero"],
       tmt_state: ["quintana_roo", "yucatan", "campeche", "tabasco", "chiapas"],
     },
