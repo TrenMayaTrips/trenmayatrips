@@ -217,7 +217,7 @@ const Destinos = () => {
                     className="rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all group block"
                   >
                     <div className="relative h-48 overflow-hidden bg-muted">
-                      {destinationImageMap[dest.slug] && (
+                      {(dest.featuredImage || destinationImageMap[dest.slug]) && (
                         <img
                           src={destinationImageMap[dest.slug]}
                           alt={dest.name}
