@@ -239,6 +239,8 @@ const TrenMaya = () => {
     return map;
   }, [stations]);
 
+  const stateRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   const toggleState = useCallback((key: string) => {
     setExpandedStates(prev => {
       const next = new Set(prev);

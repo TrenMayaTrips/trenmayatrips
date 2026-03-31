@@ -12,10 +12,20 @@ import MayaPattern from "@/components/maya/MayaPattern";
 
 const EstacionDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const station = findStationBySlug(slug || "");
+  const { data: station, isLoading } = useStationBySlug(slug || "");
   const [expandedTips, setExpandedTips] = useState(true);
 
-  if (!station) return <Navigate to="/tren-maya" replace />;
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      </PageLayout>
+    );
+  }
+
+  if (!station || !station.hasDetailPage) return <Navigate to="/tren-maya" replace />;
 
   const typeLabel =
     station.type === "principal" ? "Estación principal" :
