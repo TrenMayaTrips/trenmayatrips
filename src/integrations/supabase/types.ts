@@ -546,6 +546,93 @@ export type Database = {
         }
         Relationships: []
       }
+      routes: {
+        Row: {
+          badge: string | null
+          badge_emoji: string | null
+          created_at: string
+          daily_departures: number
+          description: string | null
+          description_en: string | null
+          destination: string
+          destination_en: string | null
+          duration: string
+          duration_minutes: number
+          hero_image: string | null
+          id: string
+          origin: string
+          origin_en: string | null
+          prices: Json
+          scenic_highlights: string | null
+          scenic_highlights_en: string | null
+          schedules: string[] | null
+          slug: string
+          sort_order: number
+          states_traversed: string[] | null
+          status: Database["public"]["Enums"]["content_status"]
+          stops: number
+          timeline: Json | null
+          tips: Json | null
+          updated_at: string
+        }
+        Insert: {
+          badge?: string | null
+          badge_emoji?: string | null
+          created_at?: string
+          daily_departures?: number
+          description?: string | null
+          description_en?: string | null
+          destination: string
+          destination_en?: string | null
+          duration: string
+          duration_minutes: number
+          hero_image?: string | null
+          id?: string
+          origin: string
+          origin_en?: string | null
+          prices: Json
+          scenic_highlights?: string | null
+          scenic_highlights_en?: string | null
+          schedules?: string[] | null
+          slug: string
+          sort_order?: number
+          states_traversed?: string[] | null
+          status?: Database["public"]["Enums"]["content_status"]
+          stops?: number
+          timeline?: Json | null
+          tips?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          badge?: string | null
+          badge_emoji?: string | null
+          created_at?: string
+          daily_departures?: number
+          description?: string | null
+          description_en?: string | null
+          destination?: string
+          destination_en?: string | null
+          duration?: string
+          duration_minutes?: number
+          hero_image?: string | null
+          id?: string
+          origin?: string
+          origin_en?: string | null
+          prices?: Json
+          scenic_highlights?: string | null
+          scenic_highlights_en?: string | null
+          schedules?: string[] | null
+          slug?: string
+          sort_order?: number
+          states_traversed?: string[] | null
+          status?: Database["public"]["Enums"]["content_status"]
+          stops?: number
+          timeline?: Json | null
+          tips?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       saved_itineraries: {
         Row: {
           created_at: string
@@ -738,6 +825,99 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      wagon_classes: {
+        Row: {
+          amenities: Json | null
+          badge: string | null
+          color_token: string | null
+          comparison: Json | null
+          config: string | null
+          created_at: string
+          description: string | null
+          description_en: string | null
+          faqs: Json | null
+          gallery_images: Json | null
+          hero_image: string | null
+          id: string
+          is_featured: boolean
+          meaning: string | null
+          meaning_full: string | null
+          meaning_full_en: string | null
+          name: string
+          name_en: string | null
+          price_base: number
+          seat_width: string | null
+          seats: number | null
+          slug: string
+          sort_order: number
+          status: Database["public"]["Enums"]["content_status"]
+          type: string
+          type_short: string | null
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          amenities?: Json | null
+          badge?: string | null
+          color_token?: string | null
+          comparison?: Json | null
+          config?: string | null
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          faqs?: Json | null
+          gallery_images?: Json | null
+          hero_image?: string | null
+          id?: string
+          is_featured?: boolean
+          meaning?: string | null
+          meaning_full?: string | null
+          meaning_full_en?: string | null
+          name: string
+          name_en?: string | null
+          price_base: number
+          seat_width?: string | null
+          seats?: number | null
+          slug: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          type: string
+          type_short?: string | null
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          amenities?: Json | null
+          badge?: string | null
+          color_token?: string | null
+          comparison?: Json | null
+          config?: string | null
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          faqs?: Json | null
+          gallery_images?: Json | null
+          hero_image?: string | null
+          id?: string
+          is_featured?: boolean
+          meaning?: string | null
+          meaning_full?: string | null
+          meaning_full_en?: string | null
+          name?: string
+          name_en?: string | null
+          price_base?: number
+          seat_width?: string | null
+          seats?: number | null
+          slug?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          type?: string
+          type_short?: string | null
+          updated_at?: string
+          video_url?: string | null
         }
         Relationships: []
       }
