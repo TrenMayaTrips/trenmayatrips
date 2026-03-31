@@ -1,12 +1,12 @@
 import { useParams, Link } from "react-router-dom";
-import { Clock, Users, Star, Check, X, MapPin, Mountain, ChevronRight, MessageCircle } from "lucide-react";
+import { Clock, Users, Star, Check, X, MapPin, Mountain, ChevronRight, MessageCircle, Loader2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
 import { Button } from "@/components/ui/button";
-import { packages, packageTypes, type Package } from "@/data/packages";
+import { usePackageBySlug, usePackages, packageTypes } from "@/hooks/usePackages";
 import { packageImageMap } from "@/data/package-images";
 import NotFound from "./NotFound";
 
