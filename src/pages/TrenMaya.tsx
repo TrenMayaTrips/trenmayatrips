@@ -553,6 +553,7 @@ const TrenMaya = () => {
                           alt={`Interior del vagón clase ${wagon.name}`}
                           className="w-full h-full object-cover"
                           loading="lazy"
+                        />
                       </div>
                       <div className="p-5 md:p-6">
                         <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.typeShort}</p>
