@@ -219,7 +219,7 @@ const Destinos = () => {
                     <div className="relative h-48 overflow-hidden bg-muted">
                       {(dest.featuredImage || destinationImageMap[dest.slug]) && (
                         <img
-                          src={destinationImageMap[dest.slug]}
+                          src={dest.featuredImage || destinationImageMap[dest.slug]}
                           alt={dest.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           loading="lazy"
