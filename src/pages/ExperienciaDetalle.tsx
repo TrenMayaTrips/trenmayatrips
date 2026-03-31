@@ -2,10 +2,10 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft, ShieldCheck } from "lucide-react";
+import { MapPin, Clock, Star, Users, Globe, Check, X, ChevronRight, ArrowLeft, ShieldCheck, Loader2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import SEOHead from "@/components/seo/SEOHead";
-import { getExperienceBySlug, experiences, categoryLabels } from "@/data/experiences";
+import { useExperienceBySlug, useRelatedExperiences, categoryLabels } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import { getReviewsForExperience } from "@/data/experience-reviews";
 import ImageGallery from "@/components/experiences/ImageGallery";
@@ -26,7 +26,8 @@ const ExperienciaDetalle = () => {
   const [activeTab, setActiveTab] = useState("Resumen");
   const [sidebarStuck, setSidebarStuck] = useState(true);
   const relatedRef = useRef<HTMLDivElement>(null);
-  const exp = getExperienceBySlug(slug);
+  const { data: exp, isLoading } = useExperienceBySlug(slug);
+  const { data: relatedExps = [] } = useRelatedExperiences(exp?.related || []);
 
   // Stop sticky when related section is visible
   useEffect(() => {
@@ -39,11 +40,17 @@ const ExperienciaDetalle = () => {
     return () => observer.disconnect();
   }, [exp]);
 
-  if (!exp) return <Navigate to="/experiencias" replace />;
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
 
-  const relatedExps = exp.related
-    .map((s) => experiences.find((e) => e.slug === s))
-    .filter(Boolean);
+  if (!exp) return <Navigate to="/experiencias" replace />;
 
   const reviewData = getReviewsForExperience(exp.slug, exp.rating, exp.reviews);
   const trainConnection = getTrainConnection(exp.slug, exp.state);
@@ -278,12 +285,12 @@ const ExperienciaDetalle = () => {
             </h2>
             <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
               {relatedExps.map((rel) => {
-                const gallery = experienceGallery[rel!.slug];
+                const gallery = experienceGallery[rel.slug];
                 const imgSrc = gallery?.[0];
                 return (
                 <Link
-                  key={rel!.slug}
-                  to={`/experiencias/${rel!.slug}`}
+                  key={rel.slug}
+                  to={`/experiencias/${rel.slug}`}
                   className="snap-start min-w-[75vw] sm:min-w-[280px] md:min-w-0 group block bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 md:hover:scale-[1.02]"
                 >
                   {/* Image */}
@@ -291,42 +298,40 @@ const ExperienciaDetalle = () => {
                     {imgSrc ? (
                       <img
                         src={imgSrc}
-                        alt={rel!.title}
+                        alt={rel.title}
                         loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[hsl(var(--primary)/0.8)] to-[hsl(160,40%,15%)] flex items-center justify-center p-4">
-                        <span className="text-primary-foreground font-heading text-center text-sm font-semibold">{rel!.title}</span>
+                        <span className="text-primary-foreground font-heading text-center text-sm font-semibold">{rel.title}</span>
                       </div>
                     )}
-                    {/* Category badge */}
                     <span className="absolute top-2 left-2 bg-background/85 backdrop-blur-sm text-foreground text-[11px] font-medium px-2 py-0.5 rounded-full">
-                      {categoryLabels[rel!.category] || rel!.category}
+                      {categoryLabels[rel.category] || rel.category}
                     </span>
                   </div>
-                  {/* Content */}
                   <div className="p-4 space-y-2">
                     <h3 className="font-heading text-base font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                      {rel!.title}
+                      {rel.title}
                     </h3>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <MapPin className="w-3 h-3" />
-                      <span>{rel!.stateName}</span>
+                      <span>{rel.stateName}</span>
                     </div>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {rel!.duration}
+                        {rel.duration}
                       </span>
                       <span className="flex items-center gap-1">
                         <Star className="w-3 h-3 fill-accent text-accent" />
-                        {rel!.rating} ({rel!.reviews})
+                        {rel.rating} ({rel.reviews})
                       </span>
                     </div>
                     <div className="pt-1 border-t border-border flex items-center justify-end">
                       <span className="text-sm font-bold text-primary">
-                        Desde ${rel!.price.toLocaleString()} MXN
+                        Desde ${rel.price.toLocaleString()} MXN
                       </span>
                     </div>
                   </div>

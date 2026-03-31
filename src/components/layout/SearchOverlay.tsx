@@ -3,7 +3,7 @@ import { X, Search, MapPin, Compass, Train } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useDestinations } from "@/hooks/useDestinations";
-import { experiences } from "@/data/experiences";
+import { useExperiences } from "@/hooks/useExperiences";
 import { routes } from "@/data/routes";
 
 interface SearchResult {
@@ -20,6 +20,7 @@ interface SearchOverlayProps {
 
 const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
   const { data: destinations = [] } = useDestinations();
+  const { data: experiences = [] } = useExperiences();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 

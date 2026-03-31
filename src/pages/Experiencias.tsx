@@ -4,7 +4,7 @@ import { MapPin, Clock, Star, Search, SlidersHorizontal, X, ArrowUpDown, Chevron
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { experiences, categoryLabels, stateLabels } from "@/data/experiences";
+import { useExperiences, categoryLabels, stateLabels } from "@/hooks/useExperiences";
 import { useExperienceCategories } from "@/hooks/useExperienceCategories";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ParallaxHero from "@/components/layout/ParallaxHero";
@@ -52,6 +52,7 @@ const Experiencias = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { data: experiences = [], isLoading: experiencesLoading } = useExperiences();
 
   // Search suggestions (max 5)
   const suggestions = useMemo(() => {
@@ -65,7 +66,7 @@ const Experiencias = () => {
           exp.stateName.toLowerCase().includes(q)
       )
       .slice(0, 5);
-  }, [searchQuery]);
+  }, [searchQuery, experiences]);
 
   // Close suggestions on click outside
   useEffect(() => {
@@ -93,7 +94,7 @@ const Experiencias = () => {
     if (sortBy === "duracion") return [...result].sort((a, b) => parseDurationHours(a.duration) - parseDurationHours(b.duration));
     if (sortBy === "rating") return [...result].sort((a, b) => b.rating - a.rating);
     return result;
-  }, [searchQuery, selectedCategory, selectedState, sortBy]);
+  }, [searchQuery, selectedCategory, selectedState, sortBy, experiences]);
 
   const perPage = isMobile ? 6 : 9;
   const totalPages = Math.ceil(filtered.length / perPage);

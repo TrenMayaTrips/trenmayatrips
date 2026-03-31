@@ -5,7 +5,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { routes } from "@/data/routes";
 import { useDestinations } from "@/hooks/useDestinations";
-import { experiences } from "@/data/experiences";
+import { useExperiences } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { useState } from "react";
@@ -71,7 +71,8 @@ const RutaDetalle = () => {
   ).slice(0, 3);
 
   // Experiences in route states (max 6)
-  const routeExperiences = experiences
+  const { data: allExperiences = [] } = useExperiences();
+  const routeExperiences = allExperiences
     .filter((e) => route.statesTraversed.includes(e.state))
     .slice(0, 6);
 

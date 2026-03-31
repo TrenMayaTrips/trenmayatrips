@@ -6,7 +6,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { useSubcategoryBySlug } from "@/hooks/useExperienceCategories";
 import { guarantees } from "@/data/experience-categories";
-import { experiences, stateLabels } from "@/data/experiences";
+import { useExperiences, stateLabels } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import TestimoniosSection from "@/components/home/TestimoniosSection";
@@ -26,7 +26,9 @@ const ExperienciaSubcategoria = () => {
     subcategorySlug: string;
   }>();
 
-  const { category, subcategory, isLoading } = useSubcategoryBySlug(categorySlug, subcategorySlug);
+  const { category, subcategory, isLoading: catLoading } = useSubcategoryBySlug(categorySlug, subcategorySlug);
+  const { data: allExperiences = [], isLoading: expLoading } = useExperiences();
+  const isLoading = catLoading || expLoading;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -34,7 +36,7 @@ const ExperienciaSubcategoria = () => {
 
   const filtered = useMemo(() => {
     if (!category) return [];
-    return experiences.filter((exp) => {
+    return allExperiences.filter((exp) => {
       const matchesCategory = exp.category === category.experienceCategory;
       const matchesSearch =
         !searchQuery ||
@@ -43,7 +45,7 @@ const ExperienciaSubcategoria = () => {
       const matchesState = !selectedState || exp.state === selectedState;
       return matchesCategory && matchesSearch && matchesState;
     });
-  }, [category, searchQuery, selectedState]);
+  }, [category, allExperiences, searchQuery, selectedState]);
 
   if (isLoading) {
     return (

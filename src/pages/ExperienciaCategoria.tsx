@@ -6,7 +6,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { useCategoryBySlug } from "@/hooks/useExperienceCategories";
 import { guarantees } from "@/data/experience-categories";
-import { experiences, categoryLabels, stateLabels, getExperienceBySlug } from "@/data/experiences";
+import { useExperiences, useExperienceBySlug, categoryLabels, stateLabels } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ExperienciaDetalle from "./ExperienciaDetalle";
@@ -24,8 +24,10 @@ import {
 
 const ExperienciaCategoria = () => {
   const { slugOrCategory } = useParams<{ slugOrCategory: string }>();
-  const { category, isLoading } = useCategoryBySlug(slugOrCategory);
-  const experience = getExperienceBySlug(slugOrCategory || "");
+  const { category, isLoading: categoryLoading } = useCategoryBySlug(slugOrCategory);
+  const { data: experienceBySlug, isLoading: expLoading } = useExperienceBySlug(slugOrCategory || "");
+  const { data: allExperiences = [] } = useExperiences();
+  const isLoading = categoryLoading || expLoading;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -33,7 +35,7 @@ const ExperienciaCategoria = () => {
 
   const filtered = useMemo(() => {
     if (!category) return [];
-    return experiences.filter((exp) => {
+    return allExperiences.filter((exp) => {
       const matchesCategory = exp.category === category.experienceCategory;
       const matchesSearch =
         !searchQuery ||
@@ -42,7 +44,7 @@ const ExperienciaCategoria = () => {
       const matchesState = !selectedState || exp.state === selectedState;
       return matchesCategory && matchesSearch && matchesState;
     });
-  }, [category, searchQuery, selectedState]);
+  }, [category, allExperiences, searchQuery, selectedState]);
 
   // Loading state
   if (isLoading) {
@@ -56,7 +58,7 @@ const ExperienciaCategoria = () => {
   }
 
   // If it's an experience slug (not a category), render the detail page
-  if (!category && experience) return <ExperienciaDetalle />;
+  if (!category && experienceBySlug) return <ExperienciaDetalle />;
   if (!category) return <Navigate to="/experiencias" replace />;
 
 
