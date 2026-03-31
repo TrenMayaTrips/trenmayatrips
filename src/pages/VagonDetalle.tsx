@@ -823,7 +823,7 @@ const VagonDetalle = () => {
                   <td className="px-4 py-4 bg-card rounded-bl-lg" />
                   {allWagons.map((w, idx) => {
                     const isCurrent = w.slug === wagon.slug;
-                    const isLast = idx === wagonClassesDetailed.length - 1;
+                    const isLast = idx === allWagons.length - 1;
                     const isUpgrade = w.priceBase > wagon.priceBase;
                     return (
                       <td
