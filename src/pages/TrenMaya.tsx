@@ -553,24 +553,20 @@ const TrenMaya = () => {
                           alt={`Interior del vagón clase ${wagon.name}`}
                           className="w-full h-full object-cover"
                           loading="lazy"
-                        />
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
                       </div>
                       <div className="p-5 md:p-6">
-                        <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.type}</p>
+                        <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.typeShort}</p>
                         <h3 className="font-heading text-xl font-bold text-foreground mt-1">{wagon.name}</h3>
                         <p className="text-xs text-muted-foreground italic">"{wagon.meaning}"</p>
                         <p className="font-heading text-2xl font-bold text-foreground mt-3">
-                          ${prices[i].toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
+                          ${wagon.priceBase.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
                         </p>
                         <p className="text-xs text-muted-foreground -mt-1">por persona / tramo sencillo</p>
                         <ul className="mt-4 space-y-2">
-                          {wagon.amenities.map((a) => (
-                            <li key={a} className="flex items-center gap-2 text-sm text-foreground/80">
+                          {wagon.amenities.slice(0, 4).map((a) => (
+                            <li key={a.name} className="flex items-center gap-2 text-sm text-foreground/80">
                               <Check size={14} className="text-primary shrink-0" />
-                              {a}
+                              {a.name}
                             </li>
                           ))}
                         </ul>
@@ -585,7 +581,7 @@ const TrenMaya = () => {
                               Reservar ahora
                             </a>
                             <Link
-                              to="/tren-maya/clases/janal"
+                              to={`/tren-maya/clases/${wagon.slug}`}
                               className="block text-center text-sm text-primary hover:underline font-medium"
                             >
                               Ver detalles de esta clase →
@@ -594,7 +590,7 @@ const TrenMaya = () => {
                         ) : (
                           <div className="mt-5 space-y-2">
                             <Link
-                              to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
+                              to={`/tren-maya/clases/${wagon.slug}`}
                               className="w-full py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center border border-border text-foreground hover:bg-secondary"
                             >
                               Ver detalles
