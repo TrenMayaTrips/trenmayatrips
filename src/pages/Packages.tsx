@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Users, Star, Check, X, ChevronDown, CalendarDays, Map, Wallet } from "lucide-react";
+import { MapPin, Clock, Users, Star, Check, X, ChevronDown, CalendarDays, Map, Wallet, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
-import { packages, packageTypes } from "@/data/packages";
+import { usePackages, packageTypes } from "@/hooks/usePackages";
 import { packageImageMap } from "@/data/package-images";
 import { Button } from "@/components/ui/button";
 import heroPaquetes from "@/assets/hero-paquetes.jpg";
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 const Packages = () => {
+  const { data: packages = [], isLoading } = usePackages();
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [compareMode, setCompareMode] = useState(false);
   const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
@@ -27,9 +28,10 @@ const Packages = () => {
     return selectedType
       ? packages.filter((pkg) => pkg.type === selectedType)
       : packages;
-  }, [selectedType]);
+  }, [selectedType, packages]);
 
   const priceRange = useMemo(() => {
+    if (filtered.length === 0) return { min: 0, max: 0 };
     const prices = filtered.map((p) => p.price);
     return { min: Math.min(...prices), max: Math.max(...prices) };
   }, [filtered]);
@@ -172,6 +174,12 @@ const Packages = () => {
       {/* Packages Grid - always visible */}
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="animate-spin text-primary" size={32} />
+            </div>
+          ) : (
+          <>
           <p className="text-sm text-muted-foreground mb-8">
             {filtered.length} paquete{filtered.length !== 1 ? "s" : ""} disponible{filtered.length !== 1 ? "s" : ""}
             {compareMode && " — selecciona paquetes para comparar"}
@@ -426,6 +434,8 @@ const Packages = () => {
               );
             })}
           </div>
+          </>
+          )}
         </div>
       </section>
 
