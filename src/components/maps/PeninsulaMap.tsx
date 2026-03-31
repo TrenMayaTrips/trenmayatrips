@@ -36,6 +36,7 @@ interface PeninsulaMapProps {
 }
 
 const PeninsulaMap = ({ highlightedSlugs }: PeninsulaMapProps) => {
+  const { data: destinations = [] } = useDestinations();
   // Build a path connecting only the highlighted destinations in order
   const highlightedPath = highlightedSlugs
     .map((slug) => destinationCoords[slug])

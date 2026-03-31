@@ -44,6 +44,7 @@ interface RutaDestinosProps {
 }
 
 const RutaDestinos = ({ statesTraversed, timelineStops = [] }: RutaDestinosProps) => {
+  const { data: destinations = [] } = useDestinations();
   const routeDestinations = destinations.filter((d) =>
     statesTraversed.includes(d.state)
   );
