@@ -6,7 +6,7 @@ import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { useCategoryBySlug } from "@/hooks/useExperienceCategories";
 import { guarantees } from "@/data/experience-categories";
-import { experiences, categoryLabels, stateLabels, getExperienceBySlug } from "@/data/experiences";
+import { useExperiences, useExperienceBySlug, categoryLabels, stateLabels } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import heroExperiencias from "@/assets/hero-experiencias.jpg";
 import ExperienciaDetalle from "./ExperienciaDetalle";
