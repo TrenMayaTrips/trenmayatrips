@@ -310,7 +310,7 @@ const TrenMaya = () => {
 
     // Simulate brief loading for UX feedback
     setTimeout(() => {
-      const route = findRoute(origin, destination);
+      const route = findRouteFromData(origin, destination);
       if (route) {
         setSearchResult(route);
         setSearchNoResult(null);
