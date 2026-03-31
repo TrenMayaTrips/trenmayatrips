@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, X, ExternalLink, ChevronDown, ZoomIn, ZoomOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import EstelaCard from "@/components/maya/EstelaCard";
-import { RouteStop } from "@/data/routes";
+import { RouteStop } from "@/hooks/useRoutes";
 import { destinationImageMap } from "@/data/destination-images";
 import { useDestinations } from "@/hooks/useDestinations";
 
