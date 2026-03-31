@@ -285,12 +285,12 @@ const ExperienciaDetalle = () => {
             </h2>
             <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
               {relatedExps.map((rel) => {
-                const gallery = experienceGallery[rel!.slug];
+                const gallery = experienceGallery[rel.slug];
                 const imgSrc = gallery?.[0];
                 return (
                 <Link
-                  key={rel!.slug}
-                  to={`/experiencias/${rel!.slug}`}
+                  key={rel.slug}
+                  to={`/experiencias/${rel.slug}`}
                   className="snap-start min-w-[75vw] sm:min-w-[280px] md:min-w-0 group block bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 md:hover:scale-[1.02]"
                 >
                   {/* Image */}
