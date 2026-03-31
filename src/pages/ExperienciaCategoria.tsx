@@ -24,8 +24,10 @@ import {
 
 const ExperienciaCategoria = () => {
   const { slugOrCategory } = useParams<{ slugOrCategory: string }>();
-  const { category, isLoading } = useCategoryBySlug(slugOrCategory);
-  const experience = getExperienceBySlug(slugOrCategory || "");
+  const { category, isLoading: categoryLoading } = useCategoryBySlug(slugOrCategory);
+  const { data: experienceBySlug, isLoading: expLoading } = useExperienceBySlug(slugOrCategory || "");
+  const { data: allExperiences = [] } = useExperiences();
+  const isLoading = categoryLoading || expLoading;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState<string | null>(null);
