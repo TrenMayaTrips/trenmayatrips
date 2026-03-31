@@ -166,7 +166,7 @@ const Destinos = () => {
           <div className="flex items-center justify-between mb-8">
             <p className="text-sm text-muted-foreground">
               {filtered.length} destino{filtered.length !== 1 ? "s" : ""}
-              {selectedState && ` en ${states.find((s) => s.slug === selectedState)?.name}`}
+              {selectedState && ` en ${(states as any[]).find((s: any) => s.slug === selectedState)?.name}`}
             </p>
             <div className="flex items-center gap-1 bg-secondary rounded-lg p-1">
               <button
