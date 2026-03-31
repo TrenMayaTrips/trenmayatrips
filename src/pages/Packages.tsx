@@ -174,6 +174,12 @@ const Packages = () => {
       {/* Packages Grid - always visible */}
       <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="animate-spin text-primary" size={32} />
+            </div>
+          ) : (
+          <>
           <p className="text-sm text-muted-foreground mb-8">
             {filtered.length} paquete{filtered.length !== 1 ? "s" : ""} disponible{filtered.length !== 1 ? "s" : ""}
             {compareMode && " — selecciona paquetes para comparar"}
