@@ -434,6 +434,8 @@ const Packages = () => {
               );
             })}
           </div>
+          </>
+          )}
         </div>
       </section>
 
