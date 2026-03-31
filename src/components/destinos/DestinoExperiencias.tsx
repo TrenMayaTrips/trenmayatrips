@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Clock, Star, Users } from "lucide-react";
-import { experiences } from "@/data/experiences";
+import { useExperiencesByState } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
