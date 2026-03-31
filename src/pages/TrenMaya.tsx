@@ -208,6 +208,9 @@ const StatsSection = () => {
 const TrenMaya = () => {
   const navigate = useNavigate();
   const { data: stations = [], isLoading: stationsLoading } = useStations();
+  const { data: allRoutes = [] } = useRoutes();
+  const { data: wagonClassesList = [] } = useWagonClasses();
+  const stationNames = useMemo(() => stations.map(s => s.name), [stations]);
   const [origin, setOrigin] = useState("Cancún");
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
