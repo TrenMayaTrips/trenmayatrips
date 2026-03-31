@@ -125,7 +125,7 @@ export const useDestinationsByState = (stateSlug: string) => {
       const { data, error } = await supabase
         .from("destinations")
         .select("*")
-        .eq("state", stateEnum)
+        .eq("state", stateEnum as any)
         .eq("status", "published")
         .order("sort_order");
       if (error) throw error;
