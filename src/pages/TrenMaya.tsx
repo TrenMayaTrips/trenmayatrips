@@ -277,13 +277,22 @@ const TrenMaya = () => {
     setSearchNoResult(null);
   };
 
+  // Find route from loaded data
+  const findRouteFromData = useCallback((o: string, d: string): Route | undefined => {
+    return allRoutes.find(
+      (r) =>
+        (r.origin === o && r.destination === d) ||
+        (r.origin === d && r.destination === o)
+    );
+  }, [allRoutes]);
+
   // Find a transfer station between two stations that don't have a direct route
-  const findTransfer = (o: string, d: string): { transfer: string; estimated: string } => {
+  const findTransfer = useCallback((o: string, d: string): { transfer: string; estimated: string } => {
     const hubs = ["Cancún", "Mérida", "Tulum", "San Francisco de Campeche", "Escárcega"];
     for (const hub of hubs) {
       if (hub === o || hub === d) continue;
-      const leg1 = findRoute(o, hub);
-      const leg2 = findRoute(hub, d);
+      const leg1 = findRouteFromData(o, hub);
+      const leg2 = findRouteFromData(hub, d);
       if (leg1 && leg2) {
         const t1 = parseFloat(leg1.duration);
         const t2 = parseFloat(leg2.duration);
@@ -291,7 +300,7 @@ const TrenMaya = () => {
       }
     }
     return { transfer: "Mérida", estimated: "6-8h aprox." };
-  };
+  }, [findRouteFromData]);
 
   const handleSearch = () => {
     if (origin === destination) return;
