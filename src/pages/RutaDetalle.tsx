@@ -50,7 +50,19 @@ const RutaDetalle = () => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
 
-  const route = routes.find((r) => r.slug === slug);
+  const { data: route, isLoading } = useRouteBySlug(slug);
+  const { data: allRoutes = [] } = useRoutes();
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      </PageLayout>
+    );
+  }
+
   if (!route) {
     return (
       <PageLayout>
@@ -66,7 +78,7 @@ const RutaDetalle = () => {
   }
 
   const faqs = routeFaqs[route.slug] || [];
-  const relatedRoutes = routes.filter(
+  const relatedRoutes = allRoutes.filter(
     (r) => r.slug !== route.slug && (r.origin === route.origin || r.origin === route.destination || r.destination === route.origin || r.destination === route.destination)
   ).slice(0, 3);
 
