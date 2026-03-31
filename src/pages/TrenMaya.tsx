@@ -204,6 +204,7 @@ const StatsSection = () => {
 
 const TrenMaya = () => {
   const navigate = useNavigate();
+  const { data: stations = [], isLoading: stationsLoading } = useStations();
   const [origin, setOrigin] = useState("Cancún");
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -214,13 +215,20 @@ const TrenMaya = () => {
   const [isSearching, setIsSearching] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  const stationSlugMap: Record<string, string> = Object.fromEntries(
-    stationDetails.map((sd) => [sd.name, sd.slug])
-  );
+  const stationSlugMap: Record<string, string> = useMemo(() => 
+    Object.fromEntries(
+      stations.filter(s => s.hasDetailPage).map((s) => [s.name, s.slug])
+    ), [stations]);
 
-  const stateList = [...new Set(stations.map((s) => s.stateKey))];
-  const [expandedStates, setExpandedStates] = useState<Set<string>>(new Set([stateList[0]]));
-  const stateRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const stateList = useMemo(() => [...new Set(stations.map((s) => s.stateKey))], [stations]);
+  const [expandedStates, setExpandedStates] = useState<Set<string>>(new Set());
+
+  // Set initial expanded state when data loads
+  useEffect(() => {
+    if (stateList.length > 0 && expandedStates.size === 0) {
+      setExpandedStates(new Set([stateList[0]]));
+    }
+  }, [stateList]);
 
   const stationsByState = useMemo(() => {
     const map: Record<string, typeof stations> = {};
@@ -229,7 +237,7 @@ const TrenMaya = () => {
       map[s.stateKey].push(s);
     }
     return map;
-  }, []);
+  }, [stations]);
 
   const toggleState = useCallback((key: string) => {
     setExpandedStates(prev => {
