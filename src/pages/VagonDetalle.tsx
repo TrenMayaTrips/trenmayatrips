@@ -763,7 +763,7 @@ const VagonDetalle = () => {
                   <th className="text-left px-4 py-3 rounded-tl-lg font-medium bg-primary text-primary-foreground">
                     Característica
                   </th>
-                  {wagonClassesDetailed.map((w, idx) => {
+                   {allWagons.map((w, idx) => {
                     const isCurrent = w.slug === wagon.slug;
                     const isLast = idx === wagonClassesDetailed.length - 1;
                     return (
