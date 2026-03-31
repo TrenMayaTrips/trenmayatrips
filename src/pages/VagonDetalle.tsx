@@ -538,12 +538,23 @@ const SeatCell = ({
 // ── Page ─────────────────────────────────────────────────────────────────────
 const VagonDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const wagon = findWagonBySlug(slug || "");
+  const { data: wagon, isLoading } = useWagonBySlug(slug);
+  const { data: allWagons = [] } = useWagonClasses();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!wagon) return <Navigate to="/tren-maya" replace />;
 
-  const otherClasses = wagonClassesDetailed.filter((w) => w.slug !== wagon.slug);
+  const otherClasses = allWagons.filter((w) => w.slug !== wagon.slug);
 
   return (
     <PageLayout>
