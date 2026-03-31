@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { destinations } from "@/data/destinations";
+import { useDestinations, destinationTypes } from "@/hooks/useDestinations";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
-import { destinationTypes } from "@/data/destinations";
 
 // Approximate SVG coordinates for destinations on a stylized Yucatan Peninsula map
 // viewBox is 0 0 500 450

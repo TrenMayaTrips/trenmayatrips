@@ -4,7 +4,7 @@ import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, Arr
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import { routes } from "@/data/routes";
-import { destinations } from "@/data/destinations";
+import { useDestinations } from "@/hooks/useDestinations";
 import { experiences } from "@/data/experiences";
 import { experienceGallery } from "@/data/experience-gallery";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";

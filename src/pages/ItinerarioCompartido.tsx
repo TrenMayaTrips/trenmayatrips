@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
-import { destinations, states, destinationTypes } from "@/data/destinations";
+import { useDestinations, useStatesInfo, destinationTypes } from "@/hooks/useDestinations";
 
 const tripTypes = [
   { id: "cultural", label: "Cultural & Arqueología", emoji: "🏛️" },

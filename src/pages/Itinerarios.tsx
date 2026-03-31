@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { destinations, states, destinationTypes, type Destination } from "@/data/destinations";
+import { useDestinations, useStatesInfo, destinationTypes, type DestinationFromDB } from "@/hooks/useDestinations";
 import { destinationImageMap } from "@/data/destination-images";
 
 const tripTypes = [
