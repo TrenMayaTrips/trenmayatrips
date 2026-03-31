@@ -611,7 +611,7 @@ const VagonDetalle = () => {
       <nav className="bg-card border-b border-border sticky top-14 md:top-20 z-30">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:justify-center">
-            {wagonClassesDetailed.map((w) => {
+            {allWagons.map((w) => {
               const isCurrent = w.slug === wagon.slug;
               return (
                 <Link
