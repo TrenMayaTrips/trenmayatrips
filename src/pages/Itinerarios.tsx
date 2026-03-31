@@ -81,6 +81,8 @@ const steps = [
 ];
 
 const Itinerarios = () => {
+  const { data: destinations = [] } = useDestinations();
+  const { data: states = [] } = useStatesInfo();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null);
