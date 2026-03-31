@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Search, MapPin, Compass, Train } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { destinations } from "@/data/destinations";
+import { useDestinations } from "@/hooks/useDestinations";
 import { experiences } from "@/data/experiences";
 import { routes } from "@/data/routes";
 
@@ -19,6 +19,7 @@ interface SearchOverlayProps {
 }
 
 const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
+  const { data: destinations = [] } = useDestinations();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 

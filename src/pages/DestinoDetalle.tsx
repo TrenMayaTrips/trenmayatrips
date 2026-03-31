@@ -1,9 +1,9 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Clock, Calendar, Train, ChevronRight, Star } from "lucide-react";
+import { MapPin, Clock, Calendar, Train, ChevronRight, Star, Loader2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
-import { destinations, states, destinationTypes } from "@/data/destinations";
+import { useDestinationBySlug, useDestinations, useStatesInfo, destinationTypes } from "@/hooks/useDestinations";
 import { destinationImageMap } from "@/data/destination-images";
 import { getDestinationGallery } from "@/data/destination-gallery";
 import { Button } from "@/components/ui/button";
@@ -17,14 +17,26 @@ import VideoModule from "@/components/ui/VideoModule";
 
 const DestinoDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const dest = destinations.find((d) => d.slug === slug);
+  const { data: dest, isLoading } = useDestinationBySlug(slug || "");
+  const { data: states = [] } = useStatesInfo();
+  const { data: allDestinations = [] } = useDestinations();
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!dest) return <Navigate to="/destinos" replace />;
 
   const state = states.find((s) => s.slug === dest.state);
-  const image = destinationImageMap[dest.slug];
+  const image = dest.featuredImage || destinationImageMap[dest.slug];
   const galleryImages = getDestinationGallery(dest.slug, dest.state);
-  const related = destinations
+  const related = allDestinations
     .filter((d) => d.state === dest.state && d.slug !== dest.slug)
     .slice(0, 3);
 

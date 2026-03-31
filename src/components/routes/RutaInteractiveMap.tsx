@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import EstelaCard from "@/components/maya/EstelaCard";
 import { RouteStop } from "@/data/routes";
 import { destinationImageMap } from "@/data/destination-images";
-import { destinations } from "@/data/destinations";
+import { useDestinations } from "@/hooks/useDestinations";
 
 // Station coordinates on the SVG map
 const stationCoords: Record<string, { x: number; y: number }> = {
@@ -122,6 +122,8 @@ const RutaInteractiveMap = ({ timeline, hoveredStation, onStationHover }: RutaIn
   const handleMarkerClick = (stop: RouteStop) => {
     setSelectedStation(stop);
   };
+
+  const { data: destinations = [] } = useDestinations();
 
   const getDestinationInfo = (stationName: string) => {
     const slug = stationToDestinationSlug[stationName];

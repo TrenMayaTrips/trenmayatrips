@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
-import { destinations, states, destinationTypes } from "@/data/destinations";
+import { useDestinations, useStatesInfo, destinationTypes } from "@/hooks/useDestinations";
 
 const tripTypes = [
   { id: "cultural", label: "Cultural & Arqueología", emoji: "🏛️" },
@@ -27,6 +27,8 @@ const lodgingOptions = [
 ];
 
 const ItinerarioCompartido = () => {
+  const { data: destinations = [] } = useDestinations();
+  const { data: states = [] } = useStatesInfo();
   const { code } = useParams<{ code: string }>();
   const [itinerary, setItinerary] = useState<any>(null);
   const [loading, setLoading] = useState(true);

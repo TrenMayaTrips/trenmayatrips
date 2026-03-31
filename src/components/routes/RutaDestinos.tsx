@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, CheckCircle2, Navigation, Info } from "lucide-react";
-import { destinations, destinationTypes } from "@/data/destinations";
+import { useDestinations, destinationTypes } from "@/hooks/useDestinations";
 import { destinationImageMap } from "@/data/destination-images";
 import EstelaCard from "@/components/maya/EstelaCard";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -44,6 +44,7 @@ interface RutaDestinosProps {
 }
 
 const RutaDestinos = ({ statesTraversed, timelineStops = [] }: RutaDestinosProps) => {
+  const { data: destinations = [] } = useDestinations();
   const routeDestinations = destinations.filter((d) =>
     statesTraversed.includes(d.state)
   );

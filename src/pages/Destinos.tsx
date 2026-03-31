@@ -1,10 +1,9 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Calendar, Star, ChevronRight, Train, LayoutGrid, List } from "lucide-react";
+import { MapPin, Clock, Calendar, Star, ChevronRight, Train, LayoutGrid, List, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
-import { destinations, states, destinationTypes } from "@/data/destinations";
-import type { StateInfo } from "@/data/destinations";
+import { useDestinations, useStatesInfo, destinationTypes } from "@/hooks/useDestinations";
 import { Button } from "@/components/ui/button";
 import { destinationImageMap } from "@/data/destination-images";
 import heroDestinos from "@/assets/hero-destinos.jpg";
@@ -14,6 +13,8 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 
 const Destinos = () => {
+  const { data: destinations = [], isLoading: destsLoading } = useDestinations();
+  const { data: states = [], isLoading: statesLoading } = useStatesInfo();
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -23,7 +24,7 @@ const Destinos = () => {
     if (selectedState) results = results.filter((d) => d.state === selectedState);
     if (selectedType) results = results.filter((d) => d.type === selectedType);
     return results;
-  }, [selectedState, selectedType]);
+  }, [selectedState, selectedType, destinations]);
 
   const statesWithCounts = states.map((s) => ({
     ...s,
@@ -32,6 +33,15 @@ const Destinos = () => {
 
   const activeState = states.find((s) => s.slug === selectedState);
 
+  if (destsLoading || statesLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
   return (
     <PageLayout>
       {/* Hero */}
@@ -156,7 +166,7 @@ const Destinos = () => {
           <div className="flex items-center justify-between mb-8">
             <p className="text-sm text-muted-foreground">
               {filtered.length} destino{filtered.length !== 1 ? "s" : ""}
-              {selectedState && ` en ${states.find((s) => s.slug === selectedState)?.name}`}
+              {selectedState && ` en ${(states as any[]).find((s: any) => s.slug === selectedState)?.name}`}
             </p>
             <div className="flex items-center gap-1 bg-secondary rounded-lg p-1">
               <button
@@ -207,9 +217,9 @@ const Destinos = () => {
                     className="rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg transition-all group block"
                   >
                     <div className="relative h-48 overflow-hidden bg-muted">
-                      {destinationImageMap[dest.slug] && (
+                      {(dest.featuredImage || destinationImageMap[dest.slug]) && (
                         <img
-                          src={destinationImageMap[dest.slug]}
+                          src={dest.featuredImage || destinationImageMap[dest.slug]}
                           alt={dest.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           loading="lazy"
@@ -248,7 +258,7 @@ const Destinos = () => {
                       <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground pt-3 border-t border-border">
                         <div className="flex items-center gap-1.5">
                           <Train size={12} className="text-primary" />
-                          <span>{dest.nearestStation}</span>
+                          <span>{(dest as any).nearestStation}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Clock size={12} className="text-accent" />

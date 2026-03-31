@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { destinations, states, destinationTypes, type Destination } from "@/data/destinations";
+import { useDestinations, useStatesInfo, destinationTypes, type DestinationFromDB } from "@/hooks/useDestinations";
 import { destinationImageMap } from "@/data/destination-images";
 
 const tripTypes = [
@@ -81,6 +81,8 @@ const steps = [
 ];
 
 const Itinerarios = () => {
+  const { data: destinations = [] } = useDestinations();
+  const { data: states = [] } = useStatesInfo();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null);
@@ -115,11 +117,11 @@ const Itinerarios = () => {
       filtered = filtered.filter((d) => d.state === stateFilter);
     }
     return filtered;
-  }, [stateFilter]);
+  }, [stateFilter, destinations]);
 
   const selectedDests = useMemo(
     () => destinations.filter((d) => selectedDestinations.includes(d.slug)),
-    [selectedDestinations]
+    [selectedDestinations, destinations]
   );
 
   const toggleDestination = (slug: string) => {
