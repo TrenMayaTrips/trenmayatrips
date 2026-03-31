@@ -14,6 +14,195 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_authors: {
+        Row: {
+          bio: string | null
+          bio_en: string | null
+          created_at: string
+          id: string
+          initials: string | null
+          linkedin: string | null
+          name: string
+          name_en: string | null
+          photo: string | null
+          role: string | null
+          role_en: string | null
+          twitter: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          bio?: string | null
+          bio_en?: string | null
+          created_at?: string
+          id?: string
+          initials?: string | null
+          linkedin?: string | null
+          name: string
+          name_en?: string | null
+          photo?: string | null
+          role?: string | null
+          role_en?: string | null
+          twitter?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          bio?: string | null
+          bio_en?: string | null
+          created_at?: string
+          id?: string
+          initials?: string | null
+          linkedin?: string | null
+          name?: string
+          name_en?: string | null
+          photo?: string | null
+          role?: string | null
+          role_en?: string | null
+          twitter?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      blog_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          description_en: string | null
+          emoji: string | null
+          id: string
+          label: string
+          label_en: string | null
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          emoji?: string | null
+          id?: string
+          label: string
+          label_en?: string | null
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          emoji?: string | null
+          id?: string
+          label?: string
+          label_en?: string | null
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          author_name: string | null
+          author_role: string | null
+          category_id: string | null
+          category_slug: string | null
+          content: string[] | null
+          content_en: string[] | null
+          content_images: Json | null
+          created_at: string
+          excerpt: string | null
+          excerpt_en: string | null
+          featured: boolean
+          featured_image: string | null
+          id: string
+          published_at: string | null
+          read_time: number | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          sort_order: number
+          status: Database["public"]["Enums"]["content_status"]
+          tags: string[] | null
+          title: string
+          title_en: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          author_name?: string | null
+          author_role?: string | null
+          category_id?: string | null
+          category_slug?: string | null
+          content?: string[] | null
+          content_en?: string[] | null
+          content_images?: Json | null
+          created_at?: string
+          excerpt?: string | null
+          excerpt_en?: string | null
+          featured?: boolean
+          featured_image?: string | null
+          id?: string
+          published_at?: string | null
+          read_time?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          tags?: string[] | null
+          title: string
+          title_en?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string | null
+          author_role?: string | null
+          category_id?: string | null
+          category_slug?: string | null
+          content?: string[] | null
+          content_en?: string[] | null
+          content_images?: Json | null
+          created_at?: string
+          excerpt?: string | null
+          excerpt_en?: string | null
+          featured?: boolean
+          featured_image?: string | null
+          id?: string
+          published_at?: string | null
+          read_time?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["content_status"]
+          tags?: string[] | null
+          title?: string
+          title_en?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "blog_authors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_messages: {
         Row: {
           created_at: string
