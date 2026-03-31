@@ -13,6 +13,8 @@ import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 
 const Destinos = () => {
+  const { data: destinations = [], isLoading: destsLoading } = useDestinations();
+  const { data: states = [], isLoading: statesLoading } = useStatesInfo();
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -22,7 +24,7 @@ const Destinos = () => {
     if (selectedState) results = results.filter((d) => d.state === selectedState);
     if (selectedType) results = results.filter((d) => d.type === selectedType);
     return results;
-  }, [selectedState, selectedType]);
+  }, [selectedState, selectedType, destinations]);
 
   const statesWithCounts = states.map((s) => ({
     ...s,
@@ -31,6 +33,15 @@ const Destinos = () => {
 
   const activeState = states.find((s) => s.slug === selectedState);
 
+  if (destsLoading || statesLoading) {
+    return (
+      <PageLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
   return (
     <PageLayout>
       {/* Hero */}
