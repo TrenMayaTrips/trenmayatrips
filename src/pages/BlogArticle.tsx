@@ -37,7 +37,11 @@ function slugify(text: string): string {
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const { data: post, isLoading } = useBlogPostBySlug(slug || "");
+  const { data: allPosts = [] } = useBlogPosts();
+  const { data: blogCategories = [] } = useBlogCategories();
+  const authorName = post?.author || "";
+  const { data: authorData } = useAuthorByName(authorName);
 
   const tocItems = useMemo<TOCItem[]>(() => {
     if (!post) return [];
@@ -58,7 +62,7 @@ const BlogArticle = () => {
 
   const related = useMemo(() => {
     if (!post) return [];
-    const others = blogPosts.filter((p) => p.slug !== post.slug);
+    const others = allPosts.filter((p) => p.slug !== post.slug);
     const scored = others.map((p) => {
       let score = 0;
       score += p.tags.filter((t) => post.tags.includes(t)).length * 10;
@@ -69,7 +73,17 @@ const BlogArticle = () => {
     });
     scored.sort((a, b) => b.score - a.score);
     return scored.slice(0, 6).map((s) => s.post);
-  }, [post]);
+  }, [post, allPosts]);
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!post) return <Navigate to="/blog" replace />;
 
