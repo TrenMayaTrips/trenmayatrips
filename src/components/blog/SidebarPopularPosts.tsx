@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { Clock } from "lucide-react";
-import { blogPosts, type BlogPost } from "@/data/blog";
+import { useBlogPosts, type BlogPost } from "@/hooks/useBlog";
 
 interface SidebarPopularPostsProps {
   currentSlug: string;
 }
 
 const SidebarPopularPosts = ({ currentSlug }: SidebarPopularPostsProps) => {
+  const { data: blogPosts = [] } = useBlogPosts();
+  
   // Pick featured or first 3 posts excluding current
   const popular: BlogPost[] = blogPosts
     .filter((p) => p.slug !== currentSlug)
