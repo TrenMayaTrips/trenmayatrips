@@ -11,9 +11,9 @@ import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
-import { stations, trenMayaStats, wagonClasses } from "@/data/stations";
+import { wagonClasses } from "@/data/stations";
 import { allStationNames } from "@/data/routes";
-import { stationDetails } from "@/data/station-details";
+import { useStations } from "@/hooks/useStations";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
 import trenJanal from "@/assets/tren-janal-interior.jpg";
@@ -79,7 +79,7 @@ const StatsSection = () => {
   const statsData = [
     { 
       key: 'km',
-      value: trenMayaStats.totalKm, 
+      value: 1554, 
       unit: "km", 
       label: "De ruta",
       context: "La ruta férrea más larga de México",
@@ -87,7 +87,7 @@ const StatsSection = () => {
     },
     { 
       key: 'stations',
-      value: trenMayaStats.stations, 
+      value: 34, 
       unit: "", 
       label: "Estaciones",
       context: "Conectando los 5 estados del sureste",
@@ -95,7 +95,7 @@ const StatsSection = () => {
     },
     { 
       key: 'states',
-      value: trenMayaStats.states, 
+      value: 5, 
       unit: "", 
       label: "Estados",
       context: "De Chiapas a Quintana Roo",
@@ -103,7 +103,7 @@ const StatsSection = () => {
     },
     { 
       key: 'classes',
-      value: trenMayaStats.wagonTypes, 
+      value: 3, 
       unit: "", 
       label: "Clases",
       context: "Para cada tipo de viajero",
@@ -204,6 +204,7 @@ const StatsSection = () => {
 
 const TrenMaya = () => {
   const navigate = useNavigate();
+  const { data: stations = [], isLoading: stationsLoading } = useStations();
   const [origin, setOrigin] = useState("Cancún");
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -214,13 +215,20 @@ const TrenMaya = () => {
   const [isSearching, setIsSearching] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  const stationSlugMap: Record<string, string> = Object.fromEntries(
-    stationDetails.map((sd) => [sd.name, sd.slug])
-  );
+  const stationSlugMap: Record<string, string> = useMemo(() => 
+    Object.fromEntries(
+      stations.filter(s => s.hasDetailPage).map((s) => [s.name, s.slug])
+    ), [stations]);
 
-  const stateList = [...new Set(stations.map((s) => s.stateKey))];
-  const [expandedStates, setExpandedStates] = useState<Set<string>>(new Set([stateList[0]]));
-  const stateRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const stateList = useMemo(() => [...new Set(stations.map((s) => s.stateKey))], [stations]);
+  const [expandedStates, setExpandedStates] = useState<Set<string>>(new Set());
+
+  // Set initial expanded state when data loads
+  useEffect(() => {
+    if (stateList.length > 0 && expandedStates.size === 0) {
+      setExpandedStates(new Set([stateList[0]]));
+    }
+  }, [stateList]);
 
   const stationsByState = useMemo(() => {
     const map: Record<string, typeof stations> = {};
@@ -229,7 +237,9 @@ const TrenMaya = () => {
       map[s.stateKey].push(s);
     }
     return map;
-  }, []);
+  }, [stations]);
+
+  const stateRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const toggleState = useCallback((key: string) => {
     setExpandedStates(prev => {

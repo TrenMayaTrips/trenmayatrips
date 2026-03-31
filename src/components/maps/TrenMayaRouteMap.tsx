@@ -1,8 +1,7 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { stations, Station } from "@/data/stations";
-import { stationDetails } from "@/data/station-details";
+import { useStations, type StationFromDB } from "@/hooks/useStations";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /* ── SVG coordinates for each station ── */
@@ -33,6 +32,7 @@ const stationCoords: Record<string, { x: number; y: number }> = {
   "Izamal": { x: 234, y: 100 },
   "Tixkokob": { x: 218, y: 92 },
   "Mérida-Teya": { x: 200, y: 82 },
+  "Mérida": { x: 200, y: 82 },
   "Umán": { x: 190, y: 96 },
   "Maxcanú": { x: 178, y: 110 },
   "Calkiní": { x: 168, y: 124 },
@@ -44,14 +44,6 @@ const stationCoords: Record<string, { x: number; y: number }> = {
 };
 
 /* ── State colors matching the Destinos timeline palette ── */
-const stateColors: Record<string, string> = {
-  chiapas: "hsl(153, 43%, 30%)",
-  tabasco: "hsl(12, 60%, 50%)",
-  campeche: "hsl(36, 55%, 52%)",
-  "quintana-roo": "hsl(170, 40%, 36%)",
-  yucatan: "hsl(45, 70%, 50%)",
-};
-
 const stateColorHex: Record<string, string> = {
   chiapas: "#2D6A4F",
   tabasco: "#C65D3A",
@@ -63,26 +55,6 @@ const stateColorHex: Record<string, string> = {
 const coastlinePath =
   "M 20,180 C 30,140 60,100 100,60 C 140,30 180,18 220,12 C 260,8 310,15 350,30 C 380,42 400,58 410,80 C 420,105 415,135 408,165 C 400,200 385,240 370,275 C 355,310 340,340 315,360 C 290,378 260,385 230,375 C 200,365 175,345 150,330 C 120,310 95,300 75,285 C 55,270 35,255 25,235 C 18,218 16,200 20,180 Z";
 
-/* ── Build colored route segments by state ── */
-function buildSegments() {
-  const segments: { path: string; color: string }[] = [];
-  for (let i = 0; i < stations.length - 1; i++) {
-    const a = stationCoords[stations[i].name];
-    const b = stationCoords[stations[i + 1].name];
-    if (!a || !b) continue;
-    segments.push({
-      path: `M ${a.x},${a.y} L ${b.x},${b.y}`,
-      color: stateColorHex[stations[i].stateKey] || "#2D6A4F",
-    });
-  }
-  return segments;
-}
-const routeSegments = buildSegments();
-
-const stationSlugMap: Record<string, string> = Object.fromEntries(
-  stationDetails.map((sd) => [sd.name, sd.slug])
-);
-
 const typeLabel: Record<string, string> = {
   principal: "Estación principal",
   estacion: "Estación",
@@ -91,7 +63,7 @@ const typeLabel: Record<string, string> = {
 
 /* ── Tooltip state ── */
 interface TooltipState {
-  station: Station;
+  station: StationFromDB;
   x: number;
   y: number;
 }
@@ -99,6 +71,7 @@ interface TooltipState {
 const TrenMayaRouteMap = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { data: stations = [] } = useStations();
   const svgRef = useRef<SVGSVGElement>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
@@ -150,9 +123,28 @@ const TrenMayaRouteMap = () => {
     }
   }, [scale]);
 
-  const handleStationInteraction = (station: Station, coords: { x: number; y: number }) => {
+  const stationSlugMap = useMemo(() => 
+    Object.fromEntries(stations.filter(s => s.hasDetailPage).map(s => [s.name, s.slug])),
+    [stations]
+  );
+
+  /* ── Build colored route segments by state ── */
+  const routeSegments = useMemo(() => {
+    const segments: { path: string; color: string }[] = [];
+    for (let i = 0; i < stations.length - 1; i++) {
+      const a = stationCoords[stations[i].name];
+      const b = stationCoords[stations[i + 1].name];
+      if (!a || !b) continue;
+      segments.push({
+        path: `M ${a.x},${a.y} L ${b.x},${b.y}`,
+        color: stateColorHex[stations[i].stateKey] || "#2D6A4F",
+      });
+    }
+    return segments;
+  }, [stations]);
+
+  const handleStationInteraction = (station: StationFromDB, coords: { x: number; y: number }) => {
     if (isMobile) {
-      // On mobile tap: show tooltip, second tap navigates
       if (tooltip?.station.name === station.name) {
         const slug = stationSlugMap[station.name];
         if (slug) navigate(`/tren-maya/estaciones/${slug}`);
@@ -166,7 +158,7 @@ const TrenMayaRouteMap = () => {
     }
   };
 
-  const handleStationHover = (station: Station, coords: { x: number; y: number }) => {
+  const handleStationHover = (station: StationFromDB, coords: { x: number; y: number }) => {
     if (!isMobile) {
       setTooltip({ station, x: coords.x, y: coords.y });
     }
@@ -185,7 +177,6 @@ const TrenMayaRouteMap = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Zoom hint on mobile */}
       {isMobile && (
         <p className="text-center text-xs text-muted-foreground mb-2">
           Pellizca para hacer zoom · Toca una estación para ver detalles
@@ -219,10 +210,8 @@ const TrenMayaRouteMap = () => {
           </linearGradient>
         </defs>
 
-        {/* Water background */}
         <rect width="460" height="420" fill="hsl(200, 30%, 92%)" rx="12" />
 
-        {/* Peninsula landmass */}
         <motion.path
           d={coastlinePath}
           fill="url(#land-gradient)"
@@ -233,14 +222,12 @@ const TrenMayaRouteMap = () => {
           transition={{ duration: 0.6 }}
         />
 
-        {/* State labels */}
         <text x="78" y="306" className="fill-muted-foreground/40 text-[8px] font-body" textAnchor="middle">CHIAPAS</text>
         <text x="85" y="240" className="fill-muted-foreground/40 text-[8px] font-body" textAnchor="middle">TABASCO</text>
         <text x="168" y="240" className="fill-muted-foreground/40 text-[8px] font-body" textAnchor="middle">CAMPECHE</text>
         <text x="240" y="68" className="fill-muted-foreground/40 text-[8px] font-body" textAnchor="middle">YUCATÁN</text>
         <text x="358" y="200" className="fill-muted-foreground/40 text-[8px] font-body" textAnchor="middle">Q. ROO</text>
 
-        {/* Train route segments colored by state */}
         {routeSegments.map((seg, i) => (
           <motion.path
             key={i}
@@ -258,7 +245,6 @@ const TrenMayaRouteMap = () => {
           />
         ))}
 
-        {/* Station dots */}
         {stations.map((station, i) => {
           const coords = stationCoords[station.name];
           if (!coords) return null;
@@ -280,7 +266,6 @@ const TrenMayaRouteMap = () => {
               onClick={() => handleStationInteraction(station, coords)}
               onMouseEnter={() => handleStationHover(station, coords)}
             >
-              {/* Pulse for principal stations */}
               {isPrincipal && (
                 <motion.circle
                   cx={coords.x}
@@ -295,7 +280,6 @@ const TrenMayaRouteMap = () => {
                 />
               )}
 
-              {/* Hover ring */}
               {isHovered && (
                 <circle
                   cx={coords.x}
@@ -319,7 +303,6 @@ const TrenMayaRouteMap = () => {
                 style={{ transition: "r 0.15s ease" }}
               />
 
-              {/* Label for principal stations */}
               {isPrincipal && (
                 <text
                   x={coords.x + (coords.x > 300 ? -10 : 10)}
@@ -334,7 +317,6 @@ const TrenMayaRouteMap = () => {
           );
         })}
 
-        {/* SVG Tooltip */}
         {tooltip && (
           <g>
             <rect
@@ -353,7 +335,7 @@ const TrenMayaRouteMap = () => {
               {tooltip.station.name}
             </text>
             <text x={tooltipX + 8} y={tooltipY + 28} className="text-[7px] fill-muted-foreground font-body">
-              {typeLabel[tooltip.station.type]} · {tooltip.station.state}
+              {typeLabel[tooltip.station.type]} · {tooltip.station.stateLabel}
             </text>
             <text x={tooltipX + 8} y={tooltipY + 39} className="text-[7px] fill-muted-foreground font-body">
               km {tooltip.station.km}
@@ -371,7 +353,6 @@ const TrenMayaRouteMap = () => {
           </g>
         )}
 
-        {/* Map legend */}
         <g transform="translate(12, 370)">
           <text className="fill-foreground/60 text-[8px] font-heading font-semibold tracking-wide">🚂 RUTA DEL TREN MAYA</text>
           <g transform="translate(0, 14)">
@@ -382,7 +363,6 @@ const TrenMayaRouteMap = () => {
             <circle cx="118" cy="0" r="2" fill="white" stroke="hsl(160, 35%, 35%)" strokeWidth="1" />
             <text x="124" y="3" className="fill-muted-foreground text-[7px] font-body">Paradero</text>
           </g>
-          {/* State color legend */}
           <g transform="translate(0, 28)">
             {Object.entries({ chiapas: "Chiapas", tabasco: "Tabasco", campeche: "Campeche", "quintana-roo": "Q. Roo", yucatan: "Yucatán" }).map(([key, label], i) => (
               <g key={key} transform={`translate(${i * 72}, 0)`}>
@@ -394,7 +374,6 @@ const TrenMayaRouteMap = () => {
         </g>
       </svg>
 
-      {/* Reset zoom button */}
       {scale > 1.1 && (
         <button
           onClick={() => { setScale(1); setTranslate({ x: 0, y: 0 }); }}
