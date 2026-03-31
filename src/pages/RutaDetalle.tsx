@@ -1,9 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, ArrowLeft, Star, ChevronRight } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Train, Calendar, ChevronDown, ChevronUp, ArrowLeft, Star, ChevronRight, Loader2 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
-import { routes } from "@/data/routes";
+import { useRouteBySlug, useRoutes } from "@/hooks/useRoutes";
 import { useDestinations } from "@/hooks/useDestinations";
 import { useExperiences } from "@/hooks/useExperiences";
 import { experienceGallery } from "@/data/experience-gallery";
@@ -50,7 +50,19 @@ const RutaDetalle = () => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
 
-  const route = routes.find((r) => r.slug === slug);
+  const { data: route, isLoading } = useRouteBySlug(slug);
+  const { data: allRoutes = [] } = useRoutes();
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      </PageLayout>
+    );
+  }
+
   if (!route) {
     return (
       <PageLayout>
@@ -66,7 +78,7 @@ const RutaDetalle = () => {
   }
 
   const faqs = routeFaqs[route.slug] || [];
-  const relatedRoutes = routes.filter(
+  const relatedRoutes = allRoutes.filter(
     (r) => r.slug !== route.slug && (r.origin === route.origin || r.origin === route.destination || r.destination === route.origin || r.destination === route.destination)
   ).slice(0, 3);
 

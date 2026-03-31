@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Armchair, Backpack, Bus, Clock } from "lucide-react";
 import EstelaCard from "@/components/maya/EstelaCard";
 import MayaPattern from "@/components/maya/MayaPattern";
-import type { RouteTip } from "@/data/routes";
+import type { RouteTip } from "@/hooks/useRoutes";
 
 const iconMap: Record<string, React.ElementType> = {
   seat: Armchair,

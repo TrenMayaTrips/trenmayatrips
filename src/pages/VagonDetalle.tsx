@@ -1,11 +1,11 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, Check, ArrowRight, ChevronLeft, X, Expand, Play } from "lucide-react";
+import { ChevronDown, ChevronUp, Check, ArrowRight, ChevronLeft, X, Expand, Play, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
-import { findWagonBySlug, wagonClassesDetailed } from "@/data/wagon-classes";
+import { useWagonBySlug, useWagonClasses } from "@/hooks/useWagonClasses";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import VideoEmbed from "@/components/ui/VideoEmbed";
@@ -538,12 +538,23 @@ const SeatCell = ({
 // ── Page ─────────────────────────────────────────────────────────────────────
 const VagonDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const wagon = findWagonBySlug(slug || "");
+  const { data: wagon, isLoading } = useWagonBySlug(slug);
+  const { data: allWagons = [] } = useWagonClasses();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="animate-spin text-primary" size={32} />
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!wagon) return <Navigate to="/tren-maya" replace />;
 
-  const otherClasses = wagonClassesDetailed.filter((w) => w.slug !== wagon.slug);
+  const otherClasses = allWagons.filter((w) => w.slug !== wagon.slug);
 
   return (
     <PageLayout>
@@ -600,7 +611,7 @@ const VagonDetalle = () => {
       <nav className="bg-card border-b border-border sticky top-14 md:top-20 z-30">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:justify-center">
-            {wagonClassesDetailed.map((w) => {
+            {allWagons.map((w) => {
               const isCurrent = w.slug === wagon.slug;
               return (
                 <Link
@@ -752,9 +763,9 @@ const VagonDetalle = () => {
                   <th className="text-left px-4 py-3 rounded-tl-lg font-medium bg-primary text-primary-foreground">
                     Característica
                   </th>
-                  {wagonClassesDetailed.map((w, idx) => {
+                   {allWagons.map((w, idx) => {
                     const isCurrent = w.slug === wagon.slug;
-                    const isLast = idx === wagonClassesDetailed.length - 1;
+                    const isLast = idx === allWagons.length - 1;
                     return (
                       <th
                         key={w.slug}
@@ -788,7 +799,7 @@ const VagonDetalle = () => {
                     <td className={`px-4 py-3 font-medium text-foreground ${i % 2 === 0 ? "bg-card" : "bg-secondary/30"}`}>
                       {row.label}
                     </td>
-                    {wagonClassesDetailed.map((w) => {
+                    {allWagons.map((w) => {
                       const isCurrent = w.slug === wagon.slug;
                       return (
                         <td
@@ -810,9 +821,9 @@ const VagonDetalle = () => {
                 {/* CTA Row */}
                 <tr>
                   <td className="px-4 py-4 bg-card rounded-bl-lg" />
-                  {wagonClassesDetailed.map((w, idx) => {
+                  {allWagons.map((w, idx) => {
                     const isCurrent = w.slug === wagon.slug;
-                    const isLast = idx === wagonClassesDetailed.length - 1;
+                    const isLast = idx === allWagons.length - 1;
                     const isUpgrade = w.priceBase > wagon.priceBase;
                     return (
                       <td

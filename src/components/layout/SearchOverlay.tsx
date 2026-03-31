@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useDestinations } from "@/hooks/useDestinations";
 import { useExperiences } from "@/hooks/useExperiences";
-import { routes } from "@/data/routes";
+import { useRoutes } from "@/hooks/useRoutes";
 
 interface SearchResult {
   label: string;
@@ -21,6 +21,7 @@ interface SearchOverlayProps {
 const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
   const { data: destinations = [] } = useDestinations();
   const { data: experiences = [] } = useExperiences();
+  const { data: routes = [] } = useRoutes();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 

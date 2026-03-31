@@ -4,22 +4,25 @@ import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Train, ArrowRight, ChevronDown, ChevronUp, Check, ArrowLeftRight, Clock, MapPin, TrainFront, Loader2, AlertTriangle, Search, MessageSquare, RouteIcon, Star } from "lucide-react";
-import { findRoute, routes as allRoutes, type Route } from "@/data/routes";
+import { useRoutes, type Route } from "@/hooks/useRoutes";
+import { useWagonClasses } from "@/hooks/useWagonClasses";
 import PageLayout from "@/components/layout/PageLayout";
 import ParallaxHero from "@/components/layout/ParallaxHero";
 import TrenMayaRouteMap from "@/components/maps/TrenMayaRouteMap";
 import GrecaDivider from "@/components/maya/GrecaDivider";
 import MayaPattern from "@/components/maya/MayaPattern";
 import EstelaCard from "@/components/maya/EstelaCard";
-import { wagonClasses } from "@/data/stations";
-import { allStationNames } from "@/data/routes";
 import { useStations } from "@/hooks/useStations";
 import heroTrenMayaPage from "@/assets/hero-tren-maya-page.jpg";
 import trenXiinbal from "@/assets/tren-xiinbal-interior.jpg";
 import trenJanal from "@/assets/tren-janal-interior.jpg";
 import trenPatal from "@/assets/tren-patal-interior.jpg";
 
-const wagonImages = [trenXiinbal, trenJanal, trenPatal];
+const wagonImages: Record<string, string> = {
+  xiinbal: trenXiinbal,
+  janal: trenJanal,
+  patal: trenPatal,
+};
 
 const stateLabelsMap: Record<string, string> = {
   chiapas: "Chiapas",
@@ -205,6 +208,9 @@ const StatsSection = () => {
 const TrenMaya = () => {
   const navigate = useNavigate();
   const { data: stations = [], isLoading: stationsLoading } = useStations();
+  const { data: allRoutes = [] } = useRoutes();
+  const { data: wagonClassesList = [] } = useWagonClasses();
+  const stationNames = useMemo(() => stations.map(s => s.name), [stations]);
   const [origin, setOrigin] = useState("Cancún");
   const [destination, setDestination] = useState("Mérida");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -271,13 +277,22 @@ const TrenMaya = () => {
     setSearchNoResult(null);
   };
 
+  // Find route from loaded data
+  const findRouteFromData = useCallback((o: string, d: string): Route | undefined => {
+    return allRoutes.find(
+      (r) =>
+        (r.origin === o && r.destination === d) ||
+        (r.origin === d && r.destination === o)
+    );
+  }, [allRoutes]);
+
   // Find a transfer station between two stations that don't have a direct route
-  const findTransfer = (o: string, d: string): { transfer: string; estimated: string } => {
+  const findTransfer = useCallback((o: string, d: string): { transfer: string; estimated: string } => {
     const hubs = ["Cancún", "Mérida", "Tulum", "San Francisco de Campeche", "Escárcega"];
     for (const hub of hubs) {
       if (hub === o || hub === d) continue;
-      const leg1 = findRoute(o, hub);
-      const leg2 = findRoute(hub, d);
+      const leg1 = findRouteFromData(o, hub);
+      const leg2 = findRouteFromData(hub, d);
       if (leg1 && leg2) {
         const t1 = parseFloat(leg1.duration);
         const t2 = parseFloat(leg2.duration);
@@ -285,7 +300,7 @@ const TrenMaya = () => {
       }
     }
     return { transfer: "Mérida", estimated: "6-8h aprox." };
-  };
+  }, [findRouteFromData]);
 
   const handleSearch = () => {
     if (origin === destination) return;
@@ -295,7 +310,7 @@ const TrenMaya = () => {
 
     // Simulate brief loading for UX feedback
     setTimeout(() => {
-      const route = findRoute(origin, destination);
+      const route = findRouteFromData(origin, destination);
       if (route) {
         setSearchResult(route);
         setSearchNoResult(null);
@@ -338,7 +353,7 @@ const TrenMaya = () => {
                   onChange={(e) => setOrigin(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm min-h-[44px]"
                 >
-                  {allStationNames.map((s) => (
+                  {stationNames.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
@@ -359,7 +374,7 @@ const TrenMaya = () => {
                   onChange={(e) => setDestination(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm min-h-[44px]"
                 >
-                  {allStationNames.map((s) => (
+                  {stationNames.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
@@ -513,9 +528,8 @@ const TrenMaya = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {wagonClasses.map((wagon, i) => {
-              const isFeatured = i === 1;
-              const prices = [890, 1490, 2490];
+            {wagonClassesList.map((wagon, i) => {
+              const isFeatured = wagon.isFeatured;
               return (
                 <motion.div
                   key={wagon.name}
@@ -528,32 +542,32 @@ const TrenMaya = () => {
                     <div className={`bg-card rounded-xl overflow-hidden relative ${
                       isFeatured ? "shadow-lg" : ""
                     }`}>
-                      {isFeatured && (
+                      {isFeatured && wagon.badge && (
                         <div className="bg-primary text-primary-foreground text-xs font-semibold text-center py-1.5">
-                          ⭐ Más popular
+                          {wagon.badge}
                         </div>
                       )}
                       <div className="h-40 overflow-hidden">
                         <img
-                          src={wagonImages[i]}
+                          src={wagonImages[wagon.slug] || wagon.heroImage}
                           alt={`Interior del vagón clase ${wagon.name}`}
                           className="w-full h-full object-cover"
                           loading="lazy"
                         />
                       </div>
                       <div className="p-5 md:p-6">
-                        <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.type}</p>
+                        <p className="text-xs text-accent font-medium uppercase tracking-wider">{wagon.typeShort}</p>
                         <h3 className="font-heading text-xl font-bold text-foreground mt-1">{wagon.name}</h3>
                         <p className="text-xs text-muted-foreground italic">"{wagon.meaning}"</p>
                         <p className="font-heading text-2xl font-bold text-foreground mt-3">
-                          ${prices[i].toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
+                          ${wagon.priceBase.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">MXN</span>
                         </p>
                         <p className="text-xs text-muted-foreground -mt-1">por persona / tramo sencillo</p>
                         <ul className="mt-4 space-y-2">
-                          {wagon.amenities.map((a) => (
-                            <li key={a} className="flex items-center gap-2 text-sm text-foreground/80">
+                          {wagon.amenities.slice(0, 4).map((a) => (
+                            <li key={a.name} className="flex items-center gap-2 text-sm text-foreground/80">
                               <Check size={14} className="text-primary shrink-0" />
-                              {a}
+                              {a.name}
                             </li>
                           ))}
                         </ul>
@@ -568,7 +582,7 @@ const TrenMaya = () => {
                               Reservar ahora
                             </a>
                             <Link
-                              to="/tren-maya/clases/janal"
+                              to={`/tren-maya/clases/${wagon.slug}`}
                               className="block text-center text-sm text-primary hover:underline font-medium"
                             >
                               Ver detalles de esta clase →
@@ -577,7 +591,7 @@ const TrenMaya = () => {
                         ) : (
                           <div className="mt-5 space-y-2">
                             <Link
-                              to={`/tren-maya/clases/${["xiinbal", "janal", "patal"][i]}`}
+                              to={`/tren-maya/clases/${wagon.slug}`}
                               className="w-full py-2.5 rounded-lg font-semibold text-sm transition-colors block text-center border border-border text-foreground hover:bg-secondary"
                             >
                               Ver detalles
