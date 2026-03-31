@@ -71,7 +71,8 @@ const RutaDetalle = () => {
   ).slice(0, 3);
 
   // Experiences in route states (max 6)
-  const routeExperiences = experiences
+  const { data: allExperiences = [] } = useExperiences();
+  const routeExperiences = allExperiences
     .filter((e) => route.statesTraversed.includes(e.state))
     .slice(0, 6);
 
