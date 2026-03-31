@@ -765,7 +765,7 @@ const VagonDetalle = () => {
                   </th>
                    {allWagons.map((w, idx) => {
                     const isCurrent = w.slug === wagon.slug;
-                    const isLast = idx === wagonClassesDetailed.length - 1;
+                    const isLast = idx === allWagons.length - 1;
                     return (
                       <th
                         key={w.slug}
