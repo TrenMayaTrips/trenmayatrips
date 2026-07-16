@@ -21,7 +21,7 @@ import { z } from "zod";
 const contactSchema = z.object({
   name: z.string().trim().min(3, "Ingresa tu nombre completo").max(100, "Máximo 100 caracteres").regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/, "Solo letras y espacios"),
   email: z.string().trim().email("Ingresa un email válido").max(255, "Máximo 255 caracteres"),
-  topic: z.enum(["reservas", "consultas", "sugerencias"], { required_error: "Selecciona un tema" }),
+  topic: z.enum(["reservas", "consultas", "sugerencias"], { message: "Selecciona un tema" }),
   subject: z.string().trim().min(5, "El asunto debe tener al menos 5 caracteres").max(200, "Máximo 200 caracteres"),
   message: z.string().trim().min(20, "Escribe al menos 20 caracteres").max(2000, "Máximo 2000 caracteres")
 });
@@ -133,7 +133,7 @@ const Contacto = () => {
   const validateField = useCallback((field: FieldKey, value: unknown): string | undefined => {
     const fieldSchema = contactSchema.shape[field];
     const result = fieldSchema.safeParse(value);
-    return result.success ? undefined : result.error.errors[0]?.message;
+    return result.success ? undefined : result.error.issues[0]?.message;
   }, []);
 
   const isFieldValid = useCallback((field: FieldKey): boolean => {
@@ -170,7 +170,7 @@ const Contacto = () => {
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Partial<Record<FieldKey, string>> = {};
-      result.error.errors.forEach(err => {
+      result.error.issues.forEach(err => {
         const field = err.path[0] as FieldKey;
         fieldErrors[field] = err.message;
       });
