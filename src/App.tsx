@@ -27,6 +27,8 @@ import Sostenibilidad from "./pages/Sostenibilidad";
 import AvisoPrivacidad from "./pages/AvisoPrivacidad";
 import TerminosCondiciones from "./pages/TerminosCondiciones";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +61,8 @@ const App = () => (
           <Route path="/sostenibilidad" element={<Sostenibilidad />} />
           <Route path="/aviso-de-privacidad" element={<AvisoPrivacidad />} />
           <Route path="/terminos-y-condiciones" element={<TerminosCondiciones />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
