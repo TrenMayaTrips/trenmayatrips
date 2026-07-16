@@ -133,7 +133,7 @@ const Contacto = () => {
   const validateField = useCallback((field: FieldKey, value: unknown): string | undefined => {
     const fieldSchema = contactSchema.shape[field];
     const result = fieldSchema.safeParse(value);
-    return result.success ? undefined : result.error.errors[0]?.message;
+    return result.success ? undefined : result.error.issues[0]?.message;
   }, []);
 
   const isFieldValid = useCallback((field: FieldKey): boolean => {
@@ -170,7 +170,7 @@ const Contacto = () => {
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Partial<Record<FieldKey, string>> = {};
-      result.error.errors.forEach(err => {
+      result.error.issues.forEach(err => {
         const field = err.path[0] as FieldKey;
         fieldErrors[field] = err.message;
       });
