@@ -135,7 +135,7 @@ var list_experiences_default = defineTool6({
 });
 
 // src/lib/mcp/index.ts
-var projectRef = "vvbpzfygfebkjfeeylos";
+var projectRef = "wgijpnnkjychxbnduqox";
 var mcp_default = defineMcp({
   name: "tren-maya-trips-mcp",
   title: "Tren Maya Trips",
