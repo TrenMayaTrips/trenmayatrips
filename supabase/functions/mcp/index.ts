@@ -7,7 +7,7 @@ import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.22.2";
 
 // src/lib/mcp/tools/list-blog-posts.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.22.2";
-import { createClient } from "npm:@supabase/supabase-js@^2.95.3";
+import { createClient } from "npm:@supabase/supabase-js@^2.110.7";
 import { z } from "npm:zod@^4.4.3";
 var list_blog_posts_default = defineTool({
   name: "list_blog_posts",
@@ -33,7 +33,7 @@ var list_blog_posts_default = defineTool({
 
 // src/lib/mcp/tools/get-blog-post.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.22.2";
-import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.95.3";
+import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.110.7";
 import { z as z2 } from "npm:zod@^4.4.3";
 var get_blog_post_default = defineTool2({
   name: "get_blog_post",
@@ -57,7 +57,7 @@ var get_blog_post_default = defineTool2({
 
 // src/lib/mcp/tools/list-destinations.ts
 import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.22.2";
-import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.95.3";
+import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.110.7";
 import { z as z3 } from "npm:zod@^4.4.3";
 var list_destinations_default = defineTool3({
   name: "list_destinations",
@@ -77,7 +77,7 @@ var list_destinations_default = defineTool3({
 
 // src/lib/mcp/tools/list-packages.ts
 import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.22.2";
-import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.95.3";
+import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.110.7";
 import { z as z4 } from "npm:zod@^4.4.3";
 var list_packages_default = defineTool4({
   name: "list_packages",
@@ -95,7 +95,7 @@ var list_packages_default = defineTool4({
 
 // src/lib/mcp/tools/list-routes.ts
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.22.2";
-import { createClient as createClient5 } from "npm:@supabase/supabase-js@^2.95.3";
+import { createClient as createClient5 } from "npm:@supabase/supabase-js@^2.110.7";
 import { z as z5 } from "npm:zod@^4.4.3";
 var list_routes_default = defineTool5({
   name: "list_routes",
@@ -113,7 +113,7 @@ var list_routes_default = defineTool5({
 
 // src/lib/mcp/tools/list-experiences.ts
 import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.22.2";
-import { createClient as createClient6 } from "npm:@supabase/supabase-js@^2.95.3";
+import { createClient as createClient6 } from "npm:@supabase/supabase-js@^2.110.7";
 import { z as z6 } from "npm:zod@^4.4.3";
 var list_experiences_default = defineTool6({
   name: "list_experiences",
