@@ -1,6 +1,11 @@
 # Propuesta de relaciones del catálogo
 
-**Estado:** propuesta, sin aplicar. Joel revisa las tablas, corrige lo que haga falta y aprueba. Después se corre el SQL en el SQL Editor de `tmt-production`: primero la migración `20260924130000_experiencias_subcategorias.sql` y luego el SQL de datos de abajo.
+**Estado (24-sep-2026):** el contenido actual del catálogo es **simulado** y se reemplazará desde el admin. Por eso las dudas marcadas con ❓ no se resuelven ahora: lo que importa es la estructura. Las relaciones se llenan con datos de muestra en `supabase/datos-muestra/20260924_relaciones.sql`, que usa dos migraciones:
+
+- `20260924130000_experiencias_subcategorias.sql`
+- `20260924140000_experiencias_destinos.sql` (varios destinos por experiencia)
+
+Este documento queda como referencia del razonamiento.
 
 **Por qué:** hoy la base no relaciona experiencias con destinos ni con subcategorías, y los destinos solo tienen el nombre de su estación, no la relación. Sin estas relaciones, varias secciones del sitio quedan vacías:
 

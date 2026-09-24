@@ -5,6 +5,7 @@ Estas 10 colecciones sirven para diseñar con contenido real. Son una **copia de
 > **Actualización del 24-sep-2026.** La definición vigente de cada campo es `scripts/framer/contrato.mjs`; este documento es la referencia de diseño. El CMS de Framer ya no es una muestra: es una copia sincronizada de Supabase. Ver `flujo-diseno-datos.md`. Se agregaron tres campos:
 > - **Estado vinculado** (Reference → Estados) en Experiencias, Destinos y Estaciones. Se deriva de la columna `state` y permite filtrar por estado, porque Framer no filtra campos Option contra otro registro.
 > - **Subcategorías** (Multi Reference → Subcategorías) en Experiencias. Sale de la tabla nueva `experience_subcategory_links`.
+> - **Destinos** (Multi Reference → Destinos) en Experiencias. Sale de la tabla nueva `experience_destination_links`; "Destino" sigue siendo el principal.
 
 ## Reglas de importación
 
@@ -47,6 +48,7 @@ Estas 10 colecciones sirven para diseñar con contenido real. Son una **copia de
 | Destacada | `is_featured` | Toggle |
 | Estado vinculado | `state` | Reference → Estados (derivado) |
 | Subcategorías | `experience_subcategory_links` | Multi Reference → Subcategorías |
+| Destinos | `experience_destination_links` | Multi Reference → Destinos |
 
 ## 2. Categorías ← `experience_categories` · instancia `cultural-patrimonio`
 

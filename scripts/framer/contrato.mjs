@@ -217,6 +217,7 @@ export const COLECCIONES = [
       f("destacada", "Destacada", "boolean", (r) => !!r.is_featured),
       estadoVinculado(),
       f("subcategorias", "Subcategorías", "refs", (r, d) => (d.subcategoriasDe[r.id] || []), { coleccion: "Subcategorías" }),
+      f("destinos", "Destinos", "refs", (r, d) => (d.destinosDe[r.id] || []), { coleccion: "Destinos" }),
     ],
   },
   {
@@ -301,7 +302,7 @@ export const COLECCIONES = [
 ];
 
 // Tablas que se leen además de las de cada colección (para relaciones).
-export const TABLAS_EXTRA = ["blog_categories", "experience_subcategory_links"];
+export const TABLAS_EXTRA = ["blog_categories", "experience_subcategory_links", "experience_destination_links"];
 
 // Arma el paquete listo para Framer a partir de las tablas leídas de Supabase.
 export function construir(tablas) {
@@ -315,10 +316,15 @@ export function construir(tablas) {
     const s = slug.experience_subcategories[l.subcategory_id];
     if (s) (subcategoriasDe[l.experience_id] ||= []).push(s);
   }
+  const destinosDe = {};
+  for (const l of [...(tablas.experience_destination_links || [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))) {
+    const s = slug.destinations[l.destination_id];
+    if (s) (destinosDe[l.experience_id] ||= []).push(s);
+  }
   const categoriasBlog = [...(tablas.blog_categories || [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
   const etiquetaBlog = Object.fromEntries(categoriasBlog.map((c) => [c.slug, c.label]));
   const estacionPorNombre = Object.fromEntries((tablas.stations || []).map((s) => [s.name, s.slug]));
-  const d = { porId, slug, subcategoriasDe, etiquetaBlog, estacionPorNombre };
+  const d = { porId, slug, subcategoriasDe, destinosDe, etiquetaBlog, estacionPorNombre };
 
   return COLECCIONES.map((c) => {
     const filas = (tablas[c.tabla] || []).filter(c.publicado || ((r) => (r.status ?? "published") === "published"));
