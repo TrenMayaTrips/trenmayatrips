@@ -2,6 +2,8 @@
 
 **Fase 1 del runbook.** Extraído de `src/App.tsx` (rama `main`, commit `8099f6c`). No existe `public/sitemap.xml` y `robots.txt` no declara ninguno. Plantillas según `01-mapa-de-sitio.md` y `02-plantillas.md`.
 
+> **Corrección del 24-sep-2026.** Estas son las rutas de **la app de este repo**, que se publica en Vercel. El dominio `trenmayatrips.com` no la sirve: es un sitio en HubSpot CMS con 51 URLs bajo `/es/…` y `/en/…`, y esas son las que tienen tráfico orgánico. Ver `urls-sitio-actual.md`. Todo lo que este documento llama "sitio actual" se refiere a la app de Vercel.
+
 ## Tabla de rutas
 
 | Ruta | Página (`src/pages`) | Plantilla | Notas |
@@ -47,13 +49,13 @@
 
 ## Discrepancias con `01-mapa-de-sitio.md`
 
-1. **Rutas del tren.** El mapa dice que `/rutas/cancun-tulum` es una URL verificada en el sitio en vivo. En el código, las rutas viven en `/tren-maya/rutas/:slug`, y `/rutas/...` cae en la página 404. Hay que confirmar cuál es la URL que Google tiene indexada antes de la fase de código.
+1. **Rutas del tren.** El mapa dice que `/rutas/cancun-tulum` es una URL verificada en el sitio en vivo. En el código, las rutas viven en `/tren-maya/rutas/:slug`, y `/rutas/...` cae en la página 404. El sitemap del sitio en vivo (HubSpot) tampoco la incluye; sus URLs de rutas están bajo `/es/mapa-de-tren/…` (ver `urls-sitio-actual.md`).
 2. **Paquetes.** En el mapa, Paquetes cuelga de "Planifica tu viaje"; en el código es `/paquetes`, en la raíz. Es solo una diferencia de navegación, no de URL.
 3. **Clases de servicio.** El mapa las pone bajo El Tren Maya y el código lo confirma (`/tren-maya/clases/:slug`). El slug de P'atal es `patal`, sin apóstrofo.
 
 ## Hallazgos de SEO y enlaces
 
-- **No hay sitemap.** Ni `public/sitemap.xml` ni referencia en `robots.txt`. Con tráfico orgánico real, conviene generarlo en la fase de código.
-- **Enlace roto.** `src/components/contacto/TrustIndicators.tsx` enlaza a `/aviso-privacidad`; la ruta real es `/aviso-de-privacidad`.
-- **Slugs de categoría en el home.** `src/components/home/ExperienciasSection.tsx` enlaza a `/experiencias/cultura-patrimonio`, `/experiencias/naturaleza-aventura`, `/experiencias/gastronomia` y `/experiencias/bienestar`. Los slugs de categoría del código son `cultural-patrimonio`, `aventura-naturaleza`, `gastronomico` y `bienestar`. **Confirmado contra Supabase:** la base usa `cultural-patrimonio`, `aventura-naturaleza`, `gastronomico` y `bienestar`, así que tres de las cuatro tarjetas del home no encuentran su categoría y redirigen a `/experiencias`. Solo funciona `bienestar`.
-- **Rutas del home.** `src/components/home/RutasSection.tsx` pone nombres propios que no coinciden con la ruta a la que enlazan; por ejemplo, "Ruta Puuc" enlaza a `cancun-merida` y "Selva y Cacao" a `merida-campeche`.
+- **No hay sitemap en la app.** Ni `public/sitemap.xml` ni referencia en `robots.txt`. El sitio en vivo (HubSpot) sí tiene el suyo. Para la app se genera en la fase de código, cuando se sepa en qué dominio va a vivir.
+- **Enlace roto.** `src/components/contacto/TrustIndicators.tsx` enlazaba a `/aviso-privacidad`; la ruta real es `/aviso-de-privacidad`. **Corregido** en el PR #2 (`fix/home-enlaces-rutas`).
+- **Slugs de categoría en el home.** `src/components/home/ExperienciasSection.tsx` enlaza a `/experiencias/cultura-patrimonio`, `/experiencias/naturaleza-aventura`, `/experiencias/gastronomia` y `/experiencias/bienestar`. Los slugs de categoría del código son `cultural-patrimonio`, `aventura-naturaleza`, `gastronomico` y `bienestar`. **Confirmado contra Supabase:** la base usa `cultural-patrimonio`, `aventura-naturaleza`, `gastronomico` y `bienestar`, así que tres de las cuatro tarjetas del home no encontraban su categoría y redirigían a `/experiencias`. **Corregido** en el PR #2.
+- **Rutas del home.** `src/components/home/RutasSection.tsx` ponía nombres, orígenes y duraciones inventados que no coincidían con la ruta enlazada; por ejemplo, "Ruta Puuc" enlazaba a `cancun-merida`. **Corregido** en el PR #2: ahora lee las rutas de Supabase.

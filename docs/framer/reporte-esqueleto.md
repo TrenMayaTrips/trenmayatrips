@@ -94,15 +94,16 @@ La base no tiene ninguna imagen cargada. Las 84 imágenes del CMS salen del repo
 
 ## 4. Discrepancias entre el mapa de sitio, la base y las rutas reales
 
+0. **El sitio en vivo no es esta app.** `trenmayatrips.com` está en HubSpot CMS; redirige a `www.trenmayatrips.com/es/` y su sitemap tiene 51 URLs: 33 artículos del blog, 5 estados, 4 páginas del mapa del tren, 3 de actividades y algunas más. Ninguna coincide con las rutas de la app de este repo, que se publica en Vercel. Esas 51 URLs son las que hay que conservar o redirigir con 301 (ver `urls-sitio-actual.md`).
 1. **Rutas del tren.** El mapa de sitio da `/rutas/cancun-tulum` como URL verificada. El código usa `/tren-maya/rutas/:slug`.
 2. **Categoría y experiencia comparten URL.** En el sitio, `/experiencias/:slug` sirve a las dos. Framer no lo permite, así que allí están en rutas separadas. El código debe conservar las URLs actuales.
 3. **Páginas sin ruta actual.** T06 Estado, T15 Cotización y T18 Centro de ayuda no existen en el sitio. `/sostenibilidad`, la 404 y `/itinerarios/:code` no tienen plantilla propia.
-4. **Enlaces rotos en el sitio actual.** Tres de las cuatro tarjetas de categoría del home apuntan a slugs que no existen (`cultura-patrimonio`, `naturaleza-aventura` y `gastronomia`). El enlace a `/aviso-privacidad` también está roto; la ruta real es `/aviso-de-privacidad`.
-5. **Sin sitemap.** No hay `sitemap.xml`, a pesar de que el sitio tiene tráfico orgánico.
+4. **Enlaces rotos en la app.** Tres de las cuatro tarjetas de categoría del home apuntaban a slugs que no existen, el enlace a `/aviso-privacidad` estaba roto y la sección de rutas del home mostraba datos inventados. **Corregido** en el PR #2 (`fix/home-enlaces-rutas`).
+5. **Sin sitemap en la app.** Se genera en la fase de código, cuando se defina su dominio. El sitio en vivo (HubSpot) sí tiene sitemap.
 6. **Relaciones que faltan en la base.** Las experiencias no tienen `destination_id` y no se relacionan con subcategorías, rutas ni estaciones. Cinco destinos no tienen estación ligada: `cancun`, `campeche-ciudad`, `edzna`, `villahermosa` y `comalcalco`.
 7. **Categorías.** El mapa de 2024 tiene 7 categorías de experiencias y 5 del blog; la base tiene 4 y 4.
 8. **Contenido escrito en el código.** Hay reseñas y testimonios sin fuente, cifras como "500+ viajeros" y "4.8/5", precios de las clases en el home y preguntas frecuentes (ver `contenido-en-codigo.md`).
-9. **Supabase en pausa.** Durante la fase 1 el proyecto estaba en pausa y el catálogo del sitio en producción no cargaba. Si está en el plan gratuito, puede volver a pausarse.
+9. **Supabase en pausa.** Durante la fase 1 el proyecto estaba en pausa, así que el catálogo de la app en Vercel no cargaba (el sitio de HubSpot no depende de Supabase). Si está en el plan gratuito, puede volver a pausarse.
 
 ## 5. Límites de Framer encontrados
 
@@ -122,7 +123,8 @@ La base no tiene ninguna imagen cargada. Las 84 imágenes del CMS salen del repo
 7. **URLs nuevas:** ¿qué URL llevan T06 Estado, T15 Cotización y T18 Centro de ayuda? ¿`/sostenibilidad` se absorbe en el centro de ayuda con una redirección 301?
 8. **Contenido pendiente:** titulares de los héroes, textos de Nosotros, datos de contacto (teléfono, correo, horario y oficina), certificaciones y ofertas.
 9. **Supabase:** ¿pasamos `tmt-production` a un plan que no se pause?
-10. **Frontend de destino:** falta formalizar la propuesta de Next.js en un registro de decisión de arquitectura (ADR) antes de la fase de código.
+10. **Dominio y redirecciones:** ¿en qué dominio vive hoy la app de Vercel? Al reemplazar HubSpot, ¿quién define el destino de cada una de las 51 URLs de `urls-sitio-actual.md`?
+11. **Frontend de destino:** falta formalizar la propuesta de Next.js en un registro de decisión de arquitectura (ADR) antes de la fase de código.
 
 ## 7. Siguiente paso
 
