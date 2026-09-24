@@ -10,7 +10,8 @@
 - Lee primero `CLAUDE.md` y `docs/framer/00-LEEME.md`.
 
 **En Framer**
-- Todo cambio ocurre en la rama que Framer crea para el agente.
+- Mientras el proyecto no tenga nada publicado ni aprobado, el agente trabaja en la versión principal del proyecto, sin ramas. Todo lo que crea el agente se puede regenerar desde Supabase y este paquete.
+- Cuando el diseñador empiece a diseñar, el agente no modifica las páginas que él esté trabajando sin autorización de Joel. Si necesitan trabajar al mismo tiempo, se evalúa el plan de Framer con ramas.
 - Nunca publiques el sitio de Framer ni le conectes un dominio.
 
 **Supabase (solo lectura)**
