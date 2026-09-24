@@ -15,22 +15,31 @@ Las filas marcadas con **❓** son dudas: la propuesta es razonable, pero la dec
 
 ## 1. Experiencia → destino (`experiences.destination_id`)
 
+**Regla:** el destino es el lugar donde ocurre la experiencia, no la ciudad de salida ni la más cercana. Si el lugar no existe en la base, se crea como destino propio de su estado.
+
 | Experiencia | Destino propuesto | Motivo |
 |---|---|---|
 | `ek-balam-valladolid` | `valladolid` | El recorrido termina en Valladolid |
-| `amanecer-maya-uxmal` | `merida` ❓ | Sale de Mérida. Uxmal no es destino en la base; ¿agregarlo? |
-| `cenotes-homun` | `merida` ❓ | Sale de Mérida. Homún no es destino en la base |
-| `snorkel-arrecife` | `playa-del-carmen` ❓ | Check-in en Puerto Aventuras, entre Playa del Carmen y Tulum |
+| `amanecer-maya-uxmal` | `uxmal` (destino nuevo) | Uxmal es un lugar propio de Yucatán, no parte de Mérida |
+| `cenotes-homun` | `homun` (destino nuevo) | Homún es un lugar propio de Yucatán, no parte de Mérida |
+| `snorkel-arrecife` | ❓ | Ocurre en Puerto Aventuras (Quintana Roo), que no es destino en la base. ¿Destino nuevo `puerto-aventuras`? |
 | `palenque-agua-azul` | `palenque` | Sale de Palenque |
 | `calakmul-biosfera` | `calakmul` | |
 | `bacalar-laguna` | `bacalar` | |
 | `temazcal-selva` | — ❓ | "Selva de Chiapas", sin lugar exacto. ¿Palenque o San Cristóbal? |
-| `catamaran-isla-mujeres` | `cancun` | Sale de Marina Cancún |
+| `catamaran-isla-mujeres` | ❓ | Ocurre en Isla Mujeres (Quintana Roo); Cancún es solo la salida. ¿Destino nuevo `isla-mujeres`? |
 | `coba-tulum-cenote` | `tulum` | |
 | `cochinita-pibil-workshop` | `merida` | Mercado local de Mérida |
 | `ruta-del-cacao` | `comalcalco` ❓ | Visita Comalcalco; sale de Villahermosa |
 
-**Pregunta de modelo:** una experiencia hoy tiene un solo destino. Si alguna recorre varios (por ejemplo Cobá y Tulum), conviene una tabla de relación como la de subcategorías. Por ahora se propone un destino principal.
+**Destinos nuevos.** Se crean `uxmal` y `homun` en Yucatán, en estado `draft`. Mientras estén en borrador no aparecen en el sitio ni en Framer, y las dos experiencias se muestran sin destino. Para publicarlos faltan datos que no se inventan:
+
+| Destino | Tipo propuesto | Falta |
+|---|---|---|
+| `uxmal` | `arqueologia` | Frase, descripción, imperdibles, mejores meses, estación más cercana ❓, tiempo de traslado y fotos |
+| `homun` | `pueblo` ❓ (¿o `naturaleza`, por sus cenotes?) | Lo mismo |
+
+**Pregunta de modelo:** una experiencia hoy tiene un solo destino, pero varias ocurren en más de un lugar: `coba-tulum-cenote` (Cobá y Tulum), `palenque-agua-azul` (Palenque y Cascadas de Agua Azul) y `ek-balam-valladolid` (Ek Balam y Valladolid). Para que escale, se recomienda una tabla de relación experiencia ↔ destinos, como la de subcategorías, en lugar de un solo `destination_id`. Mientras se decide, se propone un destino principal.
 
 ## 2. Experiencia → subcategorías (tabla nueva `experience_subcategory_links`)
 
@@ -72,17 +81,24 @@ Idempotente: se puede correr varias veces. Usa slugs, no ids internos. Las líne
 ```sql
 BEGIN;
 
+-- 0. Destinos nuevos (en borrador hasta completar su contenido)
+INSERT INTO public.destinations (slug, name, state, state_label, type, status, sort_order)
+VALUES
+  ('uxmal', 'Uxmal', 'yucatan', 'Yucatán', 'arqueologia', 'draft', 17),
+  ('homun', 'Homún', 'yucatan', 'Yucatán', 'pueblo', 'draft', 18)   -- ❓ tipo
+ON CONFLICT (slug) DO NOTHING;
+
 -- 1. Experiencia → destino
 UPDATE public.experiences e SET destination_id = d.id
 FROM (VALUES
   ('ek-balam-valladolid', 'valladolid'),
-  ('amanecer-maya-uxmal', 'merida'),        -- ❓
-  ('cenotes-homun', 'merida'),              -- ❓
-  ('snorkel-arrecife', 'playa-del-carmen'), -- ❓
+  ('amanecer-maya-uxmal', 'uxmal'),
+  ('cenotes-homun', 'homun'),
+  -- ('snorkel-arrecife', 'puerto-aventuras'), -- ❓ destino nuevo pendiente
   ('palenque-agua-azul', 'palenque'),
   ('calakmul-biosfera', 'calakmul'),
   ('bacalar-laguna', 'bacalar'),
-  ('catamaran-isla-mujeres', 'cancun'),
+  -- ('catamaran-isla-mujeres', 'isla-mujeres'), -- ❓ destino nuevo pendiente
   ('coba-tulum-cenote', 'tulum'),
   ('cochinita-pibil-workshop', 'merida'),
   ('ruta-del-cacao', 'comalcalco')          -- ❓
