@@ -13,7 +13,7 @@ const experiences = [
   {
     icon: Landmark,
     title: "Patrimonio maya",
-    slug: "cultura-patrimonio",
+    slug: "cultural-patrimonio",
     description: "Visita zonas arqueológicas como Chichén Itzá, Palenque, Uxmal y Calakmul con guías certificados.",
     image: imgChichenDetail,
     alt: "Detalle de glifos tallados en piedra en Chichén Itzá",
@@ -21,7 +21,7 @@ const experiences = [
   {
     icon: Palmtree,
     title: "Cenotes y naturaleza",
-    slug: "naturaleza-aventura",
+    slug: "aventura-naturaleza",
     description: "Nada en cenotes sagrados, explora la selva y descubre la Reserva de Sian Ka'an.",
     image: imgBacalar,
     alt: "Laguna de siete colores en Bacalar rodeada de vegetación",
@@ -29,7 +29,7 @@ const experiences = [
   {
     icon: UtensilsCrossed,
     title: "Gastronomía regional",
-    slug: "gastronomia",
+    slug: "gastronomico",
     description: "Cochinita pibil, papadzules, chocolate de Tabasco y sabores auténticos del sureste.",
     image: imgCampeche,
     alt: "Fachadas coloridas del centro histórico de Campeche",
