@@ -49,3 +49,10 @@ npm install      # dependencias
 npm run dev      # desarrollo local
 npm run build    # build de producción (dist/)
 ```
+
+## Iniciativa activa: rediseño en Framer → reconstrucción en código
+- Framer es la herramienta de diseño (proyecto "TMT — Diseño 2026"); nunca se publica como producción.
+- Paquete de traspaso y especificaciones en `docs/framer/` (mapa, plantillas, sistema de diseño, CMS, runbook).
+- Con el diseño aprobado, el frontend se reconstruye de cero (destino propuesto: Next.js en Vercel, pendiente de ADR),
+  con las mismas URLs actuales y leyendo todo el contenido de tmt-production.
+- El sitio actual sigue en producción sin cambios hasta el cutover.
