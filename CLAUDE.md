@@ -16,7 +16,7 @@ Sitio público en español (es-MX), enfocado 100% en la ruta del Tren Maya.
 - **Cliente Supabase**: `src/integrations/supabase/client.ts` (autogenerado — NO editar). Config vía variables `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` (`.env` local / env vars en Vercel; las de Vercel tienen prioridad).
 - **Edge functions** (Supabase): `send-contact`, `subscribe-newsletter`, `save-itinerary`, `mcp`. Solo usan secrets automáticos de Supabase. Si se integra email real (Resend/SendGrid) habrá que añadir su API key como secret.
 - **Pagos**: Wellet — widgets por producto y links de pago para circuitos, del lado cliente.
-- **CRM**: HubSpot Starter (leads). **Ads**: Google AdSense en el blog (3 posiciones, componente `AdPlaceholder`).
+- **CRM**: HubSpot Starter (leads). Va a desaparecer junto con el sitio de HubSpot; los formularios deben terminar en Supabase. **Ads**: Google AdSense en el blog (3 posiciones, componente `AdPlaceholder`).
 - **Admin/back-office**: Softr Professional (planeado) conectado a la misma base.
 
 ## Base de datos — 16 tablas en `public`
@@ -50,9 +50,11 @@ npm run dev      # desarrollo local
 npm run build    # build de producción (dist/)
 ```
 
-## Iniciativa activa: rediseño en Framer → reconstrucción en código
-- Framer es la herramienta de diseño (proyecto "TMT — Diseño 2026"); nunca se publica como producción.
-- Paquete de traspaso y especificaciones en `docs/framer/` (mapa, plantillas, sistema de diseño, CMS, runbook).
-- Con el diseño aprobado, el frontend se reconstruye de cero (destino propuesto: Next.js en Vercel, pendiente de ADR),
-  con las mismas URLs actuales y leyendo todo el contenido de tmt-production.
-- El sitio actual sigue en producción sin cambios hasta el cutover.
+## Iniciativa activa: Framer como experiencia, Supabase como sistema
+- **Framer crea la experiencia** (proyecto "TMT — Diseño 2026") y será el sitio público. **Supabase es el sistema propio** que la alimenta y la única fuente de verdad del contenido.
+- **Principio "grow better":** nada puede vivir solo en Framer. Todo dato que muestre el sitio existe primero en Supabase, para que también lo puedan leer una API, un agente (función `mcp`) o una app.
+- **El CMS de Framer es una copia sincronizada.** Contrato en `scripts/framer/contrato.mjs`; `npm run framer:verificar` compara y `npm run framer:sincronizar` aplica. No se edita contenido en Framer.
+- **Si el diseño pide un dato nuevo:** migración revisada en Supabase → datos → contrato → sincronizar → conectar en Framer (ver `docs/framer/flujo-diseno-datos.md`).
+- **Admin:** se construirá sobre esta app (login, roles, Supabase) cuando el diseño P1 defina los campos.
+- **Especificaciones** en `docs/framer/` (mapa, plantillas, sistema de diseño, CMS, runbook, reporte del esqueleto).
+- **Sitio en vivo:** `trenmayatrips.com` está hoy en HubSpot CMS, que va a desaparecer. Sus 51 URLs necesitan redirección 301 al lanzar (`docs/framer/urls-sitio-actual.md`).

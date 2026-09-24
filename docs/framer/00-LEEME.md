@@ -27,11 +27,11 @@ Sobre el plan de Framer: empieza con el gratuito. Si colaborar con tu diseñador
 
 ## Reglas del proyecto (para personas y agentes)
 
-- Framer es herramienta de diseño: nunca se publica con dominio propio ni se usa como producción.
-- La fuente de verdad del contenido es Supabase (`tmt-production`). La copia en el CMS de Framer es una muestra para diseñar y no se mantiene sincronizada.
+- **Actualización del 24-sep-2026:** Framer crea la experiencia y será el sitio público. Supabase es el sistema propio que la alimenta (ver `flujo-diseno-datos.md`). Esto reemplaza la regla original de que Framer nunca se publicaba.
+- La fuente de verdad del contenido es Supabase (`tmt-production`). El CMS de Framer es una copia que se sincroniza con `npm run framer:sincronizar`; el contenido no se edita en Framer.
 - Solo los 5 estados de la ruta: Quintana Roo, Yucatán, Campeche, Tabasco y Chiapas.
 - Todo el diseño va en español (es-MX). La base ya tiene campos en inglés para una versión futura; contempla el selector de idioma en la navegación.
-- Se diseña solo lo que pueda reproducirse en código. Los efectos nativos de Framer sí, porque corren sobre la librería open source `motion`. Los componentes de terceros del marketplace, no.
+- Nada vive solo en Framer: datos, relaciones y lógica viven en Supabase. Los componentes de terceros del marketplace se evitan.
 - No se inventa contenido. Lo que falte se marca `PENDIENTE` de forma visible.
 - Los precios netos (`net_price`), los códigos de Wellet y los datos de proveedores nunca salen de Supabase.
 - Solo reseñas reales y con fuente. Nada de testimonios de relleno.
