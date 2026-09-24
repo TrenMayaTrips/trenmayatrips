@@ -4,7 +4,7 @@ const indicators = [
   { icon: Clock, text: "Respuesta promedio: 4 horas" },
   { icon: CheckCircle, text: "500+ viajeros satisfechos" },
   { icon: Star, text: "4.8/5 en Google Reviews", href: "https://g.page/r/trenmayatrips/review" },
-  { icon: ShieldCheck, text: "Datos protegidos", href: "/aviso-privacidad" },
+  { icon: ShieldCheck, text: "Datos protegidos", href: "/aviso-de-privacidad" },
 ];
 
 const TrustIndicators = () => (
