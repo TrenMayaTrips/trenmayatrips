@@ -2,6 +2,11 @@
 
 Estas 10 colecciones sirven para diseñar con contenido real. Son una **copia de muestra** de `tmt-production`: no se sincronizan y no son la fuente de verdad, que sigue siendo Supabase. Los tipos de campo usan los nombres de la interfaz de Framer, que está en inglés.
 
+> **Actualización del 24-sep-2026.** La definición vigente de cada campo es `scripts/framer/contrato.mjs`; este documento es la referencia de diseño. El CMS de Framer ya no es una muestra: es una copia sincronizada de Supabase. Ver `flujo-diseno-datos.md`. Se agregaron tres campos:
+> - **Estado vinculado** (Reference → Estados) en Experiencias, Destinos y Estaciones. Se deriva de la columna `state` y permite filtrar por estado, porque Framer no filtra campos Option contra otro registro.
+> - **Subcategorías** (Multi Reference → Subcategorías) en Experiencias. Sale de la tabla nueva `experience_subcategory_links`.
+> - **Destinos** (Multi Reference → Destinos) en Experiencias. Sale de la tabla nueva `experience_destination_links`; "Destino" sigue siendo el principal.
+
 ## Reglas de importación
 
 - **Qué filas.** Solo las que tienen `status = published`. La tabla `states_info` no tiene estado; se importa completa.
@@ -27,7 +32,7 @@ Estas 10 colecciones sirven para diseñar con contenido real. Son una **copia de
 | Categoría | `category_id` | Reference → Categorías |
 | Destino | `destination_id` | Reference → Destinos |
 | Estado | `state_label` | Option (5 estados) |
-| Estación más cercana | `nearest_station_name` del destino | Plain Text (derivado) |
+| Estación más cercana | estación del destino (`nearest_station_id`) | Plain Text (derivado) |
 | Duración | `duration` | Plain Text |
 | Precio desde (MXN) | `price` | Number |
 | Grupo | `group_size` | Plain Text |
@@ -41,6 +46,9 @@ Estas 10 colecciones sirven para diseñar con contenido real. Son una **copia de
 | Imagen principal | `featured_image` | Image |
 | Galería 1 a 4 | `gallery` | Image |
 | Destacada | `is_featured` | Toggle |
+| Estado vinculado | `state` | Reference → Estados (derivado) |
+| Subcategorías | `experience_subcategory_links` | Multi Reference → Subcategorías |
+| Destinos | `experience_destination_links` | Multi Reference → Destinos |
 
 ## 2. Categorías ← `experience_categories` · instancia `cultural-patrimonio`
 
@@ -84,6 +92,7 @@ Estas 10 colecciones sirven para diseñar con contenido real. Son una **copia de
 | Mejores meses | `best_months` | Plain Text |
 | Imagen principal | `featured_image` | Image |
 | Galería 1 a 4 | `gallery` | Image |
+| Estado vinculado | `state` | Reference → Estados (derivado) |
 
 ## 5. Estados ← `states_info` · instancia `quintana-roo`
 
@@ -120,6 +129,7 @@ Se importan las 34, porque alimentan el mapa y los recorridos. Solo las 10 con `
 | Transporte local | `transport` | Formatted Text |
 | Consejos | `tips` | Formatted Text |
 | Tiene página propia | `has_detail_page` | Toggle |
+| Estado vinculado | `state` | Reference → Estados (derivado) |
 
 ## 7. Rutas ← `routes` · instancia `cancun-tulum`
 

@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "framer:verificar": "node scripts/framer/sincronizar.mjs",
+    "framer:sincronizar": "node scripts/framer/sincronizar.mjs --aplicar"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
