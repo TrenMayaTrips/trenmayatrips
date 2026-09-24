@@ -5,6 +5,8 @@
 - `20260924130000_experiencias_subcategorias.sql`
 - `20260924140000_experiencias_destinos.sql` (varios destinos por experiencia)
 
+**Aplicado el 24-sep-2026** en `tmt-production` (SQL Editor): las dos migraciones y los datos de muestra. Resultado: 12 enlaces experiencia ↔ destino (8 visibles; 4 apuntan a destinos en borrador), 16 enlaces experiencia ↔ subcategoría, 11 experiencias con destino principal y 14 destinos con estación. Framer quedó sincronizado.
+
 Este documento queda como referencia del razonamiento.
 
 **Por qué:** hoy la base no relaciona experiencias con destinos ni con subcategorías, y los destinos solo tienen el nombre de su estación, no la relación. Sin estas relaciones, varias secciones del sitio quedan vacías:
