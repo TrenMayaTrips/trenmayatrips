@@ -2,7 +2,7 @@
 
 **Fase 1 del runbook.** Relación entre las imágenes de `src/assets` y los slugs del catálogo, tomada de los mapas de imágenes del código (`src/data/*-images.ts`, `src/data/experience-gallery.ts` y los respaldos locales de `src/hooks/use*.ts`). `public/` solo tiene `logo-tmt.png`, `favicon.ico` y `placeholder.svg`.
 
-**Aviso.** Los slugs vienen del código, no de Supabase: la base no respondió durante la fase 1 (ver reporte). Hay que cruzarlos con la base antes de importar al CMS.
+**Cruce con Supabase (23-sep-2026).** Todos los slugs de este documento se confirmaron contra `tmt-production`. **La base no tiene ninguna imagen cargada:** `featured_image`, `hero_image`, `image`, `gallery` y `gallery_images` están vacíos en todas las tablas, y los 16 `content_images` del blog tienen `src` vacío (solo traen texto alternativo y pie de foto). Todas las imágenes del CMS saldrán del repo o quedarán como `FOTO PENDIENTE`.
 
 ## Calidad de las imágenes
 
@@ -30,8 +30,10 @@ Solo los héroes llegan a resolución de pantalla completa. Las demás sirven pa
 | `temazcal-selva` | — | `gallery/temazcal-1.jpg`, `gallery/temazcal-2.jpg` |
 | `snorkel-arrecife` | — | `gallery/snorkel-1.jpg`, `gallery/snorkel-2.jpg` |
 | `bacalar-laguna` | — | `gallery/bacalar-1.jpg`, `gallery/bacalar-2.jpg` |
+| `cenotes-homun` | — | — |
+| `cochinita-pibil-workshop` | — | — |
 
-Ninguna experiencia tiene imagen principal propia; la primera foto de la galería puede hacer ese papel. El runbook espera 12 experiencias y el código solo conoce 10.
+Ninguna experiencia tiene imagen principal propia; la primera foto de la galería puede hacer ese papel. La base tiene 12 experiencias; `cenotes-homun` y `cochinita-pibil-workshop` (ambas en Yucatán) no existen en el código y no tienen ninguna foto.
 
 ## Destinos (T07)
 
@@ -132,9 +134,10 @@ Todas son fotos de destino reutilizadas; ningún artículo tiene foto propia.
 
 ## Slugs sin imagen
 
-- **Experiencias:** 2 de las 12 que menciona el runbook no aparecen en el código (slugs por confirmar en Supabase). Ninguna de las 10 conocidas tiene imagen principal.
+- **Experiencias:** `cenotes-homun` y `cochinita-pibil-workshop` no tienen ninguna foto. Las otras 10 solo tienen galería de 2 fotos, sin imagen principal.
+- **Blog (fotos dentro del artículo):** los 16 espacios de `content_images` de los 9 artículos están vacíos.
 - **Estados (T06):** `quintana-roo`, `yucatan`, `campeche`, `tabasco`, `chiapas`. Ninguno tiene imagen.
 - **Categorías (T04):** `cultural-patrimonio`, `aventura-naturaleza`, `gastronomico`, `bienestar`. Todas usan el héroe genérico `hero-experiencias.jpg`.
 - **Subcategorías (T04):** las 19. Ninguna tiene imagen.
-- **Estaciones (T10):** 24 de 34 sin imagen: Boca del Cerro, Tenosique, El Triunfo, Candelaria, Escárcega, Centenario, Calakmul, Xpujil, Nicolás Bravo, Chetumal, Limones-Chacchoben, Felipe Carrillo Puerto, Tulum Aeropuerto, Puerto Morelos, Leona Vicario, Nuevo Xcán, Tixkokob, Umán, Maxcanú, Calkiní, Hecelchakán, Tenabo, Edzná, Carrillo Puerto. (Nombres tomados de `src/data/stations.ts`; los slugs se confirman en la base.)
+- **Estaciones (T10):** 24 de 34 sin imagen. Ninguna de ellas tiene página propia (`has_detail_page = false`), así que solo afectan a listas y al mapa: `boca-del-cerro`, `tenosique`, `el-triunfo`, `candelaria`, `escarcega`, `centenario`, `calakmul`, `xpujil`, `nicolas-bravo`, `chetumal`, `limones-chacchoben`, `felipe-carrillo-puerto`, `tulum-aeropuerto`, `puerto-morelos`, `leona-vicario`, `nuevo-xcan`, `tixkokob`, `uman`, `maxcanu`, `calkini`, `hecelchakan`, `tenabo`, `edzna`, `carrillo-puerto-campeche`. Las 10 estaciones con página sí tienen imagen.
 - **Paquetes, artículos y rutas:** tienen imagen, pero todas son fotos de destino reutilizadas, no fotos propias.

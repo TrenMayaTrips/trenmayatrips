@@ -8,7 +8,7 @@ Ningún archivo del sitio los importa; las páginas ya leen estas tablas de Supa
 
 | Archivo | Contenido | Tabla equivalente |
 |---|---|---|
-| `src/data/experiences.ts` | 10 experiencias | `experiences` |
+| `src/data/experiences.ts` | 10 experiencias (la base ya tiene 12) | `experiences` |
 | `src/data/destinations.ts` | 5 estados + 16 destinos | `states_info`, `destinations` |
 | `src/data/packages.ts` | 5 paquetes | `packages` |
 | `src/data/routes.ts` | 5 rutas | `routes` |
